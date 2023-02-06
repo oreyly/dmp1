@@ -25,15 +25,50 @@ namespace dmp1
     /// </summary>
     public partial class HraciPlocha : Window
     {
-        public Hra HraCoSeHraje { get; set; }
+        public string naz { get; set; } = "Zdarec";
+
+        private Hra _HraCoSeHraje;
+        public Hra HraCoSeHraje
+        {
+            get
+            {
+                return _HraCoSeHraje;
+            }
+
+            set
+            {
+                if (value.DruhSpusteniI == 1)
+                {
+                    Grid.SetColumn(UVukladani, 0);
+                    Grid.SetRow(UVukladani, 0);
+                    Grid.SetColumnSpan(UVukladani, 2);
+                    Grid.SetRowSpan(UVukladani, 2);
+
+                    btOdeslat.Visibility = Visibility.Collapsed;
+                    btUkoncit.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    Grid.SetColumn(UVukladani, 1);
+                    Grid.SetRow(UVukladani, 0);
+                    Grid.SetColumnSpan(UVukladani, 1);
+                    Grid.SetRowSpan(UVukladani, 2);
+
+                    btOdeslat.Visibility = Visibility.Visible;
+                    btUkoncit.Visibility = Visibility.Visible;
+                }
+
+                _HraCoSeHraje = value;
+            }
+        }
 
         public HraciPlocha()
         {
+            InitializeComponent();
             HraCoSeHraje = new Hra();
             DataContext = HraCoSeHraje;
-            InitializeComponent();
             imgNapoveda.Source = Properties.Resources.icoNapoveda.ToImageSource();
-
+            
             Graf gr = new Graf(cnvGRaf, this);
             /*DrawingContext dc = dgpGRaf.Open();
             dc.DrawLine(new Pen(Brushes.Black, 1), new Point(0, 0), new Point(1000, 1000));
@@ -55,6 +90,12 @@ namespace dmp1
         {
             brNapoveda.Visibility = Visibility.Collapsed;
             imgNapoveda.Visibility = Visibility.Visible;
+        }
+
+        private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            HraCoSeHraje.aktualniUloha = (Uloha)((ListViewItem)sender).DataContext;
+            //naz = "More";
         }
     }
 

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using PostSharp.Patterns.Model;
 
 namespace dmp1
 {
+    [NotifyPropertyChanged]
     public class Uloha
     {
         public string Nazev { get; set; } = "Funkce 1";
@@ -35,6 +38,7 @@ namespace dmp1
         public Uloha(int body)
         {
             Body = body;
+            Nazev += body;
         }
     }
 }

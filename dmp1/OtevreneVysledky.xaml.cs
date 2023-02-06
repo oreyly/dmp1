@@ -90,7 +90,7 @@ namespace dmp1
                 if (!double.IsNaN(gv.Columns[i].ActualWidth))
                     width -= gv.Columns[i].ActualWidth;
             }
-            return width - 20;// this is to take care of margin/padding
+            return width - 5;// this is to take care of margin/padding
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

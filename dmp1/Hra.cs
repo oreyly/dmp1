@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PostSharp.Patterns.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace dmp1
 {
+    [NotifyPropertyChanged]
     public class Hra
     {
         public string Nazev { get; set; }
@@ -57,6 +59,7 @@ namespace dmp1
             {
                 return _aktualniUloha;
             }
+
             set
             {
                 if (_aktualniUloha != null)
@@ -76,14 +79,14 @@ namespace dmp1
         {
             int pocet = 41;
             Ulohy = new Uloha[pocet];
-            DruhSpusteniI = 1;
+            DruhSpusteniI = 2;
 
             for (int i = 0; i < pocet; ++i)
             {
                 Ulohy[i] = new Uloha(i * 5);
             }
 
-            aktualniUloha = Ulohy[0];
+            aktualniUloha = Ulohy[2];
         }
     }
 }

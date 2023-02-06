@@ -24,9 +24,10 @@
                     <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},  Path=ActualHeight, Converter={StaticResource nastavPocetRadku}}"></Setter>
                     <Setter Property="Background" Value="{Binding Barva}"></Setter>
                     <Setter Property="Content" Value="{Binding Body}" ></Setter>
-                    <Setter Property="IsHitTestVisible" Value="False"></Setter>
+                    <Setter Property="IsHitTestVisible" Value="True"></Setter>
                     <Setter Property="BorderThickness" Value="0"></Setter>
                     <Setter Property="BorderBrush" Value="Black"></Setter>
+                    <EventSetter Event="MouseUp" Handler="ListBoxItem_MouseUp"></EventSetter>
                 </Style>
             </ListView.Resources>
         </ListView>
@@ -61,14 +62,13 @@
                             <TextBlock Text="{Binding aktualniUloha.Napoveda}" TextWrapping="Wrap"/>
                         </ScrollViewer>
                     </Border>
-                    <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding aktualniUloha.Nazev}"></local:LepsiLabel>
+                    <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
                 </Grid>
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto" >
                     <TextBlock Text="{Binding aktualniUloha.Popis}" TextWrapping="Wrap"/>
                 </ScrollViewer>
                 
                 <!--<local:NabidkaMoznosti Grid.Row="2" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:NabidkaMoznosti>-->
-                <local:UkladaniVysledku Grid.Row="2" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:UkladaniVysledku>
                 <Grid Grid.Row="2" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -78,6 +78,9 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
+                    <local:UkladaniVysledku x:Name="UVukladani" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:UkladaniVysledku>
+                    <Button x:Name="btOdeslat" Grid.Row="0">Odeslat</Button>
+                    <Button x:Name="btUkoncit" Grid.Row="1">Ukončit</Button>
                 </Grid>
             </Grid>
         </Grid>
