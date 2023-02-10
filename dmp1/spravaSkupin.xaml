@@ -1,0 +1,36 @@
+﻿<Window x:Class="dmp1.spravaSkupin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="spravaSkupin" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="85*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="lbSkupiny" ItemsSource="{Binding skupiny}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBox_MouseDoubleClick"></EventSetter>
+                    <EventSetter Event="MouseUp" Handler="ListBoxItem_MouseUp"></EventSetter>
+                    <Setter Property="Content" Value="{Binding Key}"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Value}" Value="true">
+                            <Setter Property="Background" Value="Gray"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <local:seznamSTlacitky x:Name="sstHraci" Grid.Column="1" druhTlacitka="Smazat" Margin="0" Padding="0" KliklNaPrvek="sstHraci_KliklNaPrvek"></local:seznamSTlacitky>
+        <Button x:Name="btSkupina" Grid.Row="1" Click="btSkupina_Click">Vytvoř Skupinu</Button>
+        <Button x:Name="btHrace" Grid.Row="1" Grid.Column="1" Click="btHrace_Click">Přidej Hráče</Button>
+    </Grid>
+</Window>

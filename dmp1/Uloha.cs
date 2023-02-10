@@ -40,5 +40,10 @@ namespace dmp1
             Body = body;
             Nazev += body;
         }
+
+        public override string ToString()
+        {
+            return Nazev;
+        }
     }
 }

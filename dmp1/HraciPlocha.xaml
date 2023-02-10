@@ -36,7 +36,16 @@
                 <RowDefinition Height="10*"></RowDefinition>
                 <RowDefinition Height="90*"></RowDefinition>
             </Grid.RowDefinitions>
-            <local:LepsiLabel x:Name="lbl" TextKZobrazeni="{Binding DruhSpusteniS}" Tucne="Bold" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <local:LepsiLabel Grid.Column="1" x:Name="lbCas" TextKZobrazeni="{Binding DruhSpusteniS}" Tucne="Bold" />
+                <local:LepsiLabel Grid.Column="1" x:Name="lbl" TextKZobrazeni="{Binding DruhSpusteniS}" Tucne="Bold" />
+            </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -65,7 +74,7 @@
                     <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
                 </Grid>
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto" >
-                    <TextBlock Text="{Binding aktualniUloha.Popis}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding aktualniUloha.Popis}" TextWrapping="Wrap" FontSize="14"/>
                 </ScrollViewer>
                 
                 <!--<local:NabidkaMoznosti Grid.Row="2" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:NabidkaMoznosti>-->

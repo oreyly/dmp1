@@ -8,12 +8,14 @@ namespace dmp1
 {
     static class Uzivatel
     {
-        public static string Jmeno;
+        public static int Id = 2;
+        public static string Jmeno = "Matyáš Matějka (matema)";
         public static int Body;
         public static int Prava;
 
-        public static void NactiUzivatele(string jmeno, int body, int prava)
+        public static void NactiUzivatele(int id, string jmeno, int body, int prava)
         {
+            Id = id;
             Jmeno = jmeno;
             Body = body;
             Prava = prava;

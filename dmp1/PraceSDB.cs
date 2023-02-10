@@ -10,9 +10,9 @@ namespace dmp1
 {
     public static class PraceSDB
     {
-        public static NpgsqlConnection conn;
-        public static NpgsqlCommand cmd;
-        public static NpgsqlDataReader ndr;
+        private static NpgsqlConnection conn;
+        private static NpgsqlCommand cmd;
+        private static NpgsqlDataReader ndr;
 
         static PraceSDB()
         {
@@ -30,7 +30,7 @@ namespace dmp1
             cmd.CommandText = $"select {prikaz}({string.Join(", ", Enumerable.Range(0, parametry.Length).Select(cislo => $"@{cislo}"))})";
             for (int i = 0; i < parametry.Length; ++i)
             {
-                cmd.Parameters.AddWithValue($"@{i}", Convert.ChangeType(parametry[i], parametry[i].GetType()));
+                cmd.Parameters.AddWithValue($"@{i}", parametry[i]);
             }
 
             if (vraciNeco)

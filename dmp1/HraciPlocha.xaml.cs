@@ -65,7 +65,7 @@ namespace dmp1
         public HraciPlocha()
         {
             InitializeComponent();
-            HraCoSeHraje = new Hra();
+            //HraCoSeHraje = new Hra();
             DataContext = HraCoSeHraje;
             imgNapoveda.Source = Properties.Resources.icoNapoveda.ToImageSource();
             

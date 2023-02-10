@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace dmp1
 {
@@ -75,7 +76,10 @@ namespace dmp1
                 _aktualniUloha = value;
             }
         }
-        public Hra()
+
+        private DispatcherTimer casovac;
+
+        public Hra(string nazev, string popis, Uloha[] ulohy, bool nahodne, int maximalnicas, int druhSpusteni)
         {
             int pocet = 41;
             Ulohy = new Uloha[pocet];

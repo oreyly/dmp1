@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -30,6 +31,33 @@ namespace dmp1
             {
                 DeleteObject(handle); 
             }
+        }
+
+        public static void NastavHodnoty<T>(this ObservableCollection<T> oc, IEnumerable<T> ie)
+        {
+            oc.Clear();
+
+            foreach(T t in ie)
+            {
+                oc.Add(t);
+            }
+        }
+
+        public static string ZiskejZavorku(this string str)
+        {
+            return str.Substring(str.LastIndexOf("(") + 1, str.LastIndexOf(")") - str.LastIndexOf("(") - 1);
+        }
+
+        public static T GetAncestorOfType<T>(this FrameworkElement child) where T : FrameworkElement
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+            if (parent != null && !(parent is T))
+            {
+                return (T)GetAncestorOfType<T>((FrameworkElement)parent);
+            }
+
+            return (T)parent;
         }
     }
 }
