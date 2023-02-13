@@ -23,10 +23,9 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro HraciPlocha.xaml
     /// </summary>
+    //Okno vykreslující hru
     public partial class HraciPlocha : Window
     {
-        public string naz { get; set; } = "Zdarec";
-
         private Hra _HraCoSeHraje;
         public Hra HraCoSeHraje
         {
@@ -37,6 +36,7 @@ namespace dmp1
 
             set
             {
+                //Nastavení zobrazení okna na základě druhu spuštění
                 if (value.DruhSpusteniI == 1)
                 {
                     Grid.SetColumn(UVukladani, 0);
@@ -62,24 +62,17 @@ namespace dmp1
             }
         }
 
+        //Nastavení základních hodnot
         public HraciPlocha()
         {
             InitializeComponent();
-            //HraCoSeHraje = new Hra();
             DataContext = HraCoSeHraje;
             imgNapoveda.Source = Properties.Resources.icoNapoveda.ToImageSource();
             
             Graf gr = new Graf(cnvGRaf, this);
-            /*DrawingContext dc = dgpGRaf.Open();
-            dc.DrawLine(new Pen(Brushes.Black, 1), new Point(0, 0), new Point(1000, 1000));
-            dc.Close();*/
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        //Zobrazení / skrytí nápovědy
         private void imgNapoveda_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             imgNapoveda.Visibility = Visibility.Collapsed;
@@ -92,30 +85,10 @@ namespace dmp1
             imgNapoveda.Visibility = Visibility.Visible;
         }
 
+        //Vybrání úlohy v dané hře
         private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
             HraCoSeHraje.aktualniUloha = (Uloha)((ListViewItem)sender).DataContext;
-            //naz = "More";
-        }
-    }
-
-    public class Calculate : MarkupExtension
-    {
-        string Exp;
-
-        public Calculate()
-        {
-
-        }
-
-        public Calculate(string exp)
-        {
-            Exp = exp;
-        }
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return Convert.ToDouble(new DataTable().Compute(Exp, "").ToString());
         }
     }
 

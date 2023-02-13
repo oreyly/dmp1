@@ -42,6 +42,9 @@
     <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.4.0.3\lib\net48\BCrypt.Net-Next.dll</HintPath>
     </Reference>
+    <Reference Include="Dubacik22.ObservableDictionary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dubacik22.ObservableDictionary.1.0.2\lib\net45\Dubacik22.ObservableDictionary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -149,6 +152,10 @@
     <Compile Include="InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Konvertory.cs" />
+    <Compile Include="lepsiComboBox.xaml.cs">
+      <DependentUpon>lepsiComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LepsiLabel.xaml.cs">
       <DependentUpon>LepsiLabel.xaml</DependentUpon>
     </Compile>
@@ -169,6 +176,9 @@
       <DependentUpon>UkladaniVysledku.xaml</DependentUpon>
     </Compile>
     <Compile Include="Uloha.cs" />
+    <Compile Include="UpravaKategorie.xaml.cs">
+      <DependentUpon>UpravaKategorie.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Uzivatel.cs" />
     <Compile Include="vyhledavaciOkno.xaml.cs">
       <DependentUpon>vyhledavaciOkno.xaml</DependentUpon>
@@ -182,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="lepsiComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -223,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UkladaniVysledku.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpravaKategorie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

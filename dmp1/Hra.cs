@@ -8,6 +8,7 @@ using System.Windows.Threading;
 
 namespace dmp1
 {
+    //Třída obsahující všechna potřebná data pro průběh jedné hry
     [NotifyPropertyChanged]
     public class Hra
     {
@@ -15,11 +16,11 @@ namespace dmp1
         public string Popis { get; set; }
 
         public Uloha[] Ulohy { get; set; }
-        public bool Nahodne;
+        public bool Nahodne; //Jestli mají být úlohy náhodně seřazeny
 
         public int maximalniCas;
 
-        private int _DruhSpusteni;
+        private int _DruhSpusteni; //V jakém módu může být hra spuštěna (učení, procvičování, oboje, test)
 
         public int DruhSpusteniI
         {
@@ -77,8 +78,9 @@ namespace dmp1
             }
         }
 
-        private DispatcherTimer casovac;
+        private DispatcherTimer casovac; //Časovač pro časový limit celé hry
 
+        //Nastavení základních hodnot hry
         public Hra(string nazev, string popis, Uloha[] ulohy, bool nahodne, int maximalnicas, int druhSpusteni)
         {
             int pocet = 41;
@@ -87,7 +89,7 @@ namespace dmp1
 
             for (int i = 0; i < pocet; ++i)
             {
-                Ulohy[i] = new Uloha(i * 5);
+                //Ulohy[i] = new Uloha(i * 5);
             }
 
             aktualniUloha = Ulohy[2];

@@ -10,10 +10,11 @@ namespace dmp1
 {
     public static class PraceSDB
     {
-        private static NpgsqlConnection conn;
-        private static NpgsqlCommand cmd;
-        private static NpgsqlDataReader ndr;
+        private static NpgsqlConnection conn; //Připojení k DB
+        private static NpgsqlCommand cmd; //Příkazová řádka v DB
+        private static NpgsqlDataReader ndr; //Čtečka dat z DB
 
+        //Připojení se k databázi a nastavení základních hodnot
         static PraceSDB()
         {
             conn = new NpgsqlConnection("User Id=postgres;Password=phdrKKWs5xNOfcIm;Server=db.nkgdnehaiwnkcwbptbgm.supabase.co;Port=5432;Database=postgres");
@@ -24,6 +25,7 @@ namespace dmp1
             cmd.CommandType = CommandType.Text;
         }
 
+        //Poslání příkazu do DB formou funkce
         public static List<List<object>> ZavolejPrikaz(string prikaz, bool vraciNeco, params object[] parametry)
         {
             cmd.Parameters.Clear();

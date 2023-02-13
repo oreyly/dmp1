@@ -18,6 +18,7 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro UkladaniVysledku.xaml
     /// </summary>
+    //Uživatelský prvek v němž se zobrazí buď seznam políček pro odpověď, nebo možnosti ABCD
     public partial class UkladaniVysledku : UserControl
     {
         public static readonly DependencyProperty VysledkyProperty = DependencyProperty.Register(
@@ -35,6 +36,7 @@ namespace dmp1
             }
         }
 
+        //Vytvoření ABCD nebo doplňovacího okna
         protected virtual void OnCustomerChanged()
         {
             string[] data = ((string)GetValue(VysledkyProperty)).Split(new string[] { "$$$" }, StringSplitOptions.None);

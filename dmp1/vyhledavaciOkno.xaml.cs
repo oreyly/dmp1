@@ -18,6 +18,7 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro vyhledavaciOkno.xaml
     /// </summary>
+    //Okno na vyhledávání hráčů
     public partial class vyhledavaciOkno : Window
     {
         public bool HraciVHledacku
@@ -35,6 +36,7 @@ namespace dmp1
                 return sstVysledky.Seznam.ToArray();
             }
         }
+
         public vyhledavaciOkno()
         {
             InitializeComponent();
@@ -73,6 +75,7 @@ namespace dmp1
             kliklNaPrvekVSeznamu?.Invoke(kliklyPrvek);
         }
 
+        //Místo zavření pouze skrytí okna
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;

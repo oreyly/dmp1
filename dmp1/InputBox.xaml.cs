@@ -18,23 +18,28 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro InputBox.xaml
     /// </summary>
+    //Lepší MessageBox s textovým vstupem
     [NotifyPropertyChanged]
     public partial class InputBox : Window
     {
-        public string noveJmeno { get; set; }
+        public string noveJmeno { get; set; } //Hodnota z textboxu
 
-        public InputBox(string stareJmeno)
+        //Nastavení základních hodnot
+        public InputBox(string stareJmeno, string Nadpis)
         {
             InitializeComponent();
             DataContext = this;
             noveJmeno = stareJmeno;
+            Title = Nadpis;
         }
 
+        //Potvrzení vstupu a zavření
         private void btUlozit_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }
 
+        //Zrušení okna bez uložení vstupu
         private void btZrusit_Click(object sender, RoutedEventArgs e)
         {
             Close();

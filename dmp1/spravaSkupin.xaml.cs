@@ -47,7 +47,7 @@ namespace dmp1
 
         private void btSkupina_Click(object sender, RoutedEventArgs e)
         {
-            InputBox ib = new InputBox("");
+            InputBox ib = new InputBox("", "Pojmenování skupiny");
             if (ib.ShowDialog() == true)
             {
                 if (skupiny.ContainsKey(ib.noveJmeno))
@@ -117,7 +117,7 @@ namespace dmp1
                 return;
             }
 
-            InputBox ib = new InputBox(stareJmeno);
+            InputBox ib = new InputBox(stareJmeno, "Pojmenování skupiny"); 
             if (ib.ShowDialog() == true)
             {
                 if (skupiny.ContainsKey(ib.noveJmeno))

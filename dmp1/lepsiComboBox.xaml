@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="dmp1.lepsiComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:dmp1"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+    <Grid>
+        <ComboBox Text="Test" Height="23" SelectionChanged="comboBox1_SelectionChanged"  Name="comboBox1" VerticalAlignment="Center" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=Seznam}" SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=VybranyItem, Mode=TwoWay}"></ComboBox>
+        <TextBlock IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,5,0,0" Name="tbkVyber" Foreground="Gray" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=PrazdnyText}"></TextBlock>
+    </Grid>
+</UserControl>

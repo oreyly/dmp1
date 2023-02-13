@@ -1,0 +1,63 @@
+﻿<Window x:Class="dmp1.UpravaKategorie"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="UpravaKategorie" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView x:Name="seznamOtazek" ItemsSource="{Binding Kategorie}" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderThickness="0" BorderBrush="Black">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Resources>
+                <Style x:Key="hedStyl" TargetType="GridViewColumnHeader">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                </Style>
+                <GridView x:Key="otazka" ColumnHeaderContainerStyle="{StaticResource hedStyl}">
+                    <GridViewColumn Width="{Binding ElementName=sloupec1, Path=ActualWidth}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label BorderThickness="1" BorderBrush="Black" Content="{Binding Key}" Margin="0" Padding="0"></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="{Binding ElementName=sloupec2, Path=ActualWidth}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button BorderThickness="1" BorderBrush="Black" Foreground="White" Margin="0" Padding="0" Content="X" Background="Red" Click="Button_Click" IsEnabled="{Binding Value}"></Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.Resources>
+            <ListView.Style>
+                <Style TargetType="ListView">
+                    <Setter Property="View" Value="{StaticResource otazka}"></Setter>
+                </Style>
+            </ListView.Style>
+        </ListView>
+        <ScrollViewer Visibility="Hidden" Margin="0" Padding="0">
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" x:Name="sloupec1" Margin="0" ></Grid>
+                <Grid Grid.Column="1" x:Name="sloupec2" Margin="0"></Grid>
+            </Grid>
+        </ScrollViewer>
+        <Button x:Name="novaKategorie" Grid.Row="1" Click="novaKategorie_Click">Nová kategorie</Button>
+    </Grid>
+</Window>

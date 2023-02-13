@@ -8,6 +8,13 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="editorUloh" Height="450" Width="800">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="Bool2Vis" TrueValue="Visible" FalseValue="Collapsed"></local:BoolToVisibilityConverter>
+        <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
+        <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
+        <local:StringToSource x:Key="Str2Src"></local:StringToSource>
+        <local:NullToBool x:Key="Null2Bool"></local:NullToBool>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
@@ -25,11 +32,10 @@
             <local:LepsiLabel TextKZobrazeni="Učitel:" HorizontalContentAlignment="Right"></local:LepsiLabel>
             <local:LepsiLabel Grid.Column="1" TextKZobrazeni="{Binding Source={x:Static local:Uzivatel.Jmeno}}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"></local:LepsiLabel>
             <local:LepsiLabel Grid.Column="2" TextKZobrazeni="Úloha:" HorizontalContentAlignment="Right"></local:LepsiLabel>
-            <ComboBox Grid.Column="3">
-            </ComboBox>
+            <local:lepsiComboBox x:Name="lcbxUloha" PrazdnyText="Vyber úlohu" Grid.Column="3" ZmenilVyber="lcbxUloha_ZmenilVyber_1"></local:lepsiComboBox>
             <Button Grid.Column="4">Nová úloha</Button>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" IsEnabled="{Binding Path=. , Converter={StaticResource Null2Bool}}">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -39,30 +45,66 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="9*"></ColumnDefinition>
+                <ColumnDefinition Width="9*"></ColumnDefinition>
+                <ColumnDefinition Width="9*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:LepsiLabel TextKZobrazeni="Nadpis"></local:LepsiLabel>
-            <TextBox Grid.Column="1"></TextBox>
-            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="Kategorie"></local:LepsiLabel>
-            <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
-            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="Body"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="1" Grid.Row="2"></toolkit:IntegerUpDown>
+            <local:LepsiLabel TextKZobrazeni="Nadpis" Grid.ColumnSpan="2"></local:LepsiLabel>
+            <TextBox Grid.Column="2" Text="{Binding Nazev}"></TextBox>
+            <Grid Grid.Column="2" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <local:lepsiComboBox x:Name="lcbxKategorie" PrazdnyText="Vyber kategorii" VybranyItem="{Binding Kategorie, Mode=TwoWay}"></local:lepsiComboBox>
+                <Button Grid.Column="1" Click="Button_Click">Sprava kategorií</Button>
+            </Grid>
+            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="Kategorie" Grid.ColumnSpan="2"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="Body" Grid.ColumnSpan="2"></local:LepsiLabel>
+            <toolkit:IntegerUpDown Grid.Column="2" Grid.Row="2" Text="{Binding Body}"></toolkit:IntegerUpDown>
 
-            <local:LepsiLabel Grid.Row="3" TextKZobrazeni="Výsledky"></local:LepsiLabel>
-            <Viewbox Grid.Column="1" Grid.Row="3">
-                <import1:HorizontalToggleSwitch  CheckedContent="ABCD" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="Otevřené" UncheckedBackground="White" UncheckedForeground="Black"></import1:HorizontalToggleSwitch>
+            <local:LepsiLabel Grid.Row="3" TextKZobrazeni="Výsledky" Grid.ColumnSpan="2"></local:LepsiLabel>
+            <Viewbox Grid.Column="2" Grid.Row="3">
+                <import1:HorizontalToggleSwitch x:Name="htsTypVysledku" Checked="htsTypVysledku_CheckChanged" Unchecked="htsTypVysledku_CheckChanged" CheckedContent="Otevřené" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="ABCD" UncheckedBackground="White" UncheckedForeground="Black" IsChecked="{Binding OtevrenyVysledek}"></import1:HorizontalToggleSwitch>
             </Viewbox>
-            <local:LepsiLabel Grid.Column="2" TextKZobrazeni="Popis"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Column="2" Grid.Row="2" TextKZobrazeni="Nápověda"></local:LepsiLabel>
-            
-            <TextBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1"></TextBox>
-            <TextBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3"></TextBox>
-            <local:UkladaniVysledku Grid.ColumnSpan="4" Grid.Row="4" Grid.RowSpan="2"></local:UkladaniVysledku>
+            <local:LepsiLabel Grid.Column="3" TextKZobrazeni="Popis"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="3" Grid.Row="2" TextKZobrazeni="Nápověda"></local:LepsiLabel>
+
+            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Popis}"></TextBox>
+            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Napoveda}"></TextBox>
+            <Grid x:Name="grOdpovedi" Grid.ColumnSpan="5" Grid.Row="4" Grid.RowSpan="2">
+                <Grid x:Name="grABCD" Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=ABCDMoznosti}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style x:Key="stlRBTB" TargetType="TextBox">
+                            <Setter Property="BorderThickness" Value="0"></Setter>
+                            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=RadioButton, Mode=FindAncestor}, Path=Background}"></Setter>
+                        </Style>
+                    </Grid.Resources>
+                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="0" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
+                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[0]}"></TextBox>
+                    </RadioButton>
+                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="1" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
+                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[1]}"></TextBox>
+                    </RadioButton>
+                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="2" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
+                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[2]}"></TextBox>
+                    </RadioButton>
+                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="3" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
+                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[3]}"></TextBox>
+                    </RadioButton>
+                </Grid>
+                <!--<Button Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=ABCDMoznosti}">2</Button>-->
+            </Grid>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" IsEnabled="{Binding Path=. , Converter={StaticResource Null2Bool}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -70,7 +112,9 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <local:LepsiLabel TextKZobrazeni="Obrázek:" VerticalAlignment="Center"></local:LepsiLabel>
-            <Image Grid.Column="1" x:Name="imgNahled"></Image>
+            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" MouseUp="imgNahled_MouseUp" Background="Transparent">
+                <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource Str2Src}}"></Image>
+            </Border>
             <Viewbox Grid.Column="2">
                 <import1:HorizontalToggleSwitch CheckedContent="Vlastní obrázek" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="Auto" UncheckedBackground="White" UncheckedForeground="Black"></import1:HorizontalToggleSwitch>
             </Viewbox>

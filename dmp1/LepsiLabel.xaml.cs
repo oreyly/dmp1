@@ -18,6 +18,7 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro LepsiLabel.xaml
     /// </summary>
+    //Label jehož text scaluje s velikostí elementu
     public partial class LepsiLabel : UserControl
     {
         public static readonly DependencyProperty TextKZobrazeniProperty = DependencyProperty.Register(
@@ -41,6 +42,7 @@ namespace dmp1
             get => (FontWeight)GetValue(TextKZobrazeniProperty);
             set => SetValue(TextKZobrazeniProperty, value);
         }
+
         public LepsiLabel()
         {
             InitializeComponent();

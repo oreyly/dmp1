@@ -40,6 +40,7 @@ namespace dmp1
 
         BackgroundWorker Casovac;
 
+        //Přiřazení základních hodnot
         public Graf(Canvas plocha, Window okno)
         {
             Okno = okno;
@@ -60,7 +61,7 @@ namespace dmp1
             Okno.KeyUp += PustilKlavesu;
         }
 
-        bool[] klavesy = new bool[] { false, false, false, false };
+        bool[] klavesy = new bool[] { false, false, false, false }; //Které klávesy jsou stisknuty (W, D, S, A)
         private void MerInterval(object sender, DoWorkEventArgs e)
         {
             while (!Casovac.CancellationPending)
@@ -174,6 +175,7 @@ namespace dmp1
             }
         }
 
+        //Vytvoření části grafu
         private void NovaCara(double x1, double y1, double x2, double y2, Brush stroke, double strokeThickness)
         {
             Line cara = new Line()
@@ -189,6 +191,7 @@ namespace dmp1
             Plocha.Children.Add(cara);
         }
         
+        //Vykreslení celého grafu
         public void NakresliGraf()
         {
             Calc();

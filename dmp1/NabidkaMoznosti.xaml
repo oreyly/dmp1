@@ -22,8 +22,7 @@
             <ColumnDefinition Width="6*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="1" Grid.Row="1">
-           <local:LepsiLabel x:Name="btA" TextKZobrazeni="A) Ahoj" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=ActualHeight}"></local:LepsiLabel>
-
+            <local:LepsiLabel x:Name="btA" TextKZobrazeni="A) Ahoj" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=ActualHeight}"></local:LepsiLabel>
         </Button>
 
         <Button Grid.Column="3" Grid.Row="1">

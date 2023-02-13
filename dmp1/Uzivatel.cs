@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace dmp1
 {
+    //Přihlášený uživatel
     static class Uzivatel
     {
         public static int Id = 2;
