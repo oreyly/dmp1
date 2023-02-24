@@ -25,7 +25,7 @@ namespace dmp1
         public Dictionary<string, bool> skupiny { get; set; }
         public spravaSkupin()
         {
-            vo = new vyhledavaciOkno();
+            vo = new vyhledavaciOknoHracu();
             vo.kliklNaPrvekVSeznamu += Vo_kliklNaPrvekVSeznamu;
             InitializeComponent();
             DataContext = this;
@@ -66,7 +66,7 @@ namespace dmp1
             }
         }
 
-        vyhledavaciOkno vo;
+        vyhledavaciOknoHracu vo;
         private void btHrace_Click(object sender, RoutedEventArgs e)
         {
             if (vo.Visibility == Visibility.Visible)

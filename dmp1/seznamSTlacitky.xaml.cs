@@ -16,10 +16,10 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-public enum druhTlacitkaVSeznamu { Nic, Smazat, Pridat }
-public delegate void seznamSTlacitkyKlikHandler(string kliklyPrvek);
 namespace dmp1
 {
+    public enum druhTlacitkaVSeznamu { Nic, Smazat, Pridat }
+    public delegate void seznamSTlacitkyKlikHandler(string kliklyPrvek);
     /// <summary>
     /// Interakční logika pro seznamSTlacitky.xaml
     /// </summary>
@@ -116,11 +116,18 @@ namespace dmp1
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public event seznamSTlacitkyKlikHandler KliklNaPrvek;
+        public event seznamSTlacitkyKlikHandler KliklNaTlacitko;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            KliklNaPrvek?.Invoke((string)((Button)sender).GetAncestorOfType<ListViewItem>().Content);
+            KliklNaTlacitko?.Invoke((string)((Button)sender).GetAncestorOfType<ListViewItem>().Content);
             //MessageBox.Show(sender.ToString());
+        }
+
+        public event seznamSTlacitkyKlikHandler DoubleKliklNaPrvek;
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DoubleKliklNaPrvek?.Invoke((string)((ListViewItem)sender).Content);
         }
 
         public string VybranyRadek
@@ -129,6 +136,17 @@ namespace dmp1
             {
                 return (string)seznamOtazek.SelectedItem;
             }
+        }
+
+        public event seznamSTlacitkyKlikHandler KliklNaPrvek;
+        private void seznamOtazek_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OnPropertyChanged("VybranyRadek");
+        }
+
+        private void ListViewItem_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            KliklNaPrvek?.Invoke((string)((ListViewItem)sender).Content);
         }
     }
 }

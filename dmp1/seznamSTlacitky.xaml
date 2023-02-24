@@ -9,7 +9,7 @@
              Margin="0" Padding="0"
              >
     <Grid Margin="0">
-        <ListView x:Name="seznamOtazek" ItemsSource="{Binding Seznam}" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderThickness="0" BorderBrush="Black">
+        <ListView x:Name="seznamOtazek" ItemsSource="{Binding Seznam}" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderThickness="0" BorderBrush="Black" SelectionChanged="seznamOtazek_SelectionChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment"
@@ -17,6 +17,8 @@
                     <Setter Property="BorderThickness" Value="0"></Setter>
                     <Setter Property="Padding" Value="0"></Setter>
                     <Setter Property="Margin" Value="0"></Setter>
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"></EventSetter>
+                    <EventSetter Event="MouseUp" Handler="ListViewItem_MouseUp"></EventSetter>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.Resources>

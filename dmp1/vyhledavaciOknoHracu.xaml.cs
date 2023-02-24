@@ -19,7 +19,7 @@ namespace dmp1
     /// Interakční logika pro vyhledavaciOkno.xaml
     /// </summary>
     //Okno na vyhledávání hráčů
-    public partial class vyhledavaciOkno : Window
+    public partial class vyhledavaciOknoHracu : Window
     {
         public bool HraciVHledacku
         {
@@ -37,9 +37,15 @@ namespace dmp1
             }
         }
 
-        public vyhledavaciOkno()
+        public vyhledavaciOknoHracu(bool hraci = true)
         {
             InitializeComponent();
+
+            if(hraci)
+            {
+
+            }
+
             NactiSeznam();
         }
 

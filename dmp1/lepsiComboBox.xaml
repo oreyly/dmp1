@@ -8,7 +8,16 @@
              d:DesignHeight="450" d:DesignWidth="800"
              >
     <Grid>
-        <ComboBox Text="Test" Height="23" SelectionChanged="comboBox1_SelectionChanged"  Name="comboBox1" VerticalAlignment="Center" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=Seznam}" SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=VybranyItem, Mode=TwoWay}"></ComboBox>
+        <ComboBox 
+            Text="Test" 
+            Height="23" 
+            SelectionChanged="comboBox1_SelectionChanged"
+            Name="comboBox1" 
+            VerticalAlignment="Center" 
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=Seznam, UpdateSourceTrigger=PropertyChanged}" 
+            SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=VybranyItem, Mode=TwoWay}" 
+            IsSynchronizedWithCurrentItem="True" SelectedValuePath="{Binding RelativeSource={RelativeSource AncestorType=local:lepsiComboBox, Mode=FindAncestor}, Path=VybranaVlastnost}" 
+            DisplayMemberPath="{Binding RelativeSource={RelativeSource AncestorType=local:lepsiComboBox, Mode=FindAncestor}, Path=VybranaVlastnost}"></ComboBox>
         <TextBlock IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,5,0,0" Name="tbkVyber" Foreground="Gray" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:lepsiComboBox}}, Path=PrazdnyText}"></TextBlock>
     </Grid>
 </UserControl>

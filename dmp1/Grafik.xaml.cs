@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NC = NCalc;
 
 namespace dmp1
 {
-    class Graf
+    /// <summary>
+    /// Interakční logika pro Grafik.xaml
+    /// </summary>
+    public partial class Grafik : UserControl
     {
         private List<List<Point>> fce; //Jednotlivé body funkcí
 
@@ -33,8 +41,8 @@ namespace dmp1
 
         float koeficient = 32; //Přiblížení / Oddálení
 
-        private NC.Expression priklad = new NC.Expression("0"); //Předpis funkce
-        private string _Predpis;
+        private NC.Expression priklad;// = new NC.Expression("2 * Sin(x)"); //Předpis funkce
+        /*private string _Predpis;
         public string Predpis
         {
             get
@@ -47,18 +55,83 @@ namespace dmp1
                 priklad = new NC.Expression(value);
                 NakresliGraf();
             }
+        }*/
+
+        public static readonly DependencyProperty PredpisProperty = DependencyProperty.Register(
+        "Predpis", typeof(string),
+        typeof(Grafik),
+        new PropertyMetadata(OnCustomerChangedCallBack2)
+        );
+
+        public string Predpis
+        {
+            get => (string)GetValue(PredpisProperty);
+            set => SetValue(PredpisProperty, value);
         }
 
-        Canvas Plocha;
-        Window Okno;
+        private static void OnCustomerChangedCallBack2(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            Grafik c = sender as Grafik;
+            if (c != null)
+            {
+                c.OnCustomerChanged2((string)e.NewValue);
+            }
+        }
+
+        protected virtual void OnCustomerChanged2(string predpis)
+        {
+            NC.Expression ex = HlavniStatik.VytvorFunkci(predpis);
+
+            if (ex != null)
+            {
+                priklad = ex;
+                NakresliGraf();
+            }
+        }
+
+        public static readonly DependencyProperty OknoProperty = DependencyProperty.Register(
+        "Okno", typeof(Window),
+        typeof(Grafik),
+        new PropertyMetadata(OnCustomerChangedCallBack)
+        );
+
+        public Window Okno
+        {
+            get => (Window)GetValue(OknoProperty);
+            set => SetValue(OknoProperty, value);
+        }
+
+        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            Grafik c = sender as Grafik;
+            if (c != null)
+            {
+                c.OnCustomerChanged((Window)e.OldValue, (Window)e.NewValue);
+            }
+        }
+
+        protected virtual void OnCustomerChanged(Window staryOkno, Window novyOkno)
+        {
+            if (staryOkno != null)
+            {
+                staryOkno.KeyDown -= StisklKlavesu;
+                staryOkno.KeyUp -= PustilKlavesu;
+            }
+
+            if (novyOkno != null)
+            {
+                novyOkno.KeyDown += StisklKlavesu;
+                novyOkno.KeyUp += PustilKlavesu;
+            }
+        }
 
         BackgroundWorker Casovac;
 
-        //Přiřazení základních hodnot
-        public Graf(Canvas plocha, Window okno)
+
+        public Grafik()
         {
-            Okno = okno;
-            Plocha = plocha;
+            InitializeComponent();
+
             Casovac = new BackgroundWorker()
             {
                 WorkerReportsProgress = true,
@@ -69,10 +142,8 @@ namespace dmp1
             Casovac.DoWork += MerInterval;
             Casovac.ProgressChanged += IntervalUplynul;
 
-            Plocha.SizeChanged += SizeChanged;
-            Plocha.MouseWheel += Zoom;
-            Okno.KeyDown += StisklKlavesu;
-            Okno.KeyUp += PustilKlavesu;
+            SizeChanged += SizeChange;
+            MouseWheel += Zoom;
         }
 
         bool[] klavesy = new bool[] { false, false, false, false }; //Které klávesy jsou stisknuty (W, D, S, A)
@@ -109,7 +180,7 @@ namespace dmp1
 
         private void StisklKlavesu(object sender, KeyEventArgs e)
         {
-            switch(e.Key)
+            switch (e.Key)
             {
                 case Key.W:
                     klavesy[0] = true;
@@ -127,7 +198,7 @@ namespace dmp1
                     return;
             }
 
-            if(!Casovac.IsBusy)
+            if (!Casovac.IsBusy)
             {
                 Casovac.RunWorkerAsync();
             }
@@ -174,6 +245,12 @@ namespace dmp1
         {
             fce = new List<List<Point>>();
             fce.Add(new List<Point>());
+
+            if(Predpis == null)
+            {
+                return;
+            }
+
             for (int x = minW - posX; x < maxW - posX; x++)
             {
                 priklad.Parameters["x"] = x / koeficient;
@@ -185,7 +262,13 @@ namespace dmp1
                     continue;
                 }
                 double res = -Convert.ToDouble(priklad.Evaluate()) * koeficient + maxH + posY;
-                fce.Last().Add(new Point(x + maxW + posX, (float)(res > Plocha.Height + 3 ? Plocha.Height + 3 : res < 0 ? -3 : res)));
+                if (double.IsNaN(res))
+                {
+                    fce.Clear();
+                    fce.Add(new List<Point>());
+                    return;
+                }
+                fce.Last().Add(new Point(x + maxW + posX, (float)(res > Plocha.ActualHeight + 3 ? Plocha.ActualHeight + 3 : res < 0 ? -3 : res)));
             }
         }
 
@@ -204,7 +287,7 @@ namespace dmp1
 
             Plocha.Children.Add(cara);
         }
-        
+
         //Vykreslení celého grafu
         public void NakresliGraf()
         {
@@ -237,7 +320,7 @@ namespace dmp1
             }
             else
             {
-                SizeChanged(null, null);
+                SizeChange(null, null);
             }
         }
 
@@ -257,7 +340,7 @@ namespace dmp1
         }
 
         //Výpočet posunutí
-        private void SizeChanged(object sender, EventArgs e)
+        public void SizeChange(object sender, EventArgs e)
         {
             minW = (int)(-Plocha.ActualWidth / 2);
             maxW = (int)(Plocha.ActualWidth / 2);
@@ -266,5 +349,6 @@ namespace dmp1
             maxH = (int)(Plocha.ActualHeight / 2);
             NakresliGraf();
         }
+
     }
 }

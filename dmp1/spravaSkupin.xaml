@@ -29,7 +29,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <local:seznamSTlacitky x:Name="sstHraci" Grid.Column="1" druhTlacitka="Smazat" Margin="0" Padding="0" KliklNaPrvek="sstHraci_KliklNaPrvek"></local:seznamSTlacitky>
+        <local:seznamSTlacitky x:Name="sstHraci" Grid.Column="1" druhTlacitka="Smazat" Margin="0" Padding="0" KliklNaTlacitko="sstHraci_KliklNaPrvek"></local:seznamSTlacitky>
         <Button x:Name="btSkupina" Grid.Row="1" Click="btSkupina_Click">Vytvoř Skupinu</Button>
         <Button x:Name="btHrace" Grid.Row="1" Grid.Column="1" Click="btHrace_Click">Přidej Hráče</Button>
     </Grid>

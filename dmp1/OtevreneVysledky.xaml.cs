@@ -22,17 +22,6 @@ namespace dmp1
     /// </summary>
     public partial class OtevreneVysledky : UserControl
     {
-        public class Par
-        {
-            public string Otazka { get; set; }
-            public string Odpoved { get; set; }
-
-            public Par(string otazka, string odpoved)
-            {
-                Otazka = otazka;
-                Odpoved = odpoved;
-            }
-        }
         // O$$$Ahoj$$$Jak se máš$$$Já se mám dobře$$$A co ty
         public ObservableCollection<Par> VysledkyData { get; set; }//  = new Par[] { new Par("Zdarec", "Párec") };
 

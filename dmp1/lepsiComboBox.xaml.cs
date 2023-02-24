@@ -34,19 +34,49 @@ namespace dmp1
             set => SetValue(VybranyIndexProperty, value);
         }
 
-        public ObservableCollection<object> Seznam { get; set; } = new ObservableCollection<object>();
+        public static readonly DependencyProperty VybranaVlastnostProperty = DependencyProperty.Register(
+        "VybranaVlastnost", typeof(string),
+        typeof(lepsiComboBox)
+        );
+
+        public string VybranaVlastnost
+        {
+            get => (string)GetValue(VybranaVlastnostProperty);
+            set => SetValue(VybranaVlastnostProperty, value);
+        }
+
+        public static readonly DependencyProperty SeznamProperty = DependencyProperty.Register(
+        "Seznam", typeof(ObservableCollection<object>),
+        typeof(lepsiComboBox)
+        );
+
+        public ObservableCollection<object> Seznam
+        {
+            get => (ObservableCollection<object>)GetValue(SeznamProperty);
+            set => SetValue(SeznamProperty, value);
+        }
+
+        //public ObservableCollection<object> Seznam { get; set; } = new ObservableCollection<object>();
         public string PrazdnyText { get; set; } //Text zobrazený v neurčitém stavu
 
 
         public lepsiComboBox()
         {
+            Seznam = new ObservableCollection<object>();
             InitializeComponent();
+            comboBox1.DataContext = this;
+            //DataContext = this;
         }
 
         private object stary; //Poslední vybraný Item
         public event ZmenaVyberu ZmenilVyber;
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            comboBox1.InvalidateVisual();
+            comboBox1.InvalidateArrange();
+            comboBox1.InvalidateMeasure();
+            comboBox1.UpdateLayout();
+            comboBox1.UpdateDefaultStyle();
             tbkVyber.Visibility = comboBox1.SelectedItem == null ? Visibility.Visible : Visibility.Hidden;
             ZmenilVyber?.Invoke(stary, comboBox1.SelectedItem);
             stary = comboBox1.SelectedItem;

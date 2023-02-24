@@ -1,0 +1,24 @@
+﻿<Window x:Class="dmp1.vyhledavaciOknoHracu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        xmlns:pokus="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
+        mc:Ignorable="d"
+        Title="Vyhledávání hráčů" Height="400" Width="300"
+        Closing="Window_Closing"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="tbHledej" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" TextChanged="NactiSeznam">I</TextBox>
+        <Viewbox Grid.Row="1">
+            <pokus:HorizontalToggleSwitch x:Name="htsHraci" CheckedContent="Hráči" UncheckedContent="Skupiny" IsChecked="True" CheckedBackground="White" CheckedForeground="Black" UncheckedBackground="White" UncheckedForeground="Black" Checked="NactiSeznam" Unchecked="NactiSeznam"></pokus:HorizontalToggleSwitch>
+        </Viewbox>
+        <local:seznamSTlacitky x:Name="sstVysledky" Grid.Row="2" druhTlacitka="Pridat" Zapnuto="True" KliklNaTlacitko="sstVysledky_KliklNaPrvek"></local:seznamSTlacitky>
+    </Grid>
+</Window>
