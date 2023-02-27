@@ -23,7 +23,7 @@ namespace dmp1
     public partial class OtevreneVysledky : UserControl
     {
         // O$$$Ahoj$$$Jak se máš$$$Já se mám dobře$$$A co ty
-        public ObservableCollection<Par> VysledkyData { get; set; }//  = new Par[] { new Par("Zdarec", "Párec") };
+        public ObservableCollection<Par<string, string>> VysledkyData { get; set; }//  = new Par[] { new Par("Zdarec", "Párec") };
 
         public static readonly DependencyProperty VysledkyProperty = DependencyProperty.Register(
             "Vysledky", typeof(string),
@@ -48,10 +48,10 @@ namespace dmp1
                 throw new Exception("Výsledek není ve formátu pro otevřené možností");
             }
 
-            ObservableCollection<Par> odpovedi = new ObservableCollection<Par>();
+            ObservableCollection<Par<string, string>> odpovedi = new ObservableCollection<Par<string, string>>();
             for (int i = 1; i < data.Length-1; i += 2)
             {
-                odpovedi.Add(new Par(data[i], data[i + 1]));
+                odpovedi.Add(new Par<string, string>(data[i], data[i + 1]));
             }
             VysledkyData = odpovedi;
         }

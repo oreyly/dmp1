@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace dmp1
 {
     public static class HlavniStatik
     {
+        public static readonly string[] Oddelovac = new string[] { "$$$" };
+
         //Import pomocné systémové metody
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -333,6 +336,42 @@ namespace dmp1
         public static ObservableCollection<object> NactiEnum(Type typ)
         {
             return new ObservableCollection<object>(Enum.GetValues(typ).Cast<object>());
+        }
+
+        public static void AddIfNotExists<T>(this IList<T> list, T value)
+        {
+            if (!list.Contains(value))
+            {
+                list.Add(value);
+            }
+        }
+
+        public static void AddIfNotExists<T>(this IList<T> list, IList<T> list2)
+        {
+            foreach (T value in list2)
+            {
+                if (!list.Contains(value))
+                {
+                    list.Add(value);
+                }
+            }
+        }
+
+        public static Random rnd = new Random();
+
+        public static void ZamichejList<T>(this IList<T> list)
+        {
+            for (int i = 0; i < list.Count; ++i)
+            {
+                int j = rnd.Next(0, i);
+
+                (list[i], list[j]) = (list[j], list[i]);
+            }
+        }
+
+        public static void NactiObrNapoved(int i)
+        {
+
         }
     }
 }

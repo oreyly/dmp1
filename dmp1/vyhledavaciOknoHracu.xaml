@@ -15,7 +15,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbHledej" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" TextChanged="NactiSeznam">I</TextBox>
+        <TextBox x:Name="tbHledej" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" TextChanged="NactiSeznam"></TextBox>
         <Viewbox Grid.Row="1">
             <pokus:HorizontalToggleSwitch x:Name="htsHraci" CheckedContent="Hráči" UncheckedContent="Skupiny" IsChecked="True" CheckedBackground="White" CheckedForeground="Black" UncheckedBackground="White" UncheckedForeground="Black" Checked="NactiSeznam" Unchecked="NactiSeznam"></pokus:HorizontalToggleSwitch>
         </Viewbox>

@@ -1,14 +1,30 @@
-﻿namespace dmp1
-{
-    public class Par
-    {
-        public string Otazka { get; set; }
-        public string Odpoved { get; set; }
+﻿using PostSharp.Patterns.Model;
 
-        public Par(string otazka, string odpoved)
+namespace dmp1
+{
+    [NotifyPropertyChanged]
+    public class Par<T,Q>
+    {
+        public T Klic { get; set; }
+        public Q Hodnota { get; set; }
+
+        public Par(T klic, Q hodnota)
         {
-            Otazka = otazka;
-            Odpoved = odpoved;
+            Klic = klic;
+            Hodnota = hodnota;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is Par<T,Q> p)
+            {
+                return Klic.Equals(p.Klic) && Hodnota.Equals(p.Hodnota);
+            }
+            return base.Equals(obj);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

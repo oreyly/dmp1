@@ -62,7 +62,7 @@
                 <ColumnDefinition Width="9*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <local:LepsiLabel TextKZobrazeni="Nadpis" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <TextBox Grid.Column="2" Text="{Binding Nazev}"></TextBox>
+            <TextBox Grid.Column="2" Text="{Binding Nazev, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Grid Grid.Column="2" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -73,7 +73,7 @@
             </Grid>
             <local:LepsiLabel Grid.Row="1" TextKZobrazeni="Kategorie" Grid.ColumnSpan="2"></local:LepsiLabel>
             <local:LepsiLabel Grid.Row="2" TextKZobrazeni="Body" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="2" Grid.Row="2" Text="{Binding Body}"></toolkit:IntegerUpDown>
+            <toolkit:IntegerUpDown Grid.Column="2" Grid.Row="2" Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}" Minimum="0"></toolkit:IntegerUpDown>
 
             <local:LepsiLabel Grid.Row="3" TextKZobrazeni="Výsledky" Grid.ColumnSpan="2"></local:LepsiLabel>
             <Viewbox Grid.Column="2" Grid.Row="3">
@@ -82,8 +82,8 @@
             <local:LepsiLabel Grid.Column="3" TextKZobrazeni="Popis"></local:LepsiLabel>
             <local:LepsiLabel Grid.Column="3" Grid.Row="2" TextKZobrazeni="Nápověda"></local:LepsiLabel>
 
-            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Popis}"></TextBox>
-            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Napoveda}"></TextBox>
+            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Popis, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding Napoveda, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Grid x:Name="grOdpovedi" Grid.ColumnSpan="5" Grid.Row="4" Grid.RowSpan="2">
                 <Grid x:Name="grABCD" Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=ABCDMoznosti}">
                     <Grid.ColumnDefinitions>
@@ -116,7 +116,7 @@
                         <RowDefinition Height="75*"></RowDefinition>
                         <RowDefinition Height="25*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lvSeznam" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" ItemsSource="{Binding otevreneVysledky}">
+                    <ListView x:Name="lvSeznam" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" ItemsSource="{Binding otevreneVysledky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.Resources>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -130,8 +130,8 @@
                                         <ColumnDefinition Width="40*"></ColumnDefinition>
                                         <ColumnDefinition Width="10*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Text="{Binding Otazka}"></TextBox>
-                                    <TextBox Grid.Column="1" Text="{Binding Odpoved}"></TextBox>
+                                    <TextBox Grid.Column="0" Text="{Binding Klic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <TextBox Grid.Column="1" Text="{Binding Hodnota, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                     <Button Grid.Column="2" Background="Red" x:Name="btOdstranit" Click="btOdstranit_Click">X</Button>
                                 </Grid>
                             </DataTemplate>

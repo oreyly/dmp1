@@ -9,7 +9,9 @@
              Margin="0" Padding="0"
              >
     <Grid Margin="0">
-        <ListView x:Name="seznamOtazek" ItemsSource="{Binding Seznam}" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderThickness="0" BorderBrush="Black" SelectionChanged="seznamOtazek_SelectionChanged">
+        <Grid.Resources>
+        </Grid.Resources>
+        <ListView Grid.Row="0" x:Name="seznamOtazek" ItemsSource="{Binding Seznam}" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderThickness="0" BorderBrush="Black" SelectionChanged="seznamOtazek_SelectionChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment"
@@ -25,6 +27,7 @@
                 <Style x:Key="hedStyl" TargetType="GridViewColumnHeader">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                 </Style>
+                
                 <GridView x:Key="otazka" ColumnHeaderContainerStyle="{StaticResource hedStyl}">
                     <GridViewColumn Width="{Binding ElementName=sloupec1, Path=ActualWidth}">
                         <GridViewColumn.CellTemplate>

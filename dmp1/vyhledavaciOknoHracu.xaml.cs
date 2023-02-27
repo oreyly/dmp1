@@ -57,11 +57,11 @@ namespace dmp1
             }
 
             string hledanyVyraz = tbHledej.Text;
-            if (string.IsNullOrWhiteSpace(hledanyVyraz))
+            /*if (string.IsNullOrWhiteSpace(hledanyVyraz))
             {
                 sstVysledky.Seznam.NastavHodnoty(new string[0]);
                 return;
-            }
+            }*/
 
             if (htsHraci.IsChecked)
             {

@@ -37,7 +37,7 @@ namespace dmp1
             set
             {
                 //Nastavení zobrazení okna na základě druhu spuštění
-                if (value.DruhSpusteniI == 1)
+                /*if (value.DruhSpusteni == DruhSpusteni.Uceni)
                 {
                     Grid.SetColumn(UVukladani, 0);
                     Grid.SetRow(UVukladani, 0);
@@ -56,20 +56,39 @@ namespace dmp1
 
                     btOdeslat.Visibility = Visibility.Visible;
                     btUkoncit.Visibility = Visibility.Visible;
-                }
+                }*/
 
                 _HraCoSeHraje = value;
             }
         }
 
+        oknoPomoci op;
         //Nastavení základních hodnot
-        public HraciPlocha()
+        public HraciPlocha(int id, int druh)
         {
             InitializeComponent();
+            tlacitkaMoznosti = new RadioButton[] { btA, btB, btC, btD };
+            Hra hr = Hra.NactiHru(id, (DruhSpusteni)druh);
+            HraCoSeHraje = hr;
             DataContext = HraCoSeHraje;
             imgNapoveda.Source = Properties.Resources.icoNapoveda.ToImageSource();
-            
-            Graf gr = new Graf(cnvGRaf, this);
+
+            switch(druh)
+            {
+                case 1:
+
+                    break;
+
+                case 2:
+                    op = new oknoPomoci();
+                    op.Show();
+                    break;
+
+                case 4:
+
+                    break;
+            }
+            ListBoxItem_MouseUp(null, null);
         }
 
         //Zobrazení / skrytí nápovědy
@@ -88,7 +107,31 @@ namespace dmp1
         //Vybrání úlohy v dané hře
         private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            HraCoSeHraje.aktualniUloha = (Uloha)((ListViewItem)sender).DataContext;
+            if (sender is ListBoxItem lvi)
+            {
+                HraCoSeHraje.aktualniUloha = (Uloha)lvi.DataContext;
+            }
+
+            if (HraCoSeHraje.DruhSpusteni == DruhSpusteni.Uceni)
+            {
+                if (!HraCoSeHraje.aktualniUloha.OtevrenyVysledek)
+                {
+                    tlacitkaMoznosti[HraCoSeHraje.aktualniUloha.SpravnyVysledek - 1].IsChecked = true;
+                }
+            }
+        }
+
+        RadioButton[] tlacitkaMoznosti;
+        private void lbxSeznamUloh_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void tbOdpoved_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(HraCoSeHraje.DruhSpusteni == DruhSpusteni.Uceni)
+            {
+                ((TextBox)sender).Text = ((Par<string, string>)((TextBox)sender).GetAncestorOfType<ListViewItem>().DataContext).Hodnota;
+            }
         }
     }
 

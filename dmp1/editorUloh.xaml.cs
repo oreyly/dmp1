@@ -97,6 +97,7 @@ namespace dmp1
 
                     string vys = zbyvaT.Result;
                     VybranaUloha.Obrazek = vys;
+                    VybranaUloha.obsahujeObrazek = true;
                 }
             }
         }
@@ -132,6 +133,7 @@ namespace dmp1
         {
             Kategorie.NastavHodnoty(((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_kategorie", true, Uzivatel.Id)[0][0]).Select(x => x.Key));
             lcbxKategorie.Seznam.NastavHodnoty(Kategorie);
+            lcbxKategorie.VybranyItem = null;
         }
 
         private void NacteniUloh()
@@ -209,9 +211,22 @@ namespace dmp1
                     {
                         //vrat = true;
                         Nazev = ((Uloha)novyObjekt).Nazev;
+                        Uloha u = null;
+                        if (((Uloha)novyObjekt).Nova)
+                        {
+                            u = (Uloha)novyObjekt;
+                        }
                         NacteniKategorii();
                         NacteniUloh();
-                        lcbxUloha.VybranyItem = lcbxUloha.Seznam.First(u => ((Uloha)u).Nazev == Nazev);
+                        if (u != null)
+                        {
+                            lcbxUloha.Seznam.AddIfNotExists(u);
+                        }
+                        lcbxUloha.VybranyItem = lcbxUloha.Seznam.FirstOrDefault(u => ((Uloha)u).Nazev == Nazev);
+                        if (lcbxUloha.VybranyItem == null)
+                        {
+                            lcbxUloha.VybranyItem = VybranaUloha;
+                        }
                         VybranaUloha = (Uloha)lcbxUloha.VybranyItem;
                         return;
                     }
@@ -251,7 +266,7 @@ namespace dmp1
         {
             btPridat.IsEnabled = VybranaUloha.otevreneVysledky.Count < 4;
 
-            foreach (Par p in lvSeznam.Items)
+            foreach (Par<string, string> p in lvSeznam.Items) 
             {
                 ListViewItem lvi = (ListViewItem)lvSeznam.ItemContainerGenerator.ContainerFromItem(p);
                 if (lvi != null)
@@ -263,12 +278,12 @@ namespace dmp1
 
         private void btPridat_Click(object sender, RoutedEventArgs e)
         {
-            VybranaUloha.otevreneVysledky.Add(new Par("", ""));
+            VybranaUloha.otevreneVysledky.Add(new Par<string, string>("", ""));
         }
 
         private void btOdstranit_Click(object sender, RoutedEventArgs e)
         {
-            Par lvi = (Par)((Button)sender).GetAncestorOfType<ListViewItem>().Content;
+            Par<string, string> lvi = (Par<string, string>)((Button)sender).GetAncestorOfType<ListViewItem>().Content;
             int ind = lvSeznam.Items.IndexOf(lvi);
             VybranaUloha.otevreneVysledky.RemoveAt(ind);
         }

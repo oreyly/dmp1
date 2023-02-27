@@ -7,8 +7,14 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="tvorbaHer" Height="450" Width="800">
+        Title="tvorbaHer" Height="450" Width="800"
+        Closed="Window_Closed"
+        >
     <Grid>
+        <Grid.Resources>
+            <local:PorovnaniHodnotDruhuSpusteni x:Key="porovnavac">
+            </local:PorovnaniHodnotDruhuSpusteni>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
@@ -17,18 +23,15 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*"></ColumnDefinition>
+                <ColumnDefinition Width="30*"></ColumnDefinition>
                 <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
-                <ColumnDefinition Width="15*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:LepsiLabel Grid.Column="0" TextKZobrazeni="Vytvořit hru" HorizontalAlignment="Center" VerticalAlignment="Center" Tucne="Bold"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Column="1" TextKZobrazeni="Čas:" HorizontalAlignment="Center" VerticalAlignment="Center"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="2" Grid.Row="2" Text="0"></toolkit:IntegerUpDown>
-            <local:LepsiLabel Grid.Column="3" TextKZobrazeni="M" HorizontalAlignment="Center" VerticalAlignment="Center"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="4" Grid.Row="2" Text="0"></toolkit:IntegerUpDown>
-            <local:LepsiLabel Grid.Column="5" TextKZobrazeni="S" HorizontalAlignment="Center" VerticalAlignment="Center"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="1" TextKZobrazeni="Vytvořit hru" HorizontalAlignment="Center" VerticalAlignment="Center" Tucne="Bold"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="2" TextKZobrazeni="Čas:" HorizontalAlignment="Right" VerticalAlignment="Center"></local:LepsiLabel>
+            <toolkit:IntegerUpDown Grid.Column="3" x:Name="iupCas" Text="1" Minimum="1" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
+            <local:LepsiLabel Grid.Column="4" TextKZobrazeni="M" HorizontalAlignment="Center" VerticalAlignment="Center"></local:LepsiLabel>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -43,24 +46,56 @@
                 <ColumnDefinition Width="30*"></ColumnDefinition>
                 <ColumnDefinition Width="5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:seznamSTlacitky Grid.Column="1" x:Name="sstHraci" druhTlacitka="Smazat">
-
+            <local:seznamSTlacitky Grid.Column="1" x:Name="sstHraci" druhTlacitka="Smazat" Zapnuto="True" KliklNaTlacitko="sstHraci_KliklNaTlacitko">
             </local:seznamSTlacitky>
+
+            <ListView Grid.Column="3" x:Name="seznamUloh" ItemsSource="{Binding Ulohy}">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80*"></ColumnDefinition>
+                                <ColumnDefinition Width="10*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{Binding Klic, Mode=OneWay}"></Label>
+                            <Button Grid.Column="1" Background="Red" x:Name="btOdstranit" Click="sstUlohy_KliklNaTlacitko">X</Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock TextWrapping="Wrap" x:Name="lbPocetUloh">Počet úloh: 444</TextBlock>
+                <TextBlock Grid.Row="1" TextWrapping="Wrap" x:Name="lbPocetHracu">Počet hráčů: 444</TextBlock>
+            </Grid>
             
-            <local:seznamSTlacitky Grid.Column="3" x:Name="sstUlohy" druhTlacitka="Smazat">
+            <Button Grid.Row="1" Grid.Column="1" Click="Button_Click">Přidat nové hráče</Button>
 
-            </local:seznamSTlacitky>
+            <CheckBox x:Name="cbxOpravovat" Grid.Row="1" Grid.Column="2" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Opravovat automaticky</TextBlock>
+            </CheckBox>
+            
+            <Button Grid.Row="1" Grid.Column="3" Click="Button_Click_1">Přidat úlohu</Button>
 
-            <Button Grid.Row="1" Grid.Column="1">Přidat nové hráče</Button>
-            <Button Grid.Row="1" Grid.Column="3">Přidat úlohu</Button>
+            <CheckBox x:Name="cbxRaditNahodne" Grid.Row="1" Grid.Column="4" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Řadit náhodně</TextBlock> 
+            </CheckBox>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.Resources>
-                <ObjectDataProvider MethodName="NactiEnum" ObjectType="{x:Type local:HlavniStatik}" x:Key="druhyTlacitek">
+                <ObjectDataProvider MethodName="NactiEnum" ObjectType="{x:Type local:HlavniStatik}" x:Key="druhySpusteni">
                     <ObjectDataProvider.MethodParameters>
-                        <x:Type TypeName="local:druhTlacitkaVSeznamu"></x:Type>
+                        <x:Type TypeName="local:DruhSpusteni"></x:Type>
                     </ObjectDataProvider.MethodParameters>
-                    
                 </ObjectDataProvider>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
@@ -68,9 +103,14 @@
                 <ColumnDefinition Width="10*"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:LepsiLabel Grid.Column="0" TextKZobrazeni="Název:"></local:LepsiLabel>
-            <local:lepsiComboBox Grid.Column="3" Seznam="{Binding Source={StaticResource druhyTlacitek}}"></local:lepsiComboBox>
+            <local:LepsiLabel Grid.Column="0" TextKZobrazeni="Název:" HorizontalAlignment="Right" VerticalAlignment="Center"></local:LepsiLabel>
+            <TextBox Grid.Column="1" x:Name="tbNazev"></TextBox>
+            <Button Grid.Column="2" Click="Button_Click_2">Vytvořit</Button>
+            <local:LepsiLabel Grid.Column="4" TextKZobrazeni="Druh spuštění:" HorizontalAlignment="Right" VerticalAlignment="Center"></local:LepsiLabel>
+            <local:lepsiComboBox x:Name="lcbxDruhSpusteni" Grid.Column="5" Seznam="{Binding Source={StaticResource druhySpusteni}}" ZmenilVyber="lcbxDruhSpusteni_ZmenilVyber"></local:lepsiComboBox>
         </Grid>
     </Grid>
 </Window>

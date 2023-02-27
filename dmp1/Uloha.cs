@@ -38,10 +38,10 @@ namespace dmp1
                 string[] data = value.Split(new string[] { "$$$" }, StringSplitOptions.None);
                 if (OtevrenyVysledek = data[0] == "O")
                 {
-                    List<Par> datka = new List<Par>();
+                    List<Par<string, string>> datka = new List<Par<string, string>>();
                     for (int i = 1; i < data.Length; i += 2)
                     {
-                        datka.Add(new Par(data[i], data[i + 1]));
+                        datka.Add(new Par<string, string>(data[i], data[i + 1]));
                     }
                     otevreneVysledky.NastavHodnoty(datka);
                 }
@@ -54,7 +54,7 @@ namespace dmp1
         }
 
         public bool OtevrenyVysledek { get; set; } //Jestli má úloha otevřené odpovědi
-        public ObservableCollection<Par> otevreneVysledky { get; set; }
+        public ObservableCollection<Par<string, string>> otevreneVysledky { get; set; }
         public ObservableCollection<string> CastiVysledku4 { get; set; } //Případné ABCD odpovědi
         public int SpravnyVysledek { get; set; } //Kolikátá odpověď je správná
         public string Napoveda { get; set; }
@@ -91,16 +91,17 @@ namespace dmp1
         public int Body { get; set; }
         public string Kategorie { get; set; }
         public bool Otevrena; //Jestli je aktuálně úloha otevřená ve hře
+        private Hra hra;
         public Brush Barva //Nastavení barvy v seznamu úloh ve hře
         {
             get
             {
-                if (Body < 50)
+                if (hra.DruhSpusteni == DruhSpusteni.Uceni)
                 {
-                    return new SolidColorBrush(Colors.Red);
+                    return Brushes.Gray;
                 }
 
-                return new SolidColorBrush(Colors.Green);
+                return Brushes.Yellow;
             }
         }
 
@@ -121,7 +122,7 @@ namespace dmp1
                 return !(Zaklad.Nazev == Nazev 
                     && Zaklad.Popis == Popis 
                     && Zaklad.OtevrenyVysledek == OtevrenyVysledek 
-                    && Enumerable.SequenceEqual(Zaklad.otevreneVysledky, otevreneVysledky, new ParComparer()) 
+                    && Enumerable.SequenceEqual(Zaklad.otevreneVysledky, otevreneVysledky, new ParComparer<string,string>()) 
                     && Enumerable.SequenceEqual(Zaklad.CastiVysledku4, CastiVysledku4) 
                     && Zaklad.SpravnyVysledek == SpravnyVysledek 
                     && Zaklad.Napoveda == Napoveda 
@@ -139,7 +140,7 @@ namespace dmp1
                 Nazev = Nazev,
                 Popis = Popis,
                 OtevrenyVysledek = OtevrenyVysledek,
-                otevreneVysledky = new ObservableCollection<Par>(otevreneVysledky.Select(p => new Par(p.Otazka, p.Odpoved))),
+                otevreneVysledky = new ObservableCollection<Par<string, string>>(otevreneVysledky.Select(p => new Par<string, string>(p.Klic, p.Hodnota))),
                 CastiVysledku4 = new ObservableCollection<string>(CastiVysledku4),
                 SpravnyVysledek = SpravnyVysledek,
                 Napoveda = Napoveda,
@@ -152,10 +153,30 @@ namespace dmp1
         }
 
         //Nastavení základních hodnot
-        public Uloha(string nazev, string popis, string vysledek, string napoveda, string obrPred, int body, string kategorie, int id)
+        public Uloha(int id)
+        {
+
+            /*
+            CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
+            otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
+            Nazev = nazev;
+            Popis = popis;
+            Vysledek = vysledek;
+            Napoveda = napoveda;
+            ObrazekPredpis = obrPred;
+            Body = body;
+            Kategorie = kategorie;
+            Nova = false;
+            Id = id;*/
+
+            Naklonuj();
+        }
+
+        //Nastavení základních hodnot
+        public Uloha(string nazev, string popis, string vysledek, string napoveda, string obrPred, int body, string kategorie, int id, Hra h = null)
         {
             CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
-            otevreneVysledky = new ObservableCollection<Par>() { new Par("", "") };
+            otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
             Nazev = nazev;
             Popis = popis;
             Vysledek = vysledek;
@@ -165,6 +186,7 @@ namespace dmp1
             Kategorie = kategorie;
             Nova = false;
             Id = id;
+            hra = h;
 
             Naklonuj();
         }
@@ -173,7 +195,7 @@ namespace dmp1
         {
             CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
             SpravnyVysledek = 1;
-            otevreneVysledky = new ObservableCollection<Par>() { new Par("", "") };
+            otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
             Nazev = "";
             Popis = "";
             Vysledek = "";
@@ -213,13 +235,13 @@ namespace dmp1
             string obrPredpis;
             if (obsahujeObrazek)
             {
-                if (string.IsNullOrWhiteSpace(ObrazekPredpis))
+                if (string.IsNullOrWhiteSpace(Obrazek))
                 {
                     obrPredpis = "N";
                 }
                 else
                 {
-                    obrPredpis = ObrazekPredpis;
+                    obrPredpis = "URL$$$" + Obrazek; 
                 }
             }
             else
@@ -245,14 +267,14 @@ namespace dmp1
             if (OtevrenyVysledek)
             {
                 vysledek = "O";
-                foreach (Par p in otevreneVysledky)
+                foreach (Par<string, string> p in otevreneVysledky)
                 {
-                    if (string.IsNullOrWhiteSpace(p.Otazka) || string.IsNullOrWhiteSpace(p.Odpoved))
+                    if (string.IsNullOrWhiteSpace(p.Klic) || string.IsNullOrWhiteSpace(p.Hodnota))
                     {
                         MessageBox.Show("Úloha nelze uložit! - Některé otevřené otázce chybí otázka nabo odpověď!");
                         return false;
                     }
-                    vysledek += $"$$${p.Otazka}$$${p.Odpoved}";
+                    vysledek += $"$$${p.Klic}$$${p.Hodnota}";
                 }
             }
             else
@@ -286,7 +308,7 @@ namespace dmp1
             Nazev = Zaklad.Nazev;
             Popis = Zaklad.Popis;
             OtevrenyVysledek = Zaklad.OtevrenyVysledek;
-            otevreneVysledky = new ObservableCollection<Par>(Zaklad.otevreneVysledky.Select(p => new Par(p.Otazka, p.Odpoved)));
+            otevreneVysledky = new ObservableCollection<Par<string, string>>(Zaklad.otevreneVysledky.Select(p => new Par<string, string>(p.Klic, p.Hodnota)));
             CastiVysledku4 = new ObservableCollection<string>(Zaklad.CastiVysledku4);
             SpravnyVysledek = Zaklad.SpravnyVysledek;
             Napoveda = Zaklad.Napoveda;
@@ -300,6 +322,12 @@ namespace dmp1
         internal void OdstranSe()
         {
             PraceSDB.ZavolejPrikaz("odstran_ulohu", false, Id);
+        }
+
+        public static Uloha[] VytvorHerniUlohy(int[] idecka, Hra h)
+        {
+            object[][] dataUloh = PraceSDB.ZavolejPrikaz("nacti_herni_ulohy", true, idecka).Select(o => (object[])o[0]).ToArray();
+            return dataUloh.Select(dato => new Uloha((string)dato[0], (string)dato[1], (string)dato[2], (string)dato[3], (string)dato[4], (int)dato[5], (string)dato[6], (int)dato[7], h)).ToArray();
         }
     }
 }

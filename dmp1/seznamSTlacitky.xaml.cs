@@ -26,6 +26,18 @@ namespace dmp1
 
     public partial class seznamSTlacitky : UserControl, INotifyPropertyChanged
     {
+        public static readonly DependencyProperty stylProperty = DependencyProperty.Register(
+             "styl", typeof(Style),
+             typeof(seznamSTlacitky),
+             new PropertyMetadata(OnCustomerChangedCallBack)
+             );
+
+        public Style styl
+        {
+            get => (Style)GetValue(stylProperty);
+            set => SetValue(stylProperty, value);
+        }
+
         public ObservableCollection<string> Seznam { get; set; } = new ObservableCollection<string>();
 
         public static readonly DependencyProperty druhTlacitkaProperty = DependencyProperty.Register(
@@ -104,6 +116,8 @@ namespace dmp1
 
         public seznamSTlacitky()
         {
+            styl = new Style();
+            styl.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Red));
             InitializeComponent();
             DataContext = this;
             //druhTlacitka = druhTlacitka;
