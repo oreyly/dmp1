@@ -23,16 +23,32 @@ namespace dmp1
     //ComboBox jenž má neutrální stav s popiskem
     public partial class lepsiComboBox : UserControl
     {
-        public static readonly DependencyProperty VybranyIndexProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty VybranyItemProperty = DependencyProperty.Register(
         "VybranyItem", typeof(object),
-        typeof(lepsiComboBox)
+        typeof(lepsiComboBox),
+        new PropertyMetadata(OnCustomerChangedCallBack)
         );
 
         public object VybranyItem
         {
-            get => (object)GetValue(VybranyIndexProperty);
-            set => SetValue(VybranyIndexProperty, value);
+            get => (object)GetValue(VybranyItemProperty);
+            set => SetValue(VybranyItemProperty, value);
         }
+
+        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            lepsiComboBox c = sender as lepsiComboBox;
+            if (c != null)
+            {
+                c.OnCustomerChanged();
+            }
+        }
+
+        protected virtual void OnCustomerChanged()
+        {
+            comboBox1.SelectedItem = GetValue(VybranyItemProperty);
+        }
+
 
         public static readonly DependencyProperty VybranaVlastnostProperty = DependencyProperty.Register(
         "VybranaVlastnost", typeof(string),
@@ -80,6 +96,11 @@ namespace dmp1
             tbkVyber.Visibility = comboBox1.SelectedItem == null ? Visibility.Visible : Visibility.Hidden;
             ZmenilVyber?.Invoke(stary, comboBox1.SelectedItem);
             stary = comboBox1.SelectedItem;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

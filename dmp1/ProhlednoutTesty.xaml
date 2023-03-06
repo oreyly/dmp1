@@ -1,29 +1,29 @@
-﻿<Window x:Class="dmp1.VyberHryKeSpusteni"
+﻿<Window x:Class="dmp1.ProhlednoutTesty"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="VyberHryKeSpusteni" Height="450" Width="800">
+        Title="ProhlednoutTesty" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="80*"></RowDefinition>
         </Grid.RowDefinitions>
-        <local:LepsiLabel VerticalAlignment="Center" HorizontalAlignment="Center" TextKZobrazeni="Výběr hry ke spuštění"></local:LepsiLabel>
+        <local:LepsiLabel VerticalAlignment="Center" HorizontalAlignment="Center" TextKZobrazeni="Výběr hry ke zkontrolování"></local:LepsiLabel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" x:Name="rb1" Style="{StaticResource {x:Type ToggleButton}}" Checked="RadioButton_Checked">Učení</RadioButton>
-            <RadioButton Grid.Column="1" x:Name="rb2" Style="{StaticResource {x:Type ToggleButton}}" Checked ="RadioButton_Checked">Procvičování</RadioButton>
-            <RadioButton Grid.Column="2" x:Name="rb3" Style="{StaticResource {x:Type ToggleButton}}" Checked="RadioButton_Checked">Test</RadioButton>
+
+            <RadioButton Grid.Column="0" x:Name="rb1" Style="{StaticResource {x:Type ToggleButton}}" Checked ="RadioButton_Checked">Procvičování</RadioButton>
+            <RadioButton Grid.Column="1" x:Name="rb2" Style="{StaticResource {x:Type ToggleButton}}" Checked="RadioButton_Checked">Test</RadioButton>
         </Grid>
-        <ListView Grid.Row="2" ItemsSource="{Binding seznamHer}">
+
+        <ListView Grid.Row="2" x:Name="lvHry" ItemsSource="{Binding seznamHer}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -53,9 +53,9 @@
                             <Label Content="{Binding Path=[3]}"></Label>
                         </Border>
                         <Border Grid.Column="4" BorderThickness="1" BorderBrush="Black">
-                            <Label Content="{Binding Path=[5]}"></Label>
+                            <Label Content="{Binding Path=[4]}"></Label>
                         </Border>
-                        <Button Grid.Column="5" Background="Yellow" x:Name="btSpustit" Click="btSpustit_Click">Spustit</Button>
+                        <Button Grid.Column="5" Background="Yellow" x:Name="btSpustit" Click="btSpustit_Click">Otevřít</Button>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

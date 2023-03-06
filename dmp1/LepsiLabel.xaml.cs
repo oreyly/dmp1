@@ -32,6 +32,18 @@ namespace dmp1
             set => SetValue(TextKZobrazeniProperty, value);
         }
 
+        public static readonly DependencyProperty BarvaPozadiProperty = DependencyProperty.Register(
+        "BarvaPozadi", typeof(Brush),
+        typeof(LepsiLabel),
+        new PropertyMetadata(Brushes.White)
+        );
+
+        public Brush BarvaPozadi
+        {
+            get => (Brush)GetValue(BarvaPozadiProperty);
+            set => SetValue(BarvaPozadiProperty, value);
+        }
+
         public static readonly DependencyProperty TucneProperty = DependencyProperty.Register(
         "Tucne", typeof(FontWeight),
         typeof(LepsiLabel)
@@ -45,6 +57,7 @@ namespace dmp1
 
         public LepsiLabel()
         {
+            //SetValue(BarvaPozadiProperty, Brushes.White);
             InitializeComponent();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,33 +38,46 @@ namespace dmp1
 
             set
             {
-                //Nastavení zobrazení okna na základě druhu spuštění
-                /*if (value.DruhSpusteni == DruhSpusteni.Uceni)
-                {
-                    Grid.SetColumn(UVukladani, 0);
-                    Grid.SetRow(UVukladani, 0);
-                    Grid.SetColumnSpan(UVukladani, 2);
-                    Grid.SetRowSpan(UVukladani, 2);
-
-                    btOdeslat.Visibility = Visibility.Collapsed;
-                    btUkoncit.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    Grid.SetColumn(UVukladani, 1);
-                    Grid.SetRow(UVukladani, 0);
-                    Grid.SetColumnSpan(UVukladani, 1);
-                    Grid.SetRowSpan(UVukladani, 2);
-
-                    btOdeslat.Visibility = Visibility.Visible;
-                    btUkoncit.Visibility = Visibility.Visible;
-                }*/
-
                 _HraCoSeHraje = value;
+                value.ZmenaAktualniUlohy += HraCoSeHraje_ZmenaAktualniUlohy;
+
+                if (value.DruhSpusteni == DruhSpusteni.Test)
+                {
+                    HlidacCasu = new BackgroundWorker()
+                    {
+                        WorkerReportsProgress = true,
+                        WorkerSupportsCancellation = true
+                    };
+
+                    HlidacCasu.DoWork += MerCas;
+                    HlidacCasu.ProgressChanged += VypisCas;
+                    HlidacCasu.RunWorkerCompleted += CasVyprsel;
+                    HlidacCasu.RunWorkerAsync();
+                }
+            }
+        }
+
+        private void CasVyprsel(object sender, RunWorkerCompletedEventArgs e)
+        {
+            HraCoSeHraje.KonecHry();
+        }
+
+        private void VypisCas(object sender, ProgressChangedEventArgs e)
+        {
+            lbCas.TextKZobrazeni = $"Zbývá: {HraCoSeHraje.CasKonce - DateTime.Now:mm\\:ss}";
+        }
+
+        private void MerCas(object sender, DoWorkEventArgs e)
+        {
+            while(!HlidacCasu.CancellationPending && DateTime.Now < HraCoSeHraje.CasKonce)
+            {
+                HlidacCasu.ReportProgress(0);
+                Thread.Sleep(1000);
             }
         }
 
         oknoPomoci op;
+        BackgroundWorker HlidacCasu;
         //Nastavení základních hodnot
         public HraciPlocha(int id, int druh)
         {
@@ -80,7 +95,7 @@ namespace dmp1
                     break;
 
                 case 2:
-                    op = new oknoPomoci();
+                    op = new oknoPomoci(HraCoSeHraje, this);
                     op.Show();
                     break;
 
@@ -116,7 +131,7 @@ namespace dmp1
             {
                 if (!HraCoSeHraje.aktualniUloha.OtevrenyVysledek)
                 {
-                    tlacitkaMoznosti[HraCoSeHraje.aktualniUloha.SpravnyVysledek - 1].IsChecked = true;
+                    //tlacitkaMoznosti[HraCoSeHraje.aktualniUloha.SpravnyVysledek - 1].IsChecked = true;
                 }
             }
         }
@@ -124,50 +139,88 @@ namespace dmp1
         RadioButton[] tlacitkaMoznosti;
         private void lbxSeznamUloh_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
         }
 
         private void tbOdpoved_Loaded(object sender, RoutedEventArgs e)
         {
-            if(HraCoSeHraje.DruhSpusteni == DruhSpusteni.Uceni)
+            /*if(HraCoSeHraje.DruhSpusteni == DruhSpusteni.Uceni)
             {
                 ((TextBox)sender).Text = ((Par<string, string>)((TextBox)sender).GetAncestorOfType<ListViewItem>().DataContext).Hodnota;
+            }*/
+        }
+
+        private void btOdeslat_Click(object sender, RoutedEventArgs e)
+        {
+            HraCoSeHraje.aktualniUloha.ZkontrolujOdpoved(true);
+
+            if (HraCoSeHraje.DruhSpusteni == DruhSpusteni.Procvicovani)
+            {
+                if (HraCoSeHraje.aktualniUloha.stavUlohy == StavUlohy.Spravne)
+                {
+                    if (HraCoSeHraje.aktualniUloha.ZachytnyBod)
+                    {
+                        MessageBox.Show("Gratulace, dosáhl jsi záchytného bodu");
+                    }
+
+                    MessageBox.Show("Správná odpověď!");
+                    try
+                    {
+                        HraCoSeHraje.aktualniUloha = HraCoSeHraje.Ulohy[HraCoSeHraje.Ulohy.IndexOf(HraCoSeHraje.aktualniUloha) + 1];
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        MessageBox.Show("Gratulace, dosáhl jsi konce!");
+                        btUkoncit_Click();
+                        return;
+                    }
+                }
+                else if (HraCoSeHraje.aktualniUloha.stavUlohy == StavUlohy.Spatne)
+                {
+                    MessageBox.Show("Špatná odpověď, padáš k nejbližšímu záchytnému bodu!");
+
+                    for (int i = HraCoSeHraje.Ulohy.IndexOf(HraCoSeHraje.aktualniUloha) - 1; i >= 0; --i)
+                    {
+                        Uloha u = HraCoSeHraje.Ulohy[i];
+                        if (u.ZachytnyBod)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            u.SpravnyVysledekOdpoved = 0;
+                            u.stavUlohy = StavUlohy.Spatne;
+                        }
+                    }
+
+                    btUkoncit_Click();
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// Will return a*value + b
-    /// </summary>
-    public class FirstDegreeFunctionConverter : IValueConverter
-    {
-        public double Kolik { get; set; }
-
-        #region IValueConverter Members
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        private void HraCoSeHraje_ZmenaAktualniUlohy(object sender, object stary, object novy)
         {
-            double x = GetDoubleValue(value);
-            Debug.WriteLine($"{x} --- {x / Kolik}");
-            return x / Kolik - 0.2;
+            foreach(RadioButton rb in tlacitkaMoznosti)
+            {
+                //rb.IsChecked = false;
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private void btUkoncit_Click(object sender = null, RoutedEventArgs e = null)
         {
-            double y = GetDoubleValue(value);
-            return y * Kolik;
-        }
-
-        #endregion
-
-
-        private double GetDoubleValue(object parameter)
-        {
-            double a;
-            if (parameter != null)
-                a = System.Convert.ToDouble(parameter);
+            if (HlidacCasu == null)
+            {
+                HraCoSeHraje.KonecHry();
+            }
             else
-                throw new Exception("Nelze zpracovat hodnotu!");
-            return a;
+            {
+                HlidacCasu.CancelAsync();
+            }
+        }
+
+        private void herniOkno_Closed(object sender, EventArgs e)
+        {
+            HraCoSeHraje.KonecHry();
         }
     }
 }

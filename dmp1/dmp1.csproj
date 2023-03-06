@@ -45,6 +45,9 @@
     <Reference Include="Dubacik22.ObservableDictionary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dubacik22.ObservableDictionary.1.0.2\lib\net45\Dubacik22.ObservableDictionary.dll</HintPath>
     </Reference>
+    <Reference Include="Enums.NET, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.4.0.1\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="ListViewDragDropManager, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ListViewDragDropManager.1.2.0\lib\net45\ListViewDragDropManager.dll</HintPath>
     </Reference>
@@ -85,6 +88,7 @@
     <Reference Include="System.Collections.Immutable, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.7.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -176,6 +180,10 @@
     <Compile Include="NabidkaMoznosti.xaml.cs">
       <DependentUpon>NabidkaMoznosti.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Nahled.xaml.cs">
+      <DependentUpon>Nahled.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NIKDYNEOTEVIRAT.cs" />
     <Compile Include="oknoPomoci.xaml.cs">
       <DependentUpon>oknoPomoci.xaml</DependentUpon>
     </Compile>
@@ -183,6 +191,12 @@
       <DependentUpon>OtevreneVysledky.xaml</DependentUpon>
     </Compile>
     <Compile Include="Par.cs" />
+    <Compile Include="ProhlednoutTesty.xaml.cs">
+      <DependentUpon>ProhlednoutTesty.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProhlednoutTestyLidi.xaml.cs">
+      <DependentUpon>ProhlednoutTestyLidi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="seznamSTlacitky.xaml.cs">
       <DependentUpon>seznamSTlacitky.xaml</DependentUpon>
     </Compile>
@@ -208,6 +222,9 @@
     </Compile>
     <Compile Include="VyhledavaciOknoUloh.xaml.cs">
       <DependentUpon>VyhledavaciOknoUloh.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VysledkoveOkno.xaml.cs">
+      <DependentUpon>VysledkoveOkno.xaml</DependentUpon>
     </Compile>
     <Page Include="editorSkupinUloh.xaml">
       <SubType>Designer</SubType>
@@ -241,6 +258,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Nahled.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="oknoPomoci.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -266,6 +287,14 @@
       <DependentUpon>Prihlaseni.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProhlednoutTesty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProhlednoutTestyLidi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="seznamSTlacitky.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,6 +324,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VyhledavaciOknoUloh.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VysledkoveOkno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -330,6 +363,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-question-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\krizek2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

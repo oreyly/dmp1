@@ -6,17 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using EnumsNET;
 using PostSharp.Patterns.Model;
 using NC = NCalc;
 
 namespace dmp1
 {
+    public enum StavUlohy {Prazdna, Spravne, Spatne, Zodpovezena }
     //Třída obsahující potřebná data o jednotlivých úlohách
     [NotifyPropertyChanged]
     public class Uloha
     {
         private int Id;
+
         public string Nazev { get; set; }
         public string Popis { get; set; }
 
@@ -44,10 +48,18 @@ namespace dmp1
                         datka.Add(new Par<string, string>(data[i], data[i + 1]));
                     }
                     otevreneVysledky.NastavHodnoty(datka);
+                    if (hra != null)
+                    {
+                        otevreneVysledkyOdpovedi.NastavHodnoty(datka.Select(dato => new Par<string, string>(dato.Klic, hra.DruhSpusteni == DruhSpusteni.Uceni ? dato.Hodnota : "")));
+                    }
                 }
                 else
                 {
                     SpravnyVysledek = Convert.ToInt32(data[5]);
+                    if(hra != null && hra.DruhSpusteni == DruhSpusteni.Uceni)
+                    {
+                        SpravnyVysledekOdpoved = SpravnyVysledek;
+                    }
                     CastiVysledku4.NastavHodnoty(data.Skip(1).Take(4));
                 }
             }
@@ -55,8 +67,10 @@ namespace dmp1
 
         public bool OtevrenyVysledek { get; set; } //Jestli má úloha otevřené odpovědi
         public ObservableCollection<Par<string, string>> otevreneVysledky { get; set; }
+        public ObservableCollection<Par<string, string>> otevreneVysledkyOdpovedi { get; set; }
         public ObservableCollection<string> CastiVysledku4 { get; set; } //Případné ABCD odpovědi
         public int SpravnyVysledek { get; set; } //Kolikátá odpověď je správná
+        public int SpravnyVysledekOdpoved { get; set; }
         public string Napoveda { get; set; }
         public bool obsahujeObrazek { get; set; }
         private string _ObrazekPredpis;
@@ -82,26 +96,86 @@ namespace dmp1
                 }
                 else
                 {
+                    if (hra != null)
+                    {
+                        Obrazek = HlavniStatik.Dira;
+                    }
                     obsahujeObrazek = true;
                 }
             }
         }
+
         public string Obrazek { get; set; } //URL obrázku
         public string Predpis { get; set; } //Případný předpis grafu apod.
-        public int Body { get; set; }
+        private int _Body;
+        public object Body { 
+            get
+            {
+                if (hra != null && hra.DruhSpusteni != DruhSpusteni.Uceni)
+                {
+                    return _Body;
+                }
+                else
+                {
+                    return "---";
+                }
+            }
+            set
+            {
+                _Body = Convert.ToInt32(value);
+            }
+        }
         public string Kategorie { get; set; }
-        public bool Otevrena; //Jestli je aktuálně úloha otevřená ve hře
+        public bool Otevrena { get; set; } //Jestli je aktuálně úloha otevřená ve hře
+        public StavUlohy stavUlohy { get; set; } = StavUlohy.Prazdna;
+        public bool ZachytnyBod { get; set; } = false;
         private Hra hra;
+        public float TloustkaOhraniceni
+        {
+            get
+            {
+                if(Otevrena)
+                {
+                    return 2f;
+                }
+                else
+                {
+                    return 0f;
+                }
+            }
+        }
         public Brush Barva //Nastavení barvy v seznamu úloh ve hře
         {
             get
             {
+                /*if(Otevrena)
+                {
+                    return Brushes.LightBlue;
+                }*/
+
+                if (ZachytnyBod)
+                {
+                    return Brushes.BlanchedAlmond;
+                }
+
                 if (hra.DruhSpusteni == DruhSpusteni.Uceni)
                 {
                     return Brushes.Gray;
                 }
 
-                return Brushes.Yellow;
+                switch (stavUlohy)
+                {
+                    case StavUlohy.Spravne:
+                        return Brushes.Green;
+                    case StavUlohy.Spatne:
+                        return Brushes.Red;
+                    case StavUlohy.Prazdna:
+                        return Brushes.Gray;
+                    case StavUlohy.Zodpovezena:
+                        return Brushes.Yellow;
+                    default:
+                        throw new Exception("Neznámý stav úlohy");
+                }
             }
         }
 
@@ -175,8 +249,11 @@ namespace dmp1
         //Nastavení základních hodnot
         public Uloha(string nazev, string popis, string vysledek, string napoveda, string obrPred, int body, string kategorie, int id, Hra h = null)
         {
+            hra = h;
+
             CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
             otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
+            otevreneVysledkyOdpovedi = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
             Nazev = nazev;
             Popis = popis;
             Vysledek = vysledek;
@@ -186,9 +263,11 @@ namespace dmp1
             Kategorie = kategorie;
             Nova = false;
             Id = id;
-            hra = h;
 
-            Naklonuj();
+            if (h == null)
+            {
+                Naklonuj();
+            }
         }
 
         public Uloha()
@@ -206,9 +285,20 @@ namespace dmp1
             Nova = true;
         }
 
+
+        public void ZamichejMoznosti()
+        {
+            if(!OtevrenyVysledek)
+            {
+                string spravny = CastiVysledku4[SpravnyVysledek - 1];
+                CastiVysledku4.ZamichejList();
+                SpravnyVysledek = CastiVysledku4.IndexOf(spravny) + 1;
+            }
+        }
+
         public override string ToString()
         {
-            return Nazev + 10;
+            return Nazev + stavUlohy.AsString(EnumFormat.Name);
         }
 
         public readonly bool Nova;
@@ -229,6 +319,12 @@ namespace dmp1
             if (string.IsNullOrWhiteSpace(Popis))
             {
                 MessageBox.Show("Úloha nelze uložit! - Neplatný popis");
+                return false;
+            }
+
+            if ((int)Body <= 0)
+            {
+                MessageBox.Show("Úloha nelze uložit! - Neplatný počet bodů");
                 return false;
             }
 
@@ -319,9 +415,83 @@ namespace dmp1
             Kategorie = Zaklad.Kategorie;
         }
 
-        internal void OdstranSe()
+        public void OdstranSe()
         {
             PraceSDB.ZavolejPrikaz("odstran_ulohu", false, Id);
+        }
+
+        public void ZkontrolujOdpoved(bool ukazovatMB)
+        {
+            if (stavUlohy is StavUlohy.Spravne or StavUlohy.Spatne)
+            {
+                _ = ukazovatMB ? MessageBox.Show("Úloha již byla zodpovězena") : default;
+                return;
+            }
+
+            bool spravne;
+            string celkovyVysledek = "";
+            if (OtevrenyVysledek)
+            {
+                spravne = true;
+
+                for (int i = 0; i < otevreneVysledky.Count; ++i)
+                {
+                    string vysledek = otevreneVysledkyOdpovedi[i].Hodnota;
+                    /*if(string.IsNullOrWhiteSpace(vysledek))
+                    {
+                        MessageBox.Show("Chybí některá z odpovědí");
+                        return;
+                    }*/
+                    celkovyVysledek += $"{celkovyVysledek}$$$";
+                    if (otevreneVysledky[i].Hodnota != vysledek)
+                    {
+                        spravne = false;
+                    }
+
+                    if (ukazovatMB && string.IsNullOrWhiteSpace(vysledek))
+                    {
+                        MessageBox.Show("Chybí jedna z odpovědí!");
+                        return;
+                    }
+                }
+
+                celkovyVysledek = celkovyVysledek.Substring(0, celkovyVysledek.Length - 3);
+            }
+            else
+            {
+                if (SpravnyVysledekOdpoved == 0)
+                {
+                    if(ukazovatMB)
+                    {
+                        MessageBox.Show("Není vybrána odpověď!");
+                        return;
+                    }
+                    spravne = false;
+                }
+                else
+                {
+                    if (SpravnyVysledekOdpoved== SpravnyVysledek)
+                    {
+                        spravne = true;
+                    }
+                    else
+                    {
+                        spravne = false;
+                    }
+                    celkovyVysledek = CastiVysledku4[SpravnyVysledekOdpoved - 1];
+                }
+            }
+
+            PraceSDB.ZavolejPrikaz("uloz_vysledek", false, Id, Uzivatel.HerniId, celkovyVysledek, hra.Kontrolovat && spravne);
+
+            if (!hra.Kontrolovat)
+            {
+                stavUlohy = StavUlohy.Zodpovezena;
+            }
+            else
+            {
+                stavUlohy = spravne ? StavUlohy.Spravne : StavUlohy.Spatne;
+            }
         }
 
         public static Uloha[] VytvorHerniUlohy(int[] idecka, Hra h)

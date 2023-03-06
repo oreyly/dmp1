@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
+using Media = System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using Npgsql;
@@ -24,6 +25,7 @@ namespace dmp1
     public static class HlavniStatik
     {
         public static readonly string[] Oddelovac = new string[] { "$$$" };
+        public static readonly string Dira = "http://home.spsostrov.cz/~matema/dlouhodobka/obr/dira.png";
 
         //Import pomocné systémové metody
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
@@ -346,9 +348,9 @@ namespace dmp1
             }
         }
 
-        public static void AddIfNotExists<T>(this IList<T> list, IList<T> list2)
+        public static void AddIfNotExists<T>(this IList<T> list, IList<T> values)
         {
-            foreach (T value in list2)
+            foreach (T value in values)
             {
                 if (!list.Contains(value))
                 {
@@ -372,6 +374,15 @@ namespace dmp1
         public static void NactiObrNapoved(int i)
         {
 
+        }
+
+        public static Media.Color SmichejBarvy(Media.Color c1, Media.Color c2)
+        {
+            byte r = (byte)(c1.R * 0.5 + c2.R * 0.5);
+            byte g = (byte)(c1.G * 0.5 + c2.G * 0.5);
+            byte b = (byte)(c1.B * 0.5 + c2.B * 0.5);
+
+            return Media.Color.FromRgb(r, g, b);
         }
     }
 }

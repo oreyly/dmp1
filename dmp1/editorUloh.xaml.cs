@@ -203,7 +203,7 @@ namespace dmp1
                 return;
             }
 
-            if ((Uloha)novyObjekt != null && (Uloha)staryObjekt != null && staryObjekt != novyObjekt && ((Uloha)staryObjekt).ZmenilSe)
+            if ((Uloha)novyObjekt != null && (Uloha)staryObjekt != null && staryObjekt != novyObjekt && (((Uloha)staryObjekt).ZmenilSe || ((Uloha)staryObjekt).Nova))
             {
                 if (MessageBox.Show("Uložit změny?", "Změna úlohy", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -232,6 +232,10 @@ namespace dmp1
                     }
                     else
                     {
+                        if (((Uloha)novyObjekt).Nova)
+                        {
+                            lcbxUloha.Seznam.Remove(novyObjekt);
+                        }
                         vrat = true;
                         lcbxUloha.VybranyItem = (Uloha)staryObjekt;
                         return;
@@ -243,10 +247,24 @@ namespace dmp1
                     {
                         ((Uloha)staryObjekt).OdstranSe();
                         Nazev = ((Uloha)novyObjekt).Nazev;
+                        Uloha u = null;
+                        if (((Uloha)novyObjekt).Nova)
+                        {
+                            u = (Uloha)novyObjekt;
+                        }
                         NacteniKategorii();
                         NacteniUloh();
-                        lcbxUloha.VybranyItem = lcbxUloha.Seznam.First(u => ((Uloha)u).Nazev == Nazev);
+                        if (u != null)
+                        {
+                            lcbxUloha.Seznam.AddIfNotExists(u);
+                        }
+                        lcbxUloha.VybranyItem = lcbxUloha.Seznam.FirstOrDefault(u => ((Uloha)u).Nazev == Nazev);
+                        if (lcbxUloha.VybranyItem == null)
+                        {
+                            lcbxUloha.VybranyItem = VybranaUloha;
+                        }
                         VybranaUloha = (Uloha)lcbxUloha.VybranyItem;
+                        return;
                     }
                     else
                     {

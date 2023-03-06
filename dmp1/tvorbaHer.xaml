@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <local:LepsiLabel Grid.Column="1" TextKZobrazeni="Vytvořit hru" HorizontalAlignment="Center" VerticalAlignment="Center" Tucne="Bold"></local:LepsiLabel>
             <local:LepsiLabel Grid.Column="2" TextKZobrazeni="Čas:" HorizontalAlignment="Right" VerticalAlignment="Center"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="3" x:Name="iupCas" Text="1" Minimum="1" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
+            <toolkit:IntegerUpDown Grid.Column="3" x:Name="iupCas" Text="3" Minimum="3" Maximum="120" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
             <local:LepsiLabel Grid.Column="4" TextKZobrazeni="M" HorizontalAlignment="Center" VerticalAlignment="Center"></local:LepsiLabel>
         </Grid>
 
@@ -77,17 +77,19 @@
                 <TextBlock TextWrapping="Wrap" x:Name="lbPocetUloh">Počet úloh: 444</TextBlock>
                 <TextBlock Grid.Row="1" TextWrapping="Wrap" x:Name="lbPocetHracu">Počet hráčů: 444</TextBlock>
             </Grid>
-            
+            <DatePicker x:Name="dpKonec" Grid.Row="0" SelectedDate="{x:Static System:DateTime.Today}" DisplayDateStart="{x:Static System:DateTime.Today}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+            </DatePicker>
+
             <Button Grid.Row="1" Grid.Column="1" Click="Button_Click">Přidat nové hráče</Button>
 
             <CheckBox x:Name="cbxOpravovat" Grid.Row="1" Grid.Column="2" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">Opravovat automaticky</TextBlock>
             </CheckBox>
-            
+
             <Button Grid.Row="1" Grid.Column="3" Click="Button_Click_1">Přidat úlohu</Button>
 
             <CheckBox x:Name="cbxRaditNahodne" Grid.Row="1" Grid.Column="4" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
-                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Řadit náhodně</TextBlock> 
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Řadit náhodně</TextBlock>
             </CheckBox>
         </Grid>
         <Grid Grid.Row="2">

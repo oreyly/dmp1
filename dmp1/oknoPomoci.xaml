@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="oknoPomoci" Height="200" Width="300">
+        Title="oknoPomoci" Height="200" Width="300"
+        >
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -25,8 +26,8 @@
             <Image x:Name="imgPomoc3" Grid.Column="2" Source="{Binding Converter={StaticResource int2src}, ConverterParameter=50}" MouseLeftButtonUp="imgPomoc3_MouseLeftButtonUp"></Image>
         </Grid>
 
-        <Grid>
-            
+        <Grid x:Name="grPomoc" MouseUp="Grid_MouseUp" Visibility="Hidden" Background="White">
+            <Label x:Name="lbPomoc" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
         </Grid>
     </Grid>
 </Window>
