@@ -1,0 +1,57 @@
+﻿<Window x:Class="dmp1.editorSkupinUloh"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="editorSkupinUloh" Height="450" Width="800"
+        >
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylVybranyRadekListView.xaml"></ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+                <local:BoolToString x:Key="bool2str" TrueValue="2" FalseValue="0"></local:BoolToString>
+                <local:NullToBool x:Key="null2bool"></local:NullToBool>
+                <local:IntToBool x:Key="int2bool"></local:IntToBool>
+                <local:BoolToVisibilityConverter x:Key="bool2vis" TrueValue="Visible" FalseValue="Hidden"></local:BoolToVisibilityConverter>
+            </ResourceDictionary>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="85*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView x:Name="lvSkupiny" SelectionChanged="ListView_SelectionChanged" ItemsSource="{Binding seznamSkupin}" Grid.ColumnSpan="2" MouseUp="lvKategorie_MouseUp" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                    <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        
+        <ListView x:Name="lvUlohy" Grid.Column="1" ItemsSource="{Binding seznamUloh}" Grid.ColumnSpan="2" MouseUp="lvKategorie_MouseUp">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                    <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <!--<local:seznamSTlacitky x:Name="sstSkupiny" druhTlacitka="Smazat" KliklNaTlacitko="sstSkupiny_KliklNaPrvek" DoubleKliklNaPrvek="sstSkupiny_DoubleKliklNaPrvek" KliklNaPrvek="sstSkupiny_KliklNaPrvek_1" Zapnuto="True"></local:seznamSTlacitky>-->
+        <!--<local:seznamSTlacitky x:Name="sstUlohy" Grid.Column="1" druhTlacitka="Smazat" Margin="0" Padding="0" KliklNaTlacitko="sstUlohy_KliklNaPrvek" Zapnuto="True"></local:seznamSTlacitky>-->
+        <Button x:Name="btSkupinaPridat" Grid.Row="1" Click="btSkupinaPridat_Click">Vytvoř Skupinu</Button>
+        <Button x:Name="btSkupinaPrejmenovat" Grid.Row="2" Click="btSkupinaPrejmenovat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenovat Skupinu</Button>
+        <Button x:Name="btSkupinaSmazat" Grid.Row="3" Click="btSkupinaSmazat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smazat Skupinu</Button>
+        <Button x:Name="btUlohyPridat" Grid.Row="1" Grid.Column="1" Click="btUlohyPridat_Click" IsVisibleChanged="btUlohyPridat_IsVisibleChanged" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}">Přidej Ulohy</Button>
+        <Button x:Name="btUlohySmazat" Grid.Row="2" Grid.Column="1" Click="btUlohySmazat_Click" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstranit Ulohy</Button>
+    </Grid>
+</Window>

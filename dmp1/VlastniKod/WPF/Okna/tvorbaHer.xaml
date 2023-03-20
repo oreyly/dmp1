@@ -1,0 +1,164 @@
+﻿<Window x:Class="dmp1.tvorbaHer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="tvorbaHer" Height="450" Width="800"
+        Closed="Window_Closed"
+        >
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylVybranyRadekListView.xaml"></ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+                <local:BoolToString x:Key="bool2str" TrueValue="2" FalseValue="0"></local:BoolToString>
+                <local:NullToBool x:Key="null2bool"></local:NullToBool>
+                <local:IntToBool x:Key="int2bool"></local:IntToBool>
+                <local:PorovnaniHodnotDruhuSpusteni x:Key="porovnavac"></local:PorovnaniHodnotDruhuSpusteni>
+                <local:BoolToVisibilityConverter x:Key="bool2vis" TrueValue="Visible" FalseValue="Hidden"></local:BoolToVisibilityConverter>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.05*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="0" TextKZobrazeni="Název:"></local:LepsiLabel>
+            <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" x:Name="tbNazev"></TextBox>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Datum"></local:LepsiLabel>
+            <DatePicker x:Name="dpKonec" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" SelectedDate="{x:Static System:DateTime.Today}" DisplayDateStart="{x:Static System:DateTime.Today}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+            </DatePicker>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="2" TextKZobrazeni="Čas:"></local:LepsiLabel>
+            <toolkit:IntegerUpDown Grid.Column="1" Grid.Row="2" x:Name="iupCas" Text="3" Minimum="3" Maximum="120" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
+            <local:LepsiLabel Grid.Column="3" Grid.Row="2" TextKZobrazeni="min."></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="3" TextKZobrazeni="Druh spuštění:" VerticalAlignment="Center"></local:LepsiLabel>
+            <local:lepsiComboBox x:Name="lcbxDruhSpusteni" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Seznam="{Binding MozneDruhySpusteni}" ZmenilVyber="lcbxDruhSpusteni_ZmenilVyber"></local:lepsiComboBox>
+
+            <Grid Grid.Row="4" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                
+                <CheckBox x:Name="cbxOpravovat" Grid.Column="0" Grid.Row="0" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+                    <Grid Width="{Binding ElementName=cbxOpravovat, Path=ActualWidth}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Viewbox Grid.Column="1">
+                            <TextBlock TextAlignment="Right" VerticalAlignment="Center">Opravovat automaticky</TextBlock>
+                        </Viewbox>
+
+                        <Grid Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox HorizontalAlignment="Left">
+                                <RadioButton Grid.Row="1" IsChecked="{Binding ElementName=cbxOpravovat, Path=IsChecked}" GroupName="a"></RadioButton>
+                            </Viewbox>
+                        </Grid>
+                    </Grid>
+                </CheckBox>
+
+                <CheckBox x:Name="cbxRaditNahodne" Grid.Column="3" Grid.Row="4" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+                    <Grid Width="{Binding ElementName=cbxOpravovat, Path=ActualWidth}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Viewbox Grid.Column="1">
+                            <TextBlock TextAlignment="Center">Řadit náhodně</TextBlock>
+                        </Viewbox>
+
+                        <Grid Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox HorizontalAlignment="Left">
+                                <RadioButton IsChecked="{Binding ElementName=cbxRaditNahodne, Path=IsChecked}" GroupName="b"></RadioButton>
+                            </Viewbox>
+                        </Grid>
+                    </Grid>
+                </CheckBox>
+            </Grid>
+            
+            
+            <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Click="Button_Click_2">Vytvořit hru</Button>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <local:LepsiLabel Grid.Column="0" TextKZobrazeni="Vybraní hráči"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="1" TextKZobrazeni="Vybrané úlohy"></local:LepsiLabel>
+
+
+            <ListView x:Name="lvHraci" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding seznamHracu}" Grid.ColumnSpan="2">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <ListView x:Name="lvUlohy" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding seznamUloh}" Grid.ColumnSpan="2">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                        <Setter Property="Content" Value="{Binding Klic}"></Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <Button x:Name="btPridatHrace" Grid.Row="2" Grid.Column="0" Click="btPridatHrace_Click">Přidat hráče</Button>
+            <Button x:Name="btOdebratHrace" Grid.Row="3" Grid.Column="0" Click="btOdebratHrace_Click" IsEnabled="{Binding ElementName=lvHraci, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odebrat hráče</Button>
+            
+            <Button x:Name="btPridatUlohu" Grid.Row="2" Grid.Column="1" Click="btPridatUlohu_Click">Přidat úlohu</Button>
+            <Button x:Name="btOdebratUlohu" Grid.Row="3" Grid.Column="1" Click="btOdebratUlohu_Click" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odebrat úlohu</Button>
+
+        </Grid>
+    </Grid>
+</Window>

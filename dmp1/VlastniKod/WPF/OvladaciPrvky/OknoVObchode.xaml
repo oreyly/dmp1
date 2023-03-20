@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="dmp1.OknoVObchode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:dmp1"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200"
+             SizeChanged="UserControl_SizeChanged"
+             >
+    <Border CornerRadius="20" BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <Grid.Resources>
+                <local:InverseBool x:Key="invBool"></local:InverseBool>
+                <local:StringToSource x:Key="Str2Src"></local:StringToSource>
+                <local:BoolToString x:Key="bool2str" TrueValue="Zakoupeno" FalseValue="Koupit"></local:BoolToString>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="35*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="80*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="1" Grid.Row="1" x:Name="imgNahled" Source="{Binding URL}"></Image>
+            <local:LepsiLabel Grid.Row="3" Grid.Column="1" TextKZobrazeni="{Binding Cena}"></local:LepsiLabel>
+            <Button Grid.Row="5" Grid.Column="1" IsEnabled="{Binding Koupeno, Converter={StaticResource invBool}}" Click="Button_Click">
+                <local:LepsiLabel TextKZobrazeni="{Binding Koupeno, Converter={StaticResource bool2str}}" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}"></local:LepsiLabel></Button>
+        </Grid>
+    </Border>
+</UserControl>

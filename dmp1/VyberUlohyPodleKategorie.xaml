@@ -1,0 +1,62 @@
+﻿<Window x:Class="dmp1.VyberUlohyPodleKategorie"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="VyberUlohyPodleKategorie" Height="450" Width="800"
+        Closed="Window_Closed"
+        IsVisibleChanged="Window_IsVisibleChanged"
+        >
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylVybranyRadekListView.xaml"></ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+                <local:BoolToString x:Key="bool2str" TrueValue="2" FalseValue="0"></local:BoolToString>
+                <local:NullToBool x:Key="null2bool"></local:NullToBool>
+                <local:IntToBool x:Key="int2bool"></local:IntToBool>
+                <local:BoolToVisibilityConverter x:Key="bool2vis" TrueValue="Visible" FalseValue="Hidden"></local:BoolToVisibilityConverter>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="85*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ListView x:Name="lvKategorie" SelectionChanged="ListView_SelectionChanged" ItemsSource="{Binding seznamKategorii}" Grid.ColumnSpan="2" MouseUp="lvKategorie_MouseUp" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                    <Setter Property="Content" Value="{Binding Klic}"></Setter>
+                    <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                    <EventSetter Event="Drop" Handler="ListViewItem_Drop"></EventSetter>
+                    <Setter Property="AllowDrop" Value="True"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        
+        <ListView x:Name="lvUlohy" Grid.Column="1" ItemsSource="{Binding seznamUloh}" MouseUp="lvKategorie_MouseUp" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
+                    <Setter Property="Content" Value="{Binding Klic}"></Setter>
+                    <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                    <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_MouseDown"></EventSetter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <Button Grid.Row="1" x:Name="btPridatKategorii" Click="btPridatKategorii_Click">Přidat kategorii</Button>
+        <Button Grid.Row="2" x:Name="btPrejmenovatKategorii" Click="btPrejmenovatKategorii_Click" IsEnabled="{Binding ElementName=lvKategorie, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenovat</Button>
+        <Button Grid.Row="3" x:Name="btSmazatKategorii" Click="btSmazatKategorii_Click" IsEnabled="{Binding ElementName=lvKategorie, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smazat</Button>
+        <Button Grid.Row="1" x:Name="btPridatUlohu" Click="btPridatUlohu_Click" Grid.Column="1" Visibility="{Binding ElementName=btPrejmenovatKategorii, Path=IsEnabled, Converter={StaticResource bool2vis}}">Přidat úlohu</Button>
+        <Button Grid.Row="2" x:Name="btUpravitUlohu" Click="btUpravitUlohu_Click" Grid.Column="1" Visibility="{Binding ElementName=btPrejmenovatKategorii, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Upravit</Button>
+        <Button Grid.Row="3" x:Name="btOdstranitUlohu" Click="btOdstranitUlohu_Click" Grid.Column="1" Visibility="{Binding ElementName=btPrejmenovatKategorii, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstranit</Button>
+    </Grid>
+</Window>

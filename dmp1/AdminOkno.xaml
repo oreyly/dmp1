@@ -1,0 +1,31 @@
+﻿<Window x:Class="dmp1.AdminOkno"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="AdminOkno" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Button x:Name="btZaci" Grid.Column="0" Grid.Row="0" Click="btZaci_Click">Načtení žáků</Button>
+            <Button x:Name="btUcitele" Grid.Column="0" Grid.Row="1" Click="btUcitele_Click">Načtení učitelů</Button>
+            <Button x:Name="btUcty" Grid.Column="0" Grid.Row="2" Click="btUcty_Click">Správa účtů</Button>
+            <Button x:Name="btObchod" Grid.Column="0" Grid.Row="3" Click="btObchod_Click">Správa obchodu</Button>
+            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="3" Click="btHesloAdmin_Click">Změna hesla administrátora</Button>
+        </Grid>
+    </Grid>
+</Window>

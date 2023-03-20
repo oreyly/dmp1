@@ -1,0 +1,65 @@
+﻿<Window x:Class="dmp1.VyberProduktu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="VyberProduktu" Height="450" Width="800"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        >
+    <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" CornerRadius="20" Background="White" MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="0,0,10,10">
+        <Border.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylKulateTlacitko.xaml"></ResourceDictionary>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylScrollBar.xaml"></ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+                <local:BoolToString x:Key="bool2str" TrueValue="2" FalseValue="0"></local:BoolToString>
+            </ResourceDictionary>
+        </Border.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ScrollViewer Margin="5 5 10 5" Grid.ColumnSpan="2">
+                <ScrollViewer.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource KulatyTmavyScrollBar}"></Style>
+                </ScrollViewer.Resources>
+                <ItemsControl x:Name="icPolozky" Background="White" MouseLeftButtonDown="Border_MouseLeftButtonDown" ItemsSource="{Binding seznamProduktu}" Width="771">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="2" CornerRadius="90" Background="Transparent" BorderThickness="{Binding Converter={StaticResource bool2str}, Path=Hodnota}" BorderBrush="Black" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}">
+                                <local:ObrazekVKrouzku Zdroj="{Binding Path=Klic}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" MouseUp="ObrazekVKrouzku_MouseUp"></local:ObrazekVKrouzku>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4"></UniformGrid>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="1" Grid.Column="1" FontSize="15" Style="{StaticResource KulateTlacitko}" Background="Orange" Foreground="Black">Vybrat</Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
