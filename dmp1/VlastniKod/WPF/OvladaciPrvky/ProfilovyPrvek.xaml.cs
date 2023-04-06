@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace dmp1
         public ProfilovyPrvek()
         {
             InitializeComponent();
+            llJmeno.TextKZobrazeni = Uzivatel.Jmeno.OdeberZavorku();
+            llZkratka.TextKZobrazeni = Uzivatel.Jmeno.ZiskejZavorku();
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -37,10 +40,15 @@ namespace dmp1
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ppNabidka.StaysOpen = true;
-            VyberProduktu vp = new VyberProduktu();
-            vp.Topmost = true;
+            VyberProduktu vp = new VyberProduktu(DruhProduktu.ProfilovaFotka);
             vp.ShowDialog();
             ppNabidka.StaysOpen = false;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }

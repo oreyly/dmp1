@@ -31,6 +31,7 @@ namespace dmp1
         {
             HraCoSeKontroluje = hra;
             DataContext = HraCoSeKontroluje;
+            HraCoSeKontroluje.aktualniUloha = HraCoSeKontroluje.Ulohy[0];
             Rodic = rodic;
             //ListBoxItem_MouseUp(null, null);
         }

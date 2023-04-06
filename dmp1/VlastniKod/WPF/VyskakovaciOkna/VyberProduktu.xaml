@@ -36,7 +36,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="2" CornerRadius="90" Background="Transparent" BorderThickness="{Binding Converter={StaticResource bool2str}, Path=Hodnota}" BorderBrush="Black" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}">
-                                <local:ObrazekVKrouzku Zdroj="{Binding Path=Klic}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" MouseUp="ObrazekVKrouzku_MouseUp"></local:ObrazekVKrouzku>
+                                <local:ObrazekVKrouzku Zdroj="{Binding Path=Klic}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" PreviewMouseDown="ObrazekVKrouzku_PreviewMouseDown" MouseUp="ObrazekVKrouzku_MouseUp"></local:ObrazekVKrouzku>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -58,7 +58,7 @@
                     <RowDefinition Height="3*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="1" Grid.Column="1" FontSize="15" Style="{StaticResource KulateTlacitko}" Background="Orange" Foreground="Black">Vybrat</Button>
+                <Button Grid.Row="1" Grid.Column="1" FontSize="15" Style="{StaticResource KulateTlacitko}" Background="Orange" Foreground="Black" PreviewMouseDown="ObrazekVKrouzku_PreviewMouseDown" PreviewMouseUp="Button_MouseUp">Vybrat</Button>
             </Grid>
         </Grid>
     </Border>

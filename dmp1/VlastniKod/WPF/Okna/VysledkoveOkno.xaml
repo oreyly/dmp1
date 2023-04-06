@@ -5,11 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="VysledkoveOkno" Height="450" Width="800"
+        Title="VysledkoveOkno" Height="576" Width="1024"
         Closed="Window_Closed"
+        IsVisibleChanged="Window_IsVisibleChanged"
         >
     <Window.Resources>
-        <local:InvPorovnaniHodnotDruhuSpusteni x:Key="invdruhComp"></local:InvPorovnaniHodnotDruhuSpusteni>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VlastniKod/Styly/StylKulateTlacitko.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/VlastniKod/Styly/StylScrollBar.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <local:InvPorovnaniHodnotDruhuSpusteni x:Key="invdruhComp"></local:InvPorovnaniHodnotDruhuSpusteni>
+            <local:AutoBarva x:Key="autoBarva"></local:AutoBarva>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -25,45 +33,75 @@
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <local:LepsiLabel TextKZobrazeni="Výsledek" Tucne="Bold"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding Nazev}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="{Binding ZbyvajiciCas}"></local:LepsiLabel>
-            <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <local:LepsiLabel TextKZobrazeni="Výsledek" Tucne="Bold" Grid.ColumnSpan="2" Zarovnani="Center"></local:LepsiLabel>
+            
+            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="Název:" Grid.Column="0"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding Nazev}" Grid.Column="1"></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="Zbývající čas:" Grid.Column="0"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="{Binding ZbyvajiciCas}" Grid.Column="1"></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Row="3" TextKZobrazeni="Max. počet bodů:" Grid.Column="0"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="3" TextKZobrazeni="{Binding HraKeKontrole.BodyCelkem}" Grid.Column="1"></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Row="4" TextKZobrazeni="Získaný počet bodů:" Grid.Column="0"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="4" TextKZobrazeni="{Binding HraKeKontrole.BodyZiskal}" Grid.Column="1"></local:LepsiLabel>
+
+            <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="4*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <local:LepsiLabel TextKZobrazeni="{Binding HraKeKontrole.BodyZiskal}"></local:LepsiLabel>
-                <local:LepsiLabel Grid.Column="1" TextKZobrazeni="{Binding HraKeKontrole.BodyCelkem}"></local:LepsiLabel>
+
+                <Button Grid.Row="1" Grid.Column="1" x:Name="btPryc" Background="Red" Click="btPryc_Click" Style="{StaticResource KulateTlacitko}">
+                    <local:LepsiLabel TextKZobrazeni="Návrat do menu" Zarovnani="Center" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualHeight}"></local:LepsiLabel>
+                </Button>
+
+                <Button Grid.Row="1" Grid.Column="3" x:Name="btProhlidka" Click="btProhlidka_Click" Background="Yellow" Style="{StaticResource KulateTlacitko}">
+                    <local:LepsiLabel TextKZobrazeni="Prohlédnout jednotlivé úlohy" Zarovnani="Center" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualHeight}"></local:LepsiLabel>
+                </Button>
+                
             </Grid>
-            <Button Grid.Row="4" x:Name="btProhlidka" Click="btProhlidka_Click">
-                <local:LepsiLabel TextKZobrazeni="Prohlédnout jednotlivé úlohy" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualHeight}"></local:LepsiLabel>
-            </Button>
-            <Button Grid.Row="5" x:Name="btPryc" Click="btPryc_Click">
-                <local:LepsiLabel TextKZobrazeni="Návrat do menu" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualHeight}"></local:LepsiLabel>
-            </Button>
+            
         </Grid>
 
-        <ListView x:Name="lbxSeznamUloh" Grid.Column="1" BorderThickness="0" Margin="0" Padding="0" ItemsSource="{Binding HraKeKontrole.Ulohy}" Grid.RowSpan="2"  IsHitTestVisible="True" Focusable="False">
+        <ListView x:Name="lbxSeznamUloh" Grid.Column="1" BorderThickness="1" Margin="0" Padding="0" ItemsSource="{Binding HraKeKontrole.Ulohy}">
             <ListView.Resources>
                 <local:RozdeleniVysek x:Key="nastavPocetRadku" Kolik="10"></local:RozdeleniVysek>
-                <Style x:Key="{x:Type ListViewItem}" TargetType= "ListBoxItem">
-                    <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},  Path=ActualHeight, Converter={StaticResource nastavPocetRadku}}"></Setter>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType= "ListBoxItem">
+                    <!--<Setter Property="Height" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},  Path=ActualHeight, Converter={StaticResource nastavPocetRadku}}"></Setter>-->
                     <!--<Setter Property="Background" Value="{Binding Barva}"></Setter>
                     <Setter Property="Content" Value="{Binding Body}" ></Setter>-->
                     <Setter Property="IsHitTestVisible" Value="True"></Setter>
                     <Setter Property="BorderThickness" Value="{Binding TloustkaOhraniceni}"></Setter>
                     <Setter Property="BorderBrush" Value="Black"></Setter>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border BorderThickness="{Binding TloustkaOhraniceni}" BorderBrush="Black">
+                                    <Label Content="{Binding Body, Mode=OneWay}" Background="{Binding Barva}" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Background, Converter={StaticResource autoBarva}}" FontSize="16" Height="30"></Label>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <local:LepsiLabel TextKZobrazeni="{Binding Body, Mode=OneWay}" BarvaPozadi="{Binding Barva}"></local:LepsiLabel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            </ListView.ItemContainerStyle>
         </ListView>
     </Grid>
 </Window>

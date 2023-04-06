@@ -44,6 +44,7 @@ namespace dmp1
         public DateTime CasKonce { get; set; }
 
         public DruhSpusteni DruhSpusteni { get; set; } //V jakém módu může být hra spuštěna (učení, procvičování, oboje, test)
+        public DruhSpusteni PuvodniDruhSpusteni { get; set; }
 
         private Uloha _aktualniUloha;
         public Uloha aktualniUloha
@@ -106,16 +107,16 @@ namespace dmp1
 
             MaximalniCas = maximalniCas;
 
-            if (nahodne)
-            {
-                Ulohy.ZamichejList();
-            }
-            else if (DruhSpusteni == DruhSpusteni.Procvicovani)
+            if (DruhSpusteni == DruhSpusteni.Procvicovani)
             {
                 Ulohy.NastavHodnoty(Ulohy.OrderBy(u => u.Body).ToArray());
                 int krok = (int)Math.Ceiling(Ulohy.Count / 3f);
                 Ulohy[krok - 1].ZachytnyBod = true;
                 Ulohy[2 * krok - 1].ZachytnyBod = true;
+            }
+            else if (nahodne)
+            {
+                Ulohy.ZamichejList();
             }
 
             Kontrolovat = kontrolovat;
@@ -137,18 +138,20 @@ namespace dmp1
             }
 
             PraceSDB.ZavolejPrikaz("konec_hry", false, Uzivatel.HerniId, celkemBodu);
-            MessageBox.Show("Konec!");
-            Environment.Exit(0);
+            if(DruhSpusteni != DruhSpusteni.Uceni)
+            {
+                LepsiMessageBox.Show("Konec!");
+            }
         }
 
-        public Hra(int idHry, int[] vysledky)
+        public Hra(int idHry, int[] vysledky, int druh)
         {
             Id = idHry;
             DruhSpusteni = DruhSpusteni.Kontrola;
+            PuvodniDruhSpusteni = (DruhSpusteni)druh;
 
             List<object[]> o = PraceSDB.ZavolejPrikaz("nacti_vysledky_uloh", true, vysledky).Select(radek => (object[])radek[0]).ToList();
             Ulohy = new ObservableCollection<Uloha>(o.Select(u => new Uloha(this, (string)u[0], (string)u[1], (string)u[2], (string)u[3], (int)u[4], (int)u[5], (string)u[6], (int)u[7])));
-            aktualniUloha = Ulohy[0];
 
             //foreach()
             return;

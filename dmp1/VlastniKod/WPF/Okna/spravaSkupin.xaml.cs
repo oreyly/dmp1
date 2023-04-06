@@ -90,15 +90,15 @@ namespace dmp1
             {
                 if (seznamSkupin.Contains(ib.noveJmeno))
                 {
-                    MessageBox.Show("Skupina s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Skupina s tímto názvem již existuje!");
                 }
                 else if ((bool)PraceSDB.ZavolejPrikaz("existuje_skupina_hracu", true, Uzivatel.Id, ib.noveJmeno)[0][0])
                 {
-                    MessageBox.Show("Nelze pojmenovat skupinu stejně jako třídu!");
+                    LepsiMessageBox.Show("Nelze pojmenovat skupinu stejně jako třídu!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název skupiny nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název skupiny nesmí být prázdný!");
                 }
                 else
                 {
@@ -115,15 +115,15 @@ namespace dmp1
             {
                 if (seznamSkupin.Contains(ib.noveJmeno))
                 {
-                    MessageBox.Show("Skupina s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Skupina s tímto názvem již existuje!");
                 }
                 else if ((bool)PraceSDB.ZavolejPrikaz("existuje_skupina_hracu", true, Uzivatel.Id, ib.noveJmeno)[0][0])
                 {
-                    MessageBox.Show("Nelze pojmenovat skupinu stejně jako třídu!");
+                    LepsiMessageBox.Show("Nelze pojmenovat skupinu stejně jako třídu!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název skupiny nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název skupiny nesmí být prázdný!");
                 }
                 else
                 {

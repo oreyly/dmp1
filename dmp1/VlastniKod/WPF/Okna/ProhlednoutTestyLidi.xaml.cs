@@ -25,9 +25,9 @@ namespace dmp1
 
 
         public ObservableCollection<string> Data { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Skupiny { get; set; } = new ObservableCollection<string>() { "SK", "CZ" };
-        public ObservableCollection<string> Hraci { get; set; } = new ObservableCollection<string>() { "Pepek", "Z Depek" };
-        public ProhlednoutTestyLidi()
+        public ObservableCollection<string> Skupiny { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<Par<string, int>> Hraci { get; set; } = new ObservableCollection<Par<string, int>>();
+        private ProhlednoutTestyLidi()
         {
             InitializeComponent();
             DataContext = this;
@@ -37,6 +37,7 @@ namespace dmp1
         public ProhlednoutTestyLidi(int idHry, Window rodic) : this()
         {
             Rodic = rodic;
+            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
             IdHry = idHry;
             NactiData();
         }
@@ -44,16 +45,16 @@ namespace dmp1
         private void NactiData()
         {
             string[] infoOHre = (string[])PraceSDB.ZavolejPrikaz("nacti_info_hry", true, IdHry)[0][0];
-            Data.NastavHodnoty(infoOHre);
+            Data.NastavHodnoty(new string[] { infoOHre[0], infoOHre[1], Convert.ToBoolean(infoOHre[2]) ? "Ano" : "Ne", infoOHre[3], Convert.ToInt32(infoOHre[4]) / 60 + " min.", Convert.ToBoolean(infoOHre[5]) ? "Ano" : "Ne", infoOHre[6], infoOHre[7] });
 
-            List<string> skupiny = ((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_skupiny", true, Uzivatel.Id)[0][0]).Select(dvojice => dvojice.Key).ToList();
+            List<string> skupiny = ((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_skupiny", true, Uzivatel.Id)[0][0]).OrderBy(dvojice => dvojice.Key).Select(dvojice => dvojice.Key).ToList();
             skupiny.Insert(0, "Všichni");
             Skupiny.NastavHodnoty(skupiny);
         }
 
         private void btSpustit_Click(object sender, RoutedEventArgs e)
         {
-            new VysledkoveOkno(IdHry, ((string)((Button)sender).GetAncestorOfType<ListViewItem>().Content).ZiskejZavorku(), this).Show();
+            new VysledkoveOkno(IdHry, ((Par<string, int>)((Button)sender).GetAncestorOfType<ListViewItem>().Content).Klic.ZiskejZavorku(), this).Show();
             Hide();
         }
 
@@ -68,7 +69,8 @@ namespace dmp1
             {
                 hraci = (string[])PraceSDB.ZavolejPrikaz("nacti_hrace_skupiny_do_vysledku", true, Uzivatel.Id, (string)lvSkupiny.SelectedItem, IdHry)[0][0];
             }
-            Hraci.NastavHodnoty(hraci);
+
+            Hraci.NastavHodnoty(hraci.Select(hrac => hrac.RozdelDolary()).Select(hrac => new Par<string, int>(hrac[0], Convert.ToInt32(hrac[1]))));
         }
     }
 }

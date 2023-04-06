@@ -40,7 +40,7 @@ namespace dmp1
 
         private void NacteniKategorii()
         {
-            seznamKategorii.NastavHodnoty(((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_kategorie", true, Uzivatel.Id)[0][0]).Select(k => new Par<string, bool>(k.Key, Convert.ToBoolean(k.Value))));
+            seznamKategorii.NastavHodnoty(((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_kategorie", true, Uzivatel.Id)[0][0]).Select(k => new Par<string, bool>(k.Key, Convert.ToBoolean(k.Value))).OrderBy(k => k.Klic));
         }
 
         private void NacteniUloh(string kategorie)
@@ -78,11 +78,11 @@ namespace dmp1
                 string Jmeno = ib.noveJmeno;
                 if (seznamKategorii.Count(par => par.Klic == Jmeno) > 0)
                 {
-                    MessageBox.Show("Kategorie s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Kategorie s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název kategorie nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název kategorie nesmí být prázdný!");
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace dmp1
             string stareJmeno = ((Par<string, bool>)lvKategorie.SelectedItem).Klic;
             if (!seznamKategorii.First(par => par.Klic == stareJmeno).Hodnota)
             {
-                MessageBox.Show("Nelze upravovat automaticky vytvořené kategorie!");
+                LepsiMessageBox.Show("Nelze upravovat automaticky vytvořené kategorie!");
                 return;
             }
 
@@ -107,11 +107,11 @@ namespace dmp1
             {
                 if (seznamKategorii.Count(par => par.Klic == ib.noveJmeno) > 0)
                 {
-                    MessageBox.Show("Kategorie s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Kategorie s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název kategorie nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název kategorie nesmí být prázdný!");
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace dmp1
 
             if (!kategorie.Hodnota)
             {
-                MessageBox.Show("Nelze odstranit automaticky vytvořené kategorie!");
+                LepsiMessageBox.Show("Nelze odstranit automaticky vytvořené kategorie!");
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace dmp1
 
             if (!(bool)PraceSDB.ZavolejPrikaz("odstran_kategorii", true, kategorie.Klic, Uzivatel.Id)[0][0])
             {
-                MessageBox.Show("Kategorie nemohla být odstraněna!");
+                LepsiMessageBox.Show("Kategorie nemohla být odstraněna!");
                 return;
             }
 

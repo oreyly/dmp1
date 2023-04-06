@@ -1,0 +1,30 @@
+﻿<Window x:Class="dmp1.SpravaUloziste"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="SpravaUloziste" Height="100" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="40*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="20*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBox x:Name="tbAdresa" Grid.Column="1" Grid.Row="1" Text="{Binding Path=(local:URLAdresa.Koren), Mode=OneTime}"></TextBox>
+        <Button x:Name="btUlozit" Grid.Column="3" Grid.Row="1" Click="btUlozit_Click">Uložit</Button>
+        <Button x:Name="btVycistit" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Click="btVycistit_Click">Vyčistit</Button>
+    </Grid>
+</Window>

@@ -149,7 +149,7 @@ namespace dmp1
             //bool[] napovedy = (bool[])PraceSDB.ZavolejPrikaz("obsahuji_ulohy_napovedu", true, sstUlohy.Seznam.Select(u => u.OdeberZavorku()).ToArray(), Uzivatel.Id)[0][0];
             if (!SpravnyPocetUloh())
             {
-                MessageBox.Show("Špatný počet úloh!");
+                LepsiMessageBox.Show("Špatný počet úloh!");
                 return;
             }
 
@@ -157,31 +157,31 @@ namespace dmp1
             {
                 if (!SpravnaUloha(par))
                 {
-                    MessageBox.Show("Špatný typ úlohy!");
+                    LepsiMessageBox.Show("Špatný typ úlohy!");
                     return;
                 }
             }
 
             if (seznamHracu.Count < 1)
             {
-                MessageBox.Show("Špatný počet hráčů!");
+                LepsiMessageBox.Show("Špatný počet hráčů!");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(tbNazev.Text))
             {
-                MessageBox.Show("Název nesmí být prázdný!");
+                LepsiMessageBox.Show("Název nesmí být prázdný!");
                 return;
             }
 
             if (lcbxDruhSpusteni.VybranyItem == null)
             {
-                MessageBox.Show("Není vybrán druh spuštění!");
+                LepsiMessageBox.Show("Není vybrán druh spuštění!");
                 return;
             }
 
             PraceSDB.ZavolejPrikaz("vytvor_hru", false, tbNazev.Text, cbxRaditNahodne.IsChecked, Convert.ToByte((int)lcbxDruhSpusteni.VybranyItem), Convert.ToInt32(iupCas.Text) * 60, (int)lcbxDruhSpusteni.VybranyItem == 4 ? ((DateTime)dpKonec.SelectedDate).AddDays(1).AddTicks(-1) : DBNull.Value, Uzivatel.Id, seznamUloh.Select(u => u.Klic.OdeberZavorku()).ToArray(), seznamHracu.Select(h => h.ZiskejZavorku()).ToArray());
-            MessageBox.Show("Vytvořeno");
+            LepsiMessageBox.Show("Vytvořeno");
             //new tvorbaHer().Show();
             Close();
         }

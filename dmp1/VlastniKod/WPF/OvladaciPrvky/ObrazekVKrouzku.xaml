@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:dmp1"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <WrapPanel x:Name="wpObr">
+    <WrapPanel x:Name="wpObr" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}">
         <Image Source="{Binding Zdroj}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"></Image>
         <WrapPanel.OpacityMask>
             <VisualBrush>

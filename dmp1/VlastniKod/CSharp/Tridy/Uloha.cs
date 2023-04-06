@@ -53,7 +53,7 @@ namespace dmp1
                     otevreneVysledky.NastavHodnoty(datka);
                     if (hra != null)
                     {
-                        otevreneVysledkyOdpovedi.NastavHodnoty(datka.Select(dato => new Par<string, string>(dato.Klic, hra.DruhSpusteni == DruhSpusteni.Uceni ? dato.Hodnota : "")));
+                        otevreneVysledkyOdpovedi.NastavHodnoty(datka.Select((dato, i) => new Par<string, Par<string, string>>(dato.Klic, new Par<string, string>(otevreneVysledky[i].Hodnota,hra.DruhSpusteni == DruhSpusteni.Uceni ? dato.Hodnota : ""))));
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace dmp1
 
         public bool OtevrenyVysledek { get; set; } //Jestli má úloha otevřené odpovědi
         public ObservableCollection<Par<string, string>> otevreneVysledky { get; set; }
-        public ObservableCollection<Par<string, string>> otevreneVysledkyOdpovedi { get; set; }
+        public ObservableCollection<Par<string, Par<string, string>>> otevreneVysledkyOdpovedi { get; set; }
         public ObservableCollection<string> CastiVysledku4 { get; set; } //Případné ABCD odpovědi
         public int SpravnyVysledek { get; set; } //Kolikátá odpověď je správná
         public int SpravnyVysledekOdpoved { get; set; }
@@ -108,7 +108,7 @@ namespace dmp1
             }
         }
 
-        public string Obrazek { get; set; } //URL obrázku
+        public URLAdresa Obrazek { get; set; } //URL obrázku
         public string Predpis { get; set; } //Případný předpis grafu apod.
         private int _Body;
         public object Body { 
@@ -238,7 +238,7 @@ namespace dmp1
             Nazev = nazev;
             Popis = popis;
             otevreneVysledky = new ObservableCollection<Par<string, string>>();
-            otevreneVysledkyOdpovedi = new ObservableCollection<Par<string, string>>();
+            otevreneVysledkyOdpovedi = new ObservableCollection<Par<string, Par<string, string>>>();
             CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
             Vysledek = vysledek;
             ObrazekPredpis = obrPred;
@@ -247,19 +247,16 @@ namespace dmp1
             if (OtevrenyVysledek)
             {
                 string[] data = vysledekOdpoved.Split(new string[] { "$$$" }, StringSplitOptions.None);
-                List<Par<string, string>> datka = new List<Par<string, string>>();
+                List<Par<string, Par<string, string>>> datka = new List<Par<string, Par<string, string>>>();
                 for (int i = 0; i < data.Length; ++i)
                 {
-                    datka.Add(new Par<string, string>(otevreneVysledky[i].Klic, data[i]));
+                    datka.Add(new Par<string, Par<string, string>>(otevreneVysledky[i].Klic, new Par<string, string>(otevreneVysledky[i].Hodnota, data[i])));
                 }
                 otevreneVysledkyOdpovedi.NastavHodnoty(datka);
             }
             else
             {
-                if (hra != null && hra.DruhSpusteni == DruhSpusteni.Uceni)
-                {
-                    SpravnyVysledekOdpoved = CastiVysledku4.IndexOf(vysledekOdpoved) + 1; 
-                }
+                SpravnyVysledekOdpoved = CastiVysledku4.IndexOf(vysledekOdpoved) + 1;
             }
 
             stavUlohy = spravne switch
@@ -298,7 +295,7 @@ namespace dmp1
             Kategorie = kategorie;
             CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
             otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
-            otevreneVysledkyOdpovedi = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
+            otevreneVysledkyOdpovedi = new ObservableCollection<Par<string, Par<string, string>>>() { new Par<string, Par<string, string>>("", new Par<string, string>("", "")) };
             Nazev = nazev;
             Popis = popis;
             Vysledek = vysledek;
@@ -353,32 +350,32 @@ namespace dmp1
                 return true;
             }
 
-            if (MessageBox.Show("Uložit změny?", "Změna úlohy", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (LepsiMessageBox.Show("Uložit změny?", DruhTlacitekLMB.AnoNe) != MessageBoxResult.Yes)
             {
                 return true;
             }
 
             if (string.IsNullOrWhiteSpace(Nazev))
             {
-                MessageBox.Show("Úloha nelze uložit! - Neplatný nadpis");
+                LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný nadpis");
                 return false;
             }
 
-            if ((bool)PraceSDB.ZavolejPrikaz("existuje_nazev_ulohy", true, Uzivatel.Id, Nazev)[0][0])
+            if (Nazev != Zaklad.Nazev && (bool)PraceSDB.ZavolejPrikaz("existuje_nazev_ulohy", true, Uzivatel.Id, Nazev)[0][0])
             {
-                MessageBox.Show("Úloha nelze uložit! - Nadpis je již využíván");
+                LepsiMessageBox.Show("Úloha nelze uložit! - Nadpis je již využíván");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(Popis))
             {
-                MessageBox.Show("Úloha nelze uložit! - Neplatný popis");
+                LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný popis");
                 return false;
             }
 
             if ((int)Body <= 0)
             {
-                MessageBox.Show("Úloha nelze uložit! - Neplatný počet bodů");
+                LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný počet bodů");
                 return false;
             }
 
@@ -398,7 +395,7 @@ namespace dmp1
             {
                 if (HlavniStatik.VytvorFunkci(Predpis) == null)
                 {
-                    MessageBox.Show("Úloha nelze uložit! - Neplatný předpis funkce");
+                    LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný předpis funkce");
                     return false;
                 }
                 else
@@ -415,7 +412,7 @@ namespace dmp1
                 {
                     if (string.IsNullOrWhiteSpace(p.Klic) || string.IsNullOrWhiteSpace(p.Hodnota))
                     {
-                        MessageBox.Show("Úloha nelze uložit! - Některé otevřené otázce chybí otázka nabo odpověď!");
+                        LepsiMessageBox.Show("Úloha nelze uložit! - Některé otevřené otázce chybí otázka nabo odpověď!");
                         return false;
                     }
                     vysledek += $"$$${p.Klic}$$${p.Hodnota}";
@@ -423,7 +420,7 @@ namespace dmp1
                 object o = otevreneVysledky.Select(p => p.Klic).Distinct().Count();
                 if (otevreneVysledky.Select(p => p.Klic).Distinct().Count() != otevreneVysledky.Count)
                 {
-                    MessageBox.Show("Úloha nelze uložit! - Některá z otázek je duplicitní!");
+                    LepsiMessageBox.Show("Úloha nelze uložit! - Některá z otázek je duplicitní!");
                     return false;
                 }
             }
@@ -434,7 +431,7 @@ namespace dmp1
                 {
                     if (string.IsNullOrWhiteSpace(odpoved))
                     {
-                        MessageBox.Show("Úloha nelze uložit! - Některé z možností výsledků chybí odpověď!");
+                        LepsiMessageBox.Show("Úloha nelze uložit! - Některé z možností výsledků chybí odpověď!");
                         return false;
                     }
                     vysledek += "$$$" + odpoved;
@@ -443,7 +440,7 @@ namespace dmp1
 
                 if (CastiVysledku4.Distinct().Count() != CastiVysledku4.Count)
                 {
-                    MessageBox.Show("Úloha nelze uložit! - Některé z možností výsledků je duplicitní!");
+                    LepsiMessageBox.Show("Úloha nelze uložit! - Některé z možností výsledků je duplicitní!");
                     return false;
                 }
             }
@@ -486,7 +483,7 @@ namespace dmp1
         {
             if (stavUlohy is StavUlohy.Spravne or StavUlohy.Spatne)
             {
-                _ = ukazovatMB ? MessageBox.Show("Úloha již byla zodpovězena") : default;
+                _ = ukazovatMB ? LepsiMessageBox.Show("Úloha již byla zodpovězena") : default;
                 return;
             }
 
@@ -498,10 +495,10 @@ namespace dmp1
 
                 for (int i = 0; i < otevreneVysledky.Count; ++i)
                 {
-                    string vysledek = otevreneVysledkyOdpovedi[i].Hodnota;
+                    string vysledek = otevreneVysledkyOdpovedi[i].Hodnota.Hodnota;
                     /*if(string.IsNullOrWhiteSpace(vysledek))
                     {
-                        MessageBox.Show("Chybí některá z odpovědí");
+                        LepsiMessageBox.Show("Chybí některá z odpovědí");
                         return;
                     }*/
                     celkovyVysledek += $"{vysledek}$$$";
@@ -512,7 +509,7 @@ namespace dmp1
 
                     if (ukazovatMB && string.IsNullOrWhiteSpace(vysledek))
                     {
-                        MessageBox.Show("Chybí jedna z odpovědí!");
+                        LepsiMessageBox.Show("Chybí jedna z odpovědí!");
                         return;
                     }
                 }
@@ -525,7 +522,7 @@ namespace dmp1
                 {
                     if(ukazovatMB)
                     {
-                        MessageBox.Show("Není vybrána odpověď!");
+                        LepsiMessageBox.Show("Není vybrána odpověď!");
                         return;
                     }
                     spravne = false;

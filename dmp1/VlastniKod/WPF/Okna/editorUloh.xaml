@@ -14,9 +14,9 @@
         <local:BoolToVisibilityConverter x:Key="Bool2Vis" TrueValue="Visible" FalseValue="Collapsed"></local:BoolToVisibilityConverter>
         <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
         <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
-        <local:StringToSource x:Key="Str2Src"></local:StringToSource>
         <local:NullToBool x:Key="Null2Bool"></local:NullToBool>
         <local:FuncToNcalc x:Key="Fun2NCalc"></local:FuncToNcalc>
+        <local:URLToStr x:Key="url2str"></local:URLToStr>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -154,7 +154,7 @@
             </Grid.ColumnDefinitions>
             <local:LepsiLabel TextKZobrazeni="Obrázek:" VerticalAlignment="Center"></local:LepsiLabel>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" MouseUp="imgNahled_MouseUp" Background="Transparent">
-                <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource Str2Src}}"></Image>
+                <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource url2str}}"></Image>
             </Border>
             <!--<Viewbox Grid.Column="1">
                 <import1:HorizontalToggleSwitch x:Name="htsObr" IsChecked="{Binding obsahujeObrazek}" CheckedContent="Vlastní obrázek" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="Auto" UncheckedBackground="White" UncheckedForeground="Black"></import1:HorizontalToggleSwitch>

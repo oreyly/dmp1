@@ -21,6 +21,17 @@ namespace dmp1
     //Label jehož text scaluje s velikostí elementu
     public partial class LepsiLabel : UserControl
     {
+        public static readonly DependencyProperty ZarovnaniProperty = DependencyProperty.Register(
+        "Zarovnani", typeof(HorizontalAlignment),
+        typeof(LepsiLabel)
+        );
+
+        public HorizontalAlignment Zarovnani
+        {
+            get => (HorizontalAlignment)GetValue(ZarovnaniProperty);
+            set => SetValue(ZarovnaniProperty, value);
+        }
+
         public static readonly DependencyProperty TextKZobrazeniProperty = DependencyProperty.Register(
         "TextKZobrazeni", typeof(string),
         typeof(LepsiLabel)
@@ -32,7 +43,7 @@ namespace dmp1
             set => SetValue(TextKZobrazeniProperty, value);
         }
 
-        public static readonly DependencyProperty BarvaPozadiProperty = DependencyProperty.Register(
+        /*public static readonly DependencyProperty BarvaPozadiProperty = DependencyProperty.Register(
         "BarvaPozadi", typeof(Brush),
         typeof(LepsiLabel),
         new PropertyMetadata(Brushes.White)
@@ -42,7 +53,7 @@ namespace dmp1
         {
             get => (Brush)GetValue(BarvaPozadiProperty);
             set => SetValue(BarvaPozadiProperty, value);
-        }
+        }*/
 
         public static readonly DependencyProperty TucneProperty = DependencyProperty.Register(
         "Tucne", typeof(FontWeight),

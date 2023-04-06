@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using dmp1;
 using Npgsql;
 
 namespace dmp1
@@ -33,6 +34,7 @@ namespace dmp1
                 client.DownloadFile(new Uri("http://home.spsostrov.cz/~matema/piejcpi/formik/gulas.jpg"), @"image.jpg");
             }*/
             this.Title = WindowsIdentity.GetCurrent().Name;
+            PrihlasSe(null, null);
         }
 
         private void Viewbox_MouseDown(object sender, MouseButtonEventArgs e)
@@ -49,23 +51,38 @@ namespace dmp1
         private void PrihlasSe(object sender, RoutedEventArgs e)
         {
             bdrJmeno.BorderBrush = Brushes.Black;
-            object h = PraceSDB.ZavolejPrikaz("prihlasHrace", true, tbJmeno.Text)[0][0];
-            if (h is not DBNull)
+            object hash = PraceSDB.ZavolejPrikaz("prihlasHrace", true, tbJmeno.Text)[0][0];
+            if (hash is not DBNull)
             {
-                if (BCrypt.Net.BCrypt.EnhancedVerify(tbHeslo.Password, Encoding.UTF8.GetString((byte[])h))) //Ověří heslo
+                if (BCrypt.Net.BCrypt.EnhancedVerify(tbHeslo.Password, Encoding.UTF8.GetString((byte[])hash))) //Ověří heslo
                 {
-                    MessageBox.Show("Přihlášeno!");
+                    Uzivatel.NactiUzivatele(tbJmeno.Text);
+                    switch(Uzivatel.Prava)
+                    {
+                        case UrovenPrav.Administrator:
+                            new AdminOkno().Show();
+                            break;
+
+                        case UrovenPrav.Ucitel:
+                            new UcitelskeOkno().Show();
+                            break;
+
+                        case UrovenPrav.Zak:
+                            new ZakovskeOkno().Show();
+                            break;
+                    }
+                    Close();
                 }
                 else
                 {
-                    MessageBox.Show("Špatné heslo!");
+                    LepsiMessageBox.Show("Špatné heslo!");
                     bdrHeslo.BorderBrush = Brushes.Red;
                     bdrHeslo.BorderThickness = new Thickness(2);
                 }
             }
             else
             {
-                MessageBox.Show("Uživatelské jméno neexistuje!");
+                LepsiMessageBox.Show("Uživatelské jméno neexistuje nebo si uživatel ještě nevytvořil heslo!");
                 bdrJmeno.BorderBrush = Brushes.Red;
                 bdrJmeno.BorderThickness = new Thickness(2);
             }

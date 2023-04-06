@@ -21,10 +21,16 @@ namespace dmp1
     public partial class Obchod : Window
     {
         public ObservableCollection<Produkt> seznamProduktu { get; set; } = new ObservableCollection<Produkt>();
-        public Obchod()
+        private Obchod()
         {
             InitializeComponent();
             DataContext = this;
+        }
+        Window Rodic;
+        public Obchod(Window rodic) : this()
+        {
+            Rodic = rodic;
+            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
         }
 
         private void htsTypVysledku_Checked(object sender, RoutedEventArgs e)

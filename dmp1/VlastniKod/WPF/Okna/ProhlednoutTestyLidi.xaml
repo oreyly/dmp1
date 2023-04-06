@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -21,26 +21,52 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <local:LepsiLabel Grid.Row="0" Grid.Column="0" TextKZobrazeni="{Binding Data[0]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="0" Grid.Column="1" TextKZobrazeni="{Binding Data[1]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="0" Grid.Column="2" TextKZobrazeni="{Binding Data[2]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="0" Grid.Column="3" TextKZobrazeni="{Binding Data[3]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="1" Grid.Column="0" TextKZobrazeni="{Binding Data[4]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="1" Grid.Column="1" TextKZobrazeni="{Binding Data[5]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="1" Grid.Column="2" TextKZobrazeni="{Binding Data[6]}"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="1" Grid.Column="3" TextKZobrazeni="{Binding Data[7]}"></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Row="0" Grid.Column="0" TextKZobrazeni="Název:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="1" Grid.Column="0" TextKZobrazeni="Počet úloh:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" Grid.Column="0" TextKZobrazeni="Náhodné pořadí:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="3" Grid.Column="0" TextKZobrazeni="Počet hráčů:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="0" Grid.Column="2" TextKZobrazeni="Maximální čas:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="1" Grid.Column="2" TextKZobrazeni="Automatická oprava:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" Grid.Column="2" TextKZobrazeni="Čas vytvoření:" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="3" Grid.Column="2" TextKZobrazeni="Termín dokončení:" Zarovnani="Left"></local:LepsiLabel>
+
+            <local:LepsiLabel Grid.Row="0" Grid.Column="1" TextKZobrazeni="{Binding Data[0]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="1" Grid.Column="1" TextKZobrazeni="{Binding Data[1]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" Grid.Column="1" TextKZobrazeni="{Binding Data[2]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="3" Grid.Column="1" TextKZobrazeni="{Binding Data[3]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="0" Grid.Column="3" TextKZobrazeni="{Binding Data[4]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="1" Grid.Column="3" TextKZobrazeni="{Binding Data[5]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="2" Grid.Column="3" TextKZobrazeni="{Binding Data[6]}" Zarovnani="Left"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Row="3" Grid.Column="3" TextKZobrazeni="{Binding Data[7]}" Zarovnani="Left"></local:LepsiLabel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ListView Grid.Column="0" x:Name="lvSkupiny" ItemsSource="{Binding Skupiny}" SelectionChanged="lvSkupiny_SelectionChanged"></ListView>
+            <ListView Grid.Column="0" x:Name="lvSkupiny" ItemsSource="{Binding Skupiny}" SelectionChanged="lvSkupiny_SelectionChanged" FontSize="15"></ListView>
             <ListView Grid.Column="1" x:Name="lvHraci" ItemsSource="{Binding Hraci}">
                 <ListView.Resources>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="FontSize" Value="15"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Hodnota}" Value="2">
+                                <Setter Property="Background" Value="Yellow"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Hodnota}" Value="3">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                <Setter Property="Background" Value="Red"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Hodnota}" Value="4">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                <Setter Property="Background" Value="Pink"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </ListView.Resources>
                 <ListView.ItemTemplate>
@@ -50,10 +76,11 @@
                                 <ColumnDefinition Width="80*"></ColumnDefinition>
                                 <ColumnDefinition Width="20*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
-                                <Label Content="{Binding}"></Label>
+                            <Border Grid.Column="0" BorderThickness="0" BorderBrush="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=Foreground}">
+                                <Label Content="{Binding Klic}" Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=Foreground}"></Label>
                             </Border>
-                            <Button Grid.Column="1" Background="Yellow" x:Name="btSpustit" Click="btSpustit_Click">Otevřít</Button>
+                            <Button Grid.Column="1" x:Name="btSpustit" Click="btSpustit_Click">
+                                Otevřít</Button>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

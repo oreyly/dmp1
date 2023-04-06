@@ -46,7 +46,6 @@ namespace dmp1
 
         Uloha uloha;
 
-        HttpClient client = new HttpClient();
         //Výběr nového obrázku
         private void imgNahled_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -60,32 +59,9 @@ namespace dmp1
             {
                 //MessageBox.Show(ofd.FileName);
                 //imgNahled.Source = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
-                BitmapImage bi = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    JpegBitmapEncoder enkoder = new JpegBitmapEncoder();
-                    enkoder.Frames.Add(BitmapFrame.Create(bi));
-                    enkoder.Save(ms);
-                    string byty = Convert.ToBase64String(ms.ToArray());
-                    Dictionary<string, string> hodnoty = new Dictionary<string, string>()
-                    {
-                        {"heslo", "KoprovkaJeZloVytvoreneDablem" },
-                        {"obr", byty }
-                    };
 
-                    IEnumerable<string> encodedItems = hodnoty.Select(i => WebUtility.UrlEncode(i.Key) + "=" + WebUtility.UrlEncode(i.Value));
-                    StringContent kontent = new StringContent(string.Join("&", encodedItems), null, "application/x-www-form-urlencoded");
-
-                    Task<HttpResponseMessage> odpovedT = client.PostAsync(@"https://home.spsostrov.cz/~matema/dlouhodobka/php/nahraniSouboru.php", kontent);
-                    odpovedT.Wait();
-
-                    Task<string> zbyvaT = odpovedT.Result.Content.ReadAsStringAsync();
-                    zbyvaT.Wait();
-
-                    string vys = zbyvaT.Result;
-                    uloha.Obrazek = vys;
-                    uloha.obsahujeObrazek = true;
-                }
+                uloha.Obrazek = HlavniStatik.NahrajObrazek(ofd.FileName);
+                uloha.obsahujeObrazek = true;
             }
         }
 
@@ -140,7 +116,7 @@ namespace dmp1
                 var size = new FileInfo(ofd.FileName).Length;
                 if (size > 4_000_000)
                 {
-                    MessageBox.Show("Soubor je moc velký, zkus něco jiného! Mě nenachytáš MARKU");
+                    LepsiMessageBox.Show("Soubor je moc velký, zkus něco jiného! Mě nenachytáš MARKU");
                     ev.Cancel = true;           
                 }
             };
@@ -217,7 +193,7 @@ namespace dmp1
         {
             if (!uloha.Nova && !uloha.ZmenilSe)
             {
-                MessageBox.Show("Nebyly provedeny žádné změny");
+                LepsiMessageBox.Show("Nebyly provedeny žádné změny");
                 return;
             }
 

@@ -28,23 +28,27 @@ namespace dmp1
             //data2 = HlavniStatik.Otoc90(File.ReadAllLines("data2.txt", Encoding.Default).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2] }).ToArray());
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        Window Rodic;
+        public AdminOkno(Window rodic) : this()
         {
-            //PraceSDB.ZavolejPrikaz("nastav_ucty_hracu", false, HlavniStatik.To2D(data));
-            //PraceSDB.ZavolejPrikaz("nastav_ucty_ucitelu", false, HlavniStatik.To2D(data2));
-            MessageBox.Show("Hotovo");
+            Rodic = rodic;
+            Closed += delegate (object o, EventArgs e) { Rodic.Show(); };
         }
 
         private void btZaci_Click(object sender, RoutedEventArgs e)
         {
             if (ofd.ShowDialog() == true)
             {
-                DateTime dt = DateTime.Now;
-                string[][] data = HlavniStatik.Otoc90(File.ReadAllLines(ofd.FileName, Encoding.Default).Skip(1).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Where(radek => radek.Length >= 5).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2], radek[4] }).ToArray());
-                //int pocet = data[0].Distinct().Count();
-                PraceSDB.ZavolejPrikaz("nastav_ucty_hracu", false, HlavniStatik.To2D(data));
-                MessageBox.Show("Žáci úspěšně nahráni" + (DateTime.Now - dt));
-                
+                try
+                {
+                    string[][] data = HlavniStatik.Otoc90(File.ReadAllLines(ofd.FileName, Encoding.Default).Skip(1).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Where(radek => radek.Length >= 5).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2], radek[4] }).ToArray());
+                    PraceSDB.ZavolejPrikaz("nastav_ucty_hracu", false, HlavniStatik.To2D(data));
+                    LepsiMessageBox.Show("Žáci úspěšně nahráni!");
+                }
+                catch
+                {
+                    LepsiMessageBox.Show("Špatný formát dat!");
+                }
             }
         }
 
@@ -52,21 +56,30 @@ namespace dmp1
         {
             if (ofd.ShowDialog() == true)
             {
-                DateTime dt = DateTime.Now;
-                string[][] data = HlavniStatik.Otoc90(File.ReadAllLines(ofd.FileName, Encoding.Default).Skip(1).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2] }).ToArray());
-                PraceSDB.ZavolejPrikaz("nastav_ucty_ucitelu", false, HlavniStatik.To2D(data));
-                MessageBox.Show("Učitelé úspěšně nahráni" + (DateTime.Now - dt));
+                try
+                {
+                    DateTime dt = DateTime.Now;
+                    string[][] data = HlavniStatik.Otoc90(File.ReadAllLines(ofd.FileName, Encoding.Default).Skip(1).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2] }).ToArray());
+                    PraceSDB.ZavolejPrikaz("nastav_ucty_ucitelu", false, HlavniStatik.To2D(data));
+                    LepsiMessageBox.Show("Učitelé úspěšně nahráni!");
+                }
+                catch
+                {
+                    LepsiMessageBox.Show("Špatný formát dat!");
+                }
             }
         }
 
         private void btUcty_Click(object sender, RoutedEventArgs e)
         {
-
+            new SpravaUzivatelu(this).Show();
+            Hide();
         }
 
         private void btObchod_Click(object sender, RoutedEventArgs e)
         {
-
+            new EditorObchodu(this).Show();
+            Hide();
         }
 
         private void btHesloAdmin_Click(object sender, RoutedEventArgs e)
@@ -79,8 +92,13 @@ namespace dmp1
 
                 PraceSDB.ZavolejPrikaz("zmen_admin_heslo", false, noveHeslo);
 
-                MessageBox.Show("Heslo změněno");
+                LepsiMessageBox.Show("Heslo změněno");
             }
+        }
+
+        private void tbUloziste_Click(object sender, RoutedEventArgs e)
+        {
+            new SpravaUloziste().ShowDialog();
         }
     }
 }

@@ -12,6 +12,8 @@
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             
             <Grid.RowDefinitions>
@@ -19,13 +21,16 @@
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
             
-            <Button x:Name="btZaci" Grid.Column="0" Grid.Row="0" Click="btZaci_Click">Načtení žáků</Button>
-            <Button x:Name="btUcitele" Grid.Column="0" Grid.Row="1" Click="btUcitele_Click">Načtení učitelů</Button>
-            <Button x:Name="btUcty" Grid.Column="0" Grid.Row="2" Click="btUcty_Click">Správa účtů</Button>
-            <Button x:Name="btObchod" Grid.Column="0" Grid.Row="3" Click="btObchod_Click">Správa obchodu</Button>
-            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="3" Click="btHesloAdmin_Click">Změna hesla administrátora</Button>
+            <Button x:Name="btZaci" Grid.Column="1" Grid.Row="1" Click="btZaci_Click">Načtení žáků</Button>
+            <Button x:Name="btUcitele" Grid.Column="3" Grid.Row="1" Click="btUcitele_Click">Načtení učitelů</Button>
+            <Button x:Name="btUcty" Grid.Column="1" Grid.Row="3" Click="btUcty_Click">Správa účtů</Button>
+            <Button x:Name="btObchod" Grid.Column="3" Grid.Row="3" Click="btObchod_Click">Správa obchodu</Button>
+            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="5" Click="btHesloAdmin_Click">Změna hesla administrátora</Button>
+            <Button x:Name="tbUloziste" Grid.Column="3" Grid.Row="5" Click="tbUloziste_Click">Uložiště</Button>
         </Grid>
     </Grid>
 </Window>

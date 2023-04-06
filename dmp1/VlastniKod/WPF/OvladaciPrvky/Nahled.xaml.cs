@@ -18,11 +18,11 @@ namespace dmp1
     /// <summary>
     /// Interakční logika pro Nahled.xaml
     /// </summary>
-    public partial class Nahled : UserControl
+    public partial class Nahled2 : UserControl
     {
         public static readonly DependencyProperty VybranaUlohaProperty = DependencyProperty.Register(
         "VybranaUloha", typeof(Uloha),
-        typeof(Nahled),
+        typeof(Nahled2),
         new PropertyMetadata(OnCustomerChangedCallBack)
         );
 
@@ -34,7 +34,7 @@ namespace dmp1
 
         private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            Nahled c = sender as Nahled;
+            Nahled2 c = sender as Nahled2;
             if (c != null)
             {
                 c.OnCustomerChanged((Uloha)e.NewValue);
@@ -46,7 +46,7 @@ namespace dmp1
             DataContext = u;
         }
 
-        public Nahled()
+        public Nahled2()
         {
             InitializeComponent();
         }

@@ -38,7 +38,7 @@ namespace dmp1
             string stareJmeno = ((ListBoxItem)sender).Content.ToString();
             if (Kategorie.First(par => par.Key == stareJmeno).Value)
             {
-                MessageBox.Show("Nelze upravovat automaticky vytvořené kategorie!");
+                LepsiMessageBox.Show("Nelze upravovat automaticky vytvořené kategorie!");
                 return;
             }
 
@@ -47,11 +47,11 @@ namespace dmp1
             {
                 if (Kategorie.Count(par => par.Key == ib.noveJmeno) > 0)
                 {
-                    MessageBox.Show("Kategorie s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Kategorie s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název kategorie nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název kategorie nesmí být prázdný!");
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace dmp1
             KeyValuePair<string, bool> lvi = (KeyValuePair<string, bool>)((Button)sender).GetAncestorOfType<ListViewItem>().Content;
             if (!(bool)PraceSDB.ZavolejPrikaz("odstran_kategorii", true, lvi.Key, Uzivatel.Id)[0][0])
             {
-                MessageBox.Show("Kategorie nemohla být odstraněna!");
+                LepsiMessageBox.Show("Kategorie nemohla být odstraněna!");
             }
             NacteniKategorii();
         }
@@ -86,11 +86,11 @@ namespace dmp1
                 string Jmeno = ib.noveJmeno;
                 if (Kategorie.Count(par => par.Key == Jmeno) > 0)
                 {
-                    MessageBox.Show("Kategorie s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Kategorie s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název kategorie nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název kategorie nesmí být prázdný!");
                 }
                 else
                 {

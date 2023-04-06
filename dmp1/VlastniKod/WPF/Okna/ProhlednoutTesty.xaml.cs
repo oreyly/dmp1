@@ -21,11 +21,22 @@ namespace dmp1
     /// </summary>
     public partial class ProhlednoutTesty : Window
     {
-        public ProhlednoutTesty()
+        Label[] zahlavi;
+        private ProhlednoutTesty()
         {
             InitializeComponent();
+            lbAutor.Content = Uzivatel.Prava == UrovenPrav.Zak ? "Autor" : "Počet hráčů";
+            lbTermin.Content = Uzivatel.Prava == UrovenPrav.Zak ? "Čas dokončení" : "Termín";
+            zahlavi = new Label[] { lbNazev, lbUlohy, lbAutor, lbVytvoreni, lbTermin };
             DataContext = this;
             rb1.IsChecked = true;
+        }
+
+        private Window Rodic;
+        public ProhlednoutTesty(Window rodic) : this()
+        {
+            Rodic = rodic;
+            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
         }
 
         public ObservableCollection<object[]> seznamHer { get; set; } = new ObservableCollection<object[]>();
@@ -64,6 +75,100 @@ namespace dmp1
             }
 
             Hide();
+        }
+        private void lbNazev_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (zahlavi.FirstOrDefault(l => l != lbNazev && (l.FontStyle == FontStyles.Italic || l.FontStyle == FontStyles.Oblique)) is Label lb)
+            {
+                lb.FontStyle = FontStyles.Normal;
+            }
+
+            if (lbNazev.FontStyle == FontStyles.Italic)
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderByDescending(h => h[0]).ToArray());
+                lbNazev.FontStyle = FontStyles.Oblique;
+            }
+            else
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderBy(h => h[0]).ToArray());
+                lbNazev.FontStyle = FontStyles.Italic;
+            }
+        }
+
+        private void lbUlohy_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (zahlavi.FirstOrDefault(l => l != lbUlohy && (l.FontStyle == FontStyles.Italic || l.FontStyle == FontStyles.Oblique)) is Label lb)
+            {
+                lb.FontStyle = FontStyles.Normal;
+            }
+
+            if (lbUlohy.FontStyle == FontStyles.Italic)
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderByDescending(h => Convert.ToInt32(h[1])).ToArray());
+                lbUlohy.FontStyle = FontStyles.Oblique;
+            }
+            else
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderBy(h => Convert.ToInt32(h[1])).ToArray());
+                lbUlohy.FontStyle = FontStyles.Italic;
+            }
+        }
+
+        private void lbAutor_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (zahlavi.FirstOrDefault(l => l != lbAutor && (l.FontStyle == FontStyles.Italic || l.FontStyle == FontStyles.Oblique)) is Label lb)
+            {
+                lb.FontStyle = FontStyles.Normal;
+            }
+
+            if (lbAutor.FontStyle == FontStyles.Italic)
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderByDescending(h => Uzivatel.Prava == UrovenPrav.Zak ? (object)((string)h[2]).ZiskejZavorku() : h[2]).ToArray());
+                lbAutor.FontStyle = FontStyles.Oblique;
+            }
+            else
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderBy(h => Uzivatel.Prava == UrovenPrav.Zak ? (object)((string)h[2]).ZiskejZavorku() : h[2]).ToArray());
+                lbAutor.FontStyle = FontStyles.Italic;
+            }
+        }
+
+        private void lbVytvoreni_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (zahlavi.FirstOrDefault(l => l != lbVytvoreni && (l.FontStyle == FontStyles.Italic || l.FontStyle == FontStyles.Oblique)) is Label lb)
+            {
+                lb.FontStyle = FontStyles.Normal;
+            }
+
+            if (lbVytvoreni.FontStyle == FontStyles.Italic)
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderByDescending(h => DateTime.Parse((string)h[3])).ToArray());
+                lbVytvoreni.FontStyle = FontStyles.Oblique;
+            }
+            else
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderBy(h => DateTime.Parse((string)h[3])).ToArray());
+                lbVytvoreni.FontStyle = FontStyles.Italic;
+            }
+        }
+
+        private void lbTermin_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (zahlavi.FirstOrDefault(l => l != lbTermin && (l.FontStyle == FontStyles.Italic || l.FontStyle == FontStyles.Oblique)) is Label lb)
+            {
+                lb.FontStyle = FontStyles.Normal;
+            }
+
+            if (lbTermin.FontStyle == FontStyles.Italic)
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderByDescending(h => DateTime.Parse((string)h[4])).ToArray());
+                lbTermin.FontStyle = FontStyles.Oblique;
+            }
+            else
+            {
+                seznamHer.NastavHodnoty(seznamHer.OrderBy(h => DateTime.Parse((string)h[4])).ToArray());
+                lbTermin.FontStyle = FontStyles.Italic;
+            }
         }
     }
 }

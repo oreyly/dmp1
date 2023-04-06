@@ -47,7 +47,7 @@
             <local:LepsiLabel Grid.Column="0" Grid.Row="0" TextKZobrazeni="Název:"></local:LepsiLabel>
             <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" x:Name="tbNazev"></TextBox>
 
-            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Datum"></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Datum:"></local:LepsiLabel>
             <DatePicker x:Name="dpKonec" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" SelectedDate="{x:Static System:DateTime.Today}" DisplayDateStart="{x:Static System:DateTime.Today}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
             </DatePicker>
 

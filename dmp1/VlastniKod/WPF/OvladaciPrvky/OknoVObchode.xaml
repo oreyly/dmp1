@@ -12,8 +12,8 @@
         <Grid>
             <Grid.Resources>
                 <local:InverseBool x:Key="invBool"></local:InverseBool>
-                <local:StringToSource x:Key="Str2Src"></local:StringToSource>
                 <local:BoolToString x:Key="bool2str" TrueValue="Zakoupeno" FalseValue="Koupit"></local:BoolToString>
+                <local:URLToStr x:Key="url2src"></local:URLToStr>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -29,10 +29,15 @@
                 <ColumnDefinition Width="80*"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="1" Grid.Row="1" x:Name="imgNahled" Source="{Binding URL}"></Image>
-            <local:LepsiLabel Grid.Row="3" Grid.Column="1" TextKZobrazeni="{Binding Cena}"></local:LepsiLabel>
+            <Image Grid.Column="1" Grid.Row="1" x:Name="imgNahled" Source="{Binding URL, Converter={StaticResource url2src}}"></Image>
+            <local:LepsiLabel Zarovnani="Center" Grid.Row="3" Grid.Column="1" TextKZobrazeni="{Binding Cena}"></local:LepsiLabel>
             <Button Grid.Row="5" Grid.Column="1" IsEnabled="{Binding Koupeno, Converter={StaticResource invBool}}" Click="Button_Click">
-                <local:LepsiLabel TextKZobrazeni="{Binding Koupeno, Converter={StaticResource bool2str}}" Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}"></local:LepsiLabel></Button>
+                <local:LepsiLabel 
+                    TextKZobrazeni="{Binding Koupeno, Converter={StaticResource bool2str}}" 
+                    Width="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualWidth}"
+                    Height="{Binding RelativeSource={RelativeSource AncestorType=Button, Mode=FindAncestor}, Path=ActualHeight}"
+                    Zarovnani="Center"
+                    ></local:LepsiLabel></Button>
         </Grid>
     </Border>
 </UserControl>

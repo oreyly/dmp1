@@ -1,0 +1,67 @@
+﻿<Window x:Class="dmp1.LepsiMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dmp1"
+        mc:Ignorable="d"
+        Title="Dávej Pozor!" Height="150" Width="300"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        >
+    <Border BorderBrush="Black" BorderThickness="2" CornerRadius="20" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="tbText" Text="Opravdu chceš ? Seš si gregre gregre gregerg htrhtrh hžčřhrh hthčhh hřčh" FontWeight="Bold" TextWrapping="Wrap" Width="260" VerticalAlignment="Center" FontSize="15" LineHeight="25" LineStackingStrategy="BlockLineHeight"></TextBlock>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="btOk" Width="80" Height="40" Grid.Row="3" Grid.Column="3" Margin="5" Click="btOk_Click">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DTL}" Value="{x:Static local:DruhTlacitekLMB.OK}">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                    OK
+                </Button>
+                <Button x:Name="btAno" Width="80" Height="40" Grid.Row="3" Grid.Column="1" Margin="5" Click="btAno_Click">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DTL}" Value="{x:Static local:DruhTlacitekLMB.OK}">
+                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                    Ano
+                </Button>
+                <Button x:Name="btNe" Width="80" Height="40" Grid.Row="3" Grid.Column="1" Margin="5" Visibility="{Binding ElementName=btAno, Path=Visibility}" Click="btNe_Click">Ne</Button>
+                <Button x:Name="btZrusit" Width="80" Height="40" Grid.Row="3" Grid.Column="1" Margin="5" Click="btZrusit_Click">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DTL}" Value="{x:Static local:DruhTlacitekLMB.AnoNeZrusit}">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                    Zrušit
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

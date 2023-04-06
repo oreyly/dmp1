@@ -56,20 +56,34 @@ namespace dmp1
                 }
             }
         }
-
+        bool konec = false;
         private void CasVyprsel(object sender, RunWorkerCompletedEventArgs e)
         {
-            HraCoSeHraje.KonecHry();
+            if(!konec)
+            {
+                Close();
+            }
+            //MessageBox.Show("More");
+            //HlidacCasu.ReportProgress(100);
         }
 
         private void VypisCas(object sender, ProgressChangedEventArgs e)
         {
+            /*if (e.ProgressPercentage == 100)
+            {
+            }*/
             lbCas.TextKZobrazeni = $"Zbývá: {HraCoSeHraje.CasKonce - DateTime.Now:mm\\:ss}";
         }
 
         private void MerCas(object sender, DoWorkEventArgs e)
         {
-            while(!HlidacCasu.CancellationPending && DateTime.Now < HraCoSeHraje.CasKonce)
+            /*while(!HlidacCasu.CancellationPending && DateTime.Now < HraCoSeHraje.CasKonce)
+            {
+                HlidacCasu.ReportProgress(0);
+                Thread.Sleep(1000);
+            }*/
+            int i = 0;
+            while (!konec)
             {
                 HlidacCasu.ReportProgress(0);
                 Thread.Sleep(1000);
@@ -79,19 +93,21 @@ namespace dmp1
         oknoPomoci op;
         BackgroundWorker HlidacCasu;
         //Nastavení základních hodnot
-        public HraciPlocha(int id, int druh)
+        public HraciPlocha(int id, int druh, Window rodic)
         {
             InitializeComponent();
+            Rodic = rodic;
+            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
             tlacitkaMoznosti = new RadioButton[] { btA, btB, btC, btD };
             Hra hr = Hra.NactiHru(id, (DruhSpusteni)druh);
             HraCoSeHraje = hr;
             DataContext = HraCoSeHraje;
-            imgNapoveda.Source = Properties.Resources.icoNapoveda.ToImageSource();
 
             switch(druh)
             {
                 case 1:
-
+                    op = new oknoPomoci(HraCoSeHraje, this);
+                    op.Show();
                     break;
 
                 case 2:
@@ -106,25 +122,13 @@ namespace dmp1
             //ListBoxItem_MouseUp(null, null);
         }
 
-        //Zobrazení / skrytí nápovědy
-        private void imgNapoveda_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            imgNapoveda.Visibility = Visibility.Collapsed;
-            brNapoveda.Visibility = Visibility.Visible;
-        }
-
-        private void ScrollViewer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            brNapoveda.Visibility = Visibility.Collapsed;
-            imgNapoveda.Visibility = Visibility.Visible;
-        }
-
         //Vybrání úlohy v dané hře
         private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is ListBoxItem lvi)
             {
                 HraCoSeHraje.aktualniUloha = (Uloha)lvi.DataContext;
+                op?.Reset();
             }
 
             if (HraCoSeHraje.DruhSpusteni == DruhSpusteni.Uceni)
@@ -135,6 +139,8 @@ namespace dmp1
                 }
             }
         }
+
+        public Window Rodic { get; set; }
 
         RadioButton[] tlacitkaMoznosti;
         private void lbxSeznamUloh_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -156,28 +162,29 @@ namespace dmp1
 
             if (HraCoSeHraje.DruhSpusteni == DruhSpusteni.Procvicovani)
             {
+                btA.Visibility = btB.Visibility = btC.Visibility = btD.Visibility = Visibility.Visible;
                 if (HraCoSeHraje.aktualniUloha.stavUlohy == StavUlohy.Spravne)
                 {
                     if (HraCoSeHraje.aktualniUloha.ZachytnyBod)
                     {
-                        MessageBox.Show("Gratulace, dosáhl jsi záchytného bodu");
+                        LepsiMessageBox.Show("Gratulace, dosáhl jsi záchytného bodu");
                     }
 
-                    MessageBox.Show("Správná odpověď!");
+                    LepsiMessageBox.Show("Správná odpověď!");
                     try
                     {
                         HraCoSeHraje.aktualniUloha = HraCoSeHraje.Ulohy[HraCoSeHraje.Ulohy.IndexOf(HraCoSeHraje.aktualniUloha) + 1];
                     }
                     catch (IndexOutOfRangeException)
                     {
-                        MessageBox.Show("Gratulace, dosáhl jsi konce!");
+                        LepsiMessageBox.Show("Gratulace, dosáhl jsi konce!");
                         btUkoncit_Click();
                         return;
                     }
                 }
                 else if (HraCoSeHraje.aktualniUloha.stavUlohy == StavUlohy.Spatne)
                 {
-                    MessageBox.Show("Špatná odpověď, padáš k nejbližšímu záchytnému bodu!");
+                    LepsiMessageBox.Show("Špatná odpověď, padáš k nejbližšímu záchytnému bodu!");
 
                     for (int i = HraCoSeHraje.Ulohy.IndexOf(HraCoSeHraje.aktualniUloha) - 1; i >= 0; --i)
                     {
@@ -208,19 +215,19 @@ namespace dmp1
 
         private void btUkoncit_Click(object sender = null, RoutedEventArgs e = null)
         {
-            if (HlidacCasu == null)
-            {
-                HraCoSeHraje.KonecHry();
-            }
-            else
-            {
-                HlidacCasu.CancelAsync();
-            }
+            Close();
         }
 
         private void herniOkno_Closed(object sender, EventArgs e)
         {
+
+        }
+
+        private void herniOkno_Closing(object sender, CancelEventArgs e)
+        {
+            konec = true;
             HraCoSeHraje.KonecHry();
+            op?.Close();
         }
     }
 }

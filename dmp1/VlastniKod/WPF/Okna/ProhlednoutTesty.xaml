@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="ProhlednoutTesty" Height="450" Width="800">
+        Title="ProhlednoutTesty" Height="576" Width="1024">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="80*"></RowDefinition>
         </Grid.RowDefinitions>
-        <local:LepsiLabel VerticalAlignment="Center" HorizontalAlignment="Center" TextKZobrazeni="Výběr hry ke zkontrolování"></local:LepsiLabel>
+        <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="Výběr hry ke zkontrolování"></local:LepsiLabel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -22,8 +23,33 @@
             <RadioButton Grid.Column="0" x:Name="rb1" Style="{StaticResource {x:Type ToggleButton}}" Checked ="RadioButton_Checked">Procvičování</RadioButton>
             <RadioButton Grid.Column="1" x:Name="rb2" Style="{StaticResource {x:Type ToggleButton}}" Checked="RadioButton_Checked">Test</RadioButton>
         </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150*"></ColumnDefinition>
+                <ColumnDefinition Width="50*"></ColumnDefinition>
+                <ColumnDefinition Width="200*"></ColumnDefinition>
+                <ColumnDefinition Width="125*"></ColumnDefinition>
+                <ColumnDefinition Width="125*"></ColumnDefinition>
+                <ColumnDefinition Width="75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" StretchDirection="DownOnly">
+                <Label x:Name="lbNazev" Content="Název" FontWeight="Bold" FontStyle="Italic" MouseUp="lbNazev_MouseUp"></Label>
+            </Viewbox>
+            <Viewbox Grid.Column="1" StretchDirection="DownOnly">
+                <Label x:Name="lbUlohy" Content="Počet úloh" FontWeight="Bold" MouseUp="lbUlohy_MouseUp"></Label>
+            </Viewbox>
+            <Viewbox Grid.Column="2" StretchDirection="DownOnly">
+                <Label x:Name="lbAutor" FontWeight="Bold" MouseUp="lbAutor_MouseUp"></Label>
+            </Viewbox>
+            <Viewbox Grid.Column="3" StretchDirection="DownOnly">
+                <Label x:Name="lbVytvoreni" Content="Čas vytvoření" FontWeight="Bold" MouseUp="lbVytvoreni_MouseUp"></Label>
+            </Viewbox>
+            <Viewbox Grid.Column="4" StretchDirection="DownOnly">
+                <Label x:Name="lbTermin" Content="Termín" FontWeight="Bold" MouseUp="lbTermin_MouseUp"></Label>
+            </Viewbox>
+        </Grid>
 
-        <ListView Grid.Row="2" x:Name="lvHry" ItemsSource="{Binding seznamHer}">
+        <ListView Grid.Row="3" x:Name="lvHry" ItemsSource="{Binding seznamHer}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -33,12 +59,12 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20*"></ColumnDefinition>
-                            <ColumnDefinition Width="20*"></ColumnDefinition>
-                            <ColumnDefinition Width="20*"></ColumnDefinition>
-                            <ColumnDefinition Width="20*"></ColumnDefinition>
-                            <ColumnDefinition Width="20*"></ColumnDefinition>
-                            <ColumnDefinition Width="10*"></ColumnDefinition>
+                            <ColumnDefinition Width="150*"></ColumnDefinition>
+                            <ColumnDefinition Width="50*"></ColumnDefinition>
+                            <ColumnDefinition Width="200*"></ColumnDefinition>
+                            <ColumnDefinition Width="125*"></ColumnDefinition>
+                            <ColumnDefinition Width="125*"></ColumnDefinition>
+                            <ColumnDefinition Width="75*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
                             <Label Content="{Binding Path=[0]}"></Label>

@@ -8,7 +8,9 @@ namespace dmp1
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch((string)parameter)
+            return Properties.Resources.icoNapoveda.ToImageSource();
+
+            switch ((string)parameter)
             {
                 case "napoveda":
                     return Properties.Resources.icoNapoveda.ToImageSource();

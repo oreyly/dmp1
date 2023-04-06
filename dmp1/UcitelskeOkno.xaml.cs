@@ -15,53 +15,43 @@ using System.Windows.Shapes;
 namespace dmp1
 {
     /// <summary>
-    /// Interakční logika pro HlavniMenu.xaml
+    /// Interakční logika pro UcitelskeOkno.xaml
     /// </summary>
-    public partial class HlavniMenu : Window
+    public partial class UcitelskeOkno : Window
     {
-        public HlavniMenu()
+        public UcitelskeOkno()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btEditorUloh_Click(object sender, RoutedEventArgs e)
         {
             new VyberUlohyPodleKategorie(this).Show();
             Hide();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void btSpravaSkupinUloh_Click(object sender, RoutedEventArgs e)
         {
             new editorSkupinUloh(this).Show();
             Hide();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void btSpravaSkupinHracu_Click(object sender, RoutedEventArgs e)
         {
             new spravaSkupin(this).Show();
             Hide();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void btTvorbaHer_Click(object sender, RoutedEventArgs e)
         {
             new tvorbaHer(this).Show();
             Hide();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void btVysledky_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            new AdminOkno(this).Show();
+            new ProhlednoutTesty(this).Show();
             Hide();
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
         }
     }
 }

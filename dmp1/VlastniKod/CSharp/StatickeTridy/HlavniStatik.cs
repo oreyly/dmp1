@@ -19,13 +19,27 @@ using Newtonsoft.Json;
 using Npgsql;
 using ObservableDictionary;
 using NC = NCalc;
+using dmp1;
+using System.IO;
+using System.Net.Http;
+using System.Net;
+using System.Security.Cryptography;
+using System.ComponentModel;
 
 namespace dmp1
 {
     public static class HlavniStatik
     {
+        public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
+        public static double Sirka { get; set; } = 1024;
+        public static double Vyska { get; set; } = 576;
+
+        public static double Left { get; set; } = 50;
+        public static double Top { get; set; } = 50;
+
         public static readonly string[] Oddelovac = new string[] { "$$$" };
         public static readonly string Dira = "http://home.spsostrov.cz/~matema/dlouhodobka/obr/dira.png";
+        private static HttpClient client = new HttpClient();
 
         //Import pomocné systémové metody
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
@@ -423,6 +437,41 @@ namespace dmp1
             }
 
             return vysledek;
+        }
+
+        public static string NahrajObrazek(string cesta)
+        {
+            BitmapImage bi = new BitmapImage(new Uri(cesta, UriKind.Absolute));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                JpegBitmapEncoder enkoder = new JpegBitmapEncoder();
+                enkoder.Frames.Add(BitmapFrame.Create(bi));
+                enkoder.Save(ms);
+                string byty = Convert.ToBase64String(ms.ToArray());
+                Dictionary<string, string> hodnoty = new Dictionary<string, string>()
+                    {
+                        {"obr", byty }
+                    };
+
+
+                return PosliPost((URLAdresa)"php/nahraniSouboru.php", hodnoty);
+            }
+        }
+
+        public static string PosliPost(string url, Dictionary<string, string> parametry)
+        {
+            parametry.Add("heslo", "KoprovkaJeZloVytvoreneDablem");
+            IEnumerable<string> encodedItems = parametry.Select(i => WebUtility.UrlEncode(i.Key) + "=" + WebUtility.UrlEncode(i.Value));
+            StringContent kontent = new StringContent(string.Join("&", encodedItems), null, "application/x-www-form-urlencoded");
+
+            Task<HttpResponseMessage> odpovedT = client.PostAsync(url, kontent);
+            odpovedT.Wait();
+
+            Task<string> zbyvaT = odpovedT.Result.Content.ReadAsStringAsync();
+            zbyvaT.Wait();
+
+            string vys = zbyvaT.Result;
+            return vys;
         }
     }
 }

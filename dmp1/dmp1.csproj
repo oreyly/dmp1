@@ -339,7 +339,26 @@
     <Compile Include="AdminOkno.xaml.cs">
       <DependentUpon>AdminOkno.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AutoBarva.cs" />
+    <Compile Include="EditorObchodu.xaml.cs">
+      <DependentUpon>EditorObchodu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IntToVis.cs" />
+    <Compile Include="LepsiMessageBox.xaml.cs">
+      <DependentUpon>LepsiMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="skejlovani.xaml.cs">
+      <DependentUpon>skejlovani.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpravaUloziste.xaml.cs">
+      <DependentUpon>SpravaUloziste.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpravaUzivatelu.xaml.cs">
+      <DependentUpon>SpravaUzivatelu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcitelskeOkno.xaml.cs">
+      <DependentUpon>UcitelskeOkno.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VlastniKod\CSharp\Komparery\ParComparer.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\BarvaUlohyPriTvorbe.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\BoolToString.cs" />
@@ -357,7 +376,9 @@
     <Compile Include="VlastniKod\CSharp\Konvertory\RadioBoolToIntConverter.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\RozdeleniVysek.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\StringToSource.cs" />
+    <Compile Include="VlastniKod\CSharp\Konvertory\URLToStr.cs" />
     <Compile Include="VlastniKod\CSharp\Tridy\Clovek.cs" />
+    <Compile Include="VlastniKod\CSharp\Tridy\URLAdresa.cs" />
     <Compile Include="VlastniKod\WPF\Okna\editorSkupinUloh.xaml.cs">
       <DependentUpon>editorSkupinUloh.xaml</DependentUpon>
     </Compile>
@@ -403,7 +424,7 @@
     <Compile Include="VlastniKod\WPF\Okna\Obchod.xaml.cs">
       <DependentUpon>Obchod.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\oknoPomoci.xaml.cs">
+    <Compile Include="VlastniKod\WPF\VyskakovaciOkna\oknoPomoci.xaml.cs">
       <DependentUpon>oknoPomoci.xaml</DependentUpon>
     </Compile>
     <Compile Include="VlastniKod\WPF\OvladaciPrvky\OknoVObchode.xaml.cs">
@@ -458,7 +479,34 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ZakovskeOkno.xaml.cs">
+      <DependentUpon>ZakovskeOkno.xaml</DependentUpon>
+    </Compile>
     <Page Include="AdminOkno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditorObchodu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LepsiMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="skejlovani.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpravaUloziste.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpravaUzivatelu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcitelskeOkno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -538,7 +586,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\oknoPomoci.xaml">
+    <Page Include="VlastniKod\WPF\VyskakovaciOkna\oknoPomoci.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -620,6 +668,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ZakovskeOkno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

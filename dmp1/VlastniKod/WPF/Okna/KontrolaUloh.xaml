@@ -5,53 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="KontrolaUloh" Height="450" Width="800"
+        Title="KontrolaUloh"  Height="576" Width="1024"
         Closed="Window_Closed"
         >
     <Grid>
         <Grid.Resources>
-            <local:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="Bool2Vis"></local:BoolToVisibilityConverter>
-            <local:BoolToVisibilityConverter TrueValue="Collapsed" FalseValue="Visible" x:Key="invBool2Vis"></local:BoolToVisibilityConverter>
-            <local:PorovnaniHodnotDruhuSpusteni x:Key="druhComp"></local:PorovnaniHodnotDruhuSpusteni>
-            <local:InvPorovnaniHodnotDruhuSpusteni x:Key="invdruhComp"></local:InvPorovnaniHodnotDruhuSpusteni>
-            <local:DruhToVis x:Key="druh2vis"></local:DruhToVis>
-            <local:InvDruhToVis x:Key="invdruh2vis"></local:InvDruhToVis>
-            <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylKulateTlacitko.xaml"></ResourceDictionary>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylScrollBar.xaml"></ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+                <local:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="Bool2Vis"></local:BoolToVisibilityConverter>
+                <local:BoolToVisibilityConverter TrueValue="Collapsed" FalseValue="Visible" x:Key="invBool2Vis"></local:BoolToVisibilityConverter>
+                <local:PorovnaniHodnotDruhuSpusteni x:Key="druhComp"></local:PorovnaniHodnotDruhuSpusteni>
+                <local:InvPorovnaniHodnotDruhuSpusteni x:Key="invdruhComp"></local:InvPorovnaniHodnotDruhuSpusteni>
+                <local:DruhToVis x:Key="druh2vis"></local:DruhToVis>
+                <local:InvDruhToVis x:Key="invdruh2vis"></local:InvDruhToVis>
+                <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
+                <local:URLToStr x:Key="url2str"></local:URLToStr>
+                <local:AutoBarva x:Key="autoBarva"></local:AutoBarva>
+            </ResourceDictionary>
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="97*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80*"></ColumnDefinition>
             <ColumnDefinition Width="20*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="lbxSeznamUloh" Grid.Column="1" BorderThickness="0" Margin="0" Padding="0" ItemsSource="{Binding Ulohy}" Grid.RowSpan="2"  IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}">
+        <ListView x:Name="lbxSeznamUloh" Grid.Column="1" BorderThickness="1" Margin="0" Padding="0" ItemsSource="{Binding Ulohy}" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}">
             <ListView.Resources>
                 <local:RozdeleniVysek x:Key="nastavPocetRadku" Kolik="10"></local:RozdeleniVysek>
-                <Style x:Key="{x:Type ListViewItem}" TargetType= "ListBoxItem">
-                    <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},  Path=ActualHeight, Converter={StaticResource nastavPocetRadku}}"></Setter>
-                    <!--<Setter Property="Background" Value="{Binding Barva}"></Setter>
-                    <Setter Property="Content" Value="{Binding Body}" ></Setter>-->
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType= "ListBoxItem">
                     <Setter Property="IsHitTestVisible" Value="True"></Setter>
                     <Setter Property="BorderThickness" Value="{Binding TloustkaOhraniceni}"></Setter>
                     <Setter Property="BorderBrush" Value="Black"></Setter>
                     <EventSetter Event="MouseUp" Handler="ListBoxItem_MouseUp"></EventSetter>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border BorderThickness="{Binding TloustkaOhraniceni}" BorderBrush="Black">
+                                    <Label Content="{Binding Body, Mode=OneWay}" Background="{Binding Barva}" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Background, Converter={StaticResource autoBarva}}" FontSize="16" Height="30"></Label>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <local:LepsiLabel TextKZobrazeni="{Binding Body, Mode=OneWay}" BarvaPozadi="{Binding Barva}"></local:LepsiLabel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            </ListView.ItemContainerStyle>
         </ListView>
-        <Grid Grid.RowSpan="2">
+
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*"></RowDefinition>
-                <RowDefinition Height="90*"></RowDefinition>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -60,62 +66,51 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <local:LepsiLabel Grid.Column="1" x:Name="lbl" TextKZobrazeni="{Binding DruhSpusteni}" Tucne="Bold" />
+                <local:LepsiLabel Grid.Column="0" x:Name="lbCas" Tucne="Bold" />
+                <local:LepsiLabel Grid.Column="1" x:Name="lbDruhSpusteni" Zarovnani="Center" TextKZobrazeni="{Binding DruhSpusteni}" Tucne="Bold" />
             </Grid>
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="75*"></RowDefinition>
+                    <RowDefinition Height="100*"></RowDefinition>
+                    <RowDefinition Height="100*"></RowDefinition>
+                    <RowDefinition Height="112"></RowDefinition>
+                    <RowDefinition Height="100*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <local:Nahled DataContext="{Binding Path=aktualniUloha}"></local:Nahled>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Border x:Name="brNapoveda" BorderBrush="Black" BorderThickness="2" Visibility="Visible">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <TextBlock Text="{Binding aktualniUloha.Napoveda}" TextWrapping="Wrap"/>
-                        </ScrollViewer>
-                    </Border>
-                    <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding aktualniUloha.Nazev}"></local:LepsiLabel>
-                </Grid>
-                <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-                    <TextBlock Text="{Binding aktualniUloha.Popis}" TextWrapping="Wrap" FontSize="14"/>
+
+                <local:LepsiLabel Grid.Row="0" FontSize="10" Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
+
+
+                <Image Grid.Row="1" Source="{Binding Path=aktualniUloha.Obrazek, Converter={StaticResource url2str}}">
+                    <Image.Resources>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=tbPopis, Path=Text}" Value="">
+                                    <Setter Property="Grid.RowSpan" Value="2"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Resources>
+                </Image>
+
+                <ScrollViewer Grid.Column="0" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
+                    <TextBlock x:Name="tbPopis" TextWrapping="Wrap" FontSize="22" Padding="5 0 5 0"/>
                 </ScrollViewer>
 
-                <Grid Grid.Row="1" Grid.Column="1" Visibility="{Binding Converter={StaticResource invdruh2vis}, Path=DruhSpusteni, ConverterParameter=Uceni}">
-                    <Grid.Resources>
-                        <local:IntToBool x:Key="int2bool"></local:IntToBool>
-                        <local:PravaToVisibility x:Key="prava2vis"></local:PravaToVisibility>
-                    </Grid.Resources>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition ></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="btUznat" Grid.Row="0" Click="btUznat_Click" IsEnabled="{Binding Path=aktualniUloha.stavUlohy, Converter={StaticResource int2bool}, ConverterParameter=1}" Visibility="{Binding Source={x:Static local:Uzivatel.Prava}, Converter={StaticResource prava2vis}, ConverterParameter={x:Static local:UrovenPrav.Ucitel}}">Uznat</Button>
-                        <Button x:Name="btNeuznat" Grid.Row="0" Grid.Column="1" Click="btNeuznat_Click" IsEnabled="{Binding Path=aktualniUloha.stavUlohy, Converter={StaticResource int2bool}, ConverterParameter=2}" Visibility="{Binding Source={x:Static local:Uzivatel.Prava}, Converter={StaticResource prava2vis}, ConverterParameter={x:Static local:UrovenPrav.Ucitel}}">Neuznat</Button>
-                    </Grid>
-                    <Button x:Name="btUkoncit" Grid.Row="1" Grid.ColumnSpan="2" Click="btUkoncit_Click">Ukončit</Button>
-                </Grid>
-
-                <!--<local:NabidkaMoznosti Grid.Row="2" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:NabidkaMoznosti>-->
-                <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <Grid x:Name="grOdpovedi" Grid.Row="3" Grid.ColumnSpan="2">
                     <!--<local:UkladaniVysledku x:Name="UVukladani" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:UkladaniVysledku>-->
                     <Grid x:Name="grMoznosti" Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=aktualniUloha.OtevrenyVysledek}">
+                        <Grid.Resources>
+                            <Style TargetType="RadioButton" x:Key="rbStyl" BasedOn="{StaticResource KulatyRadioTlacitko}">
+                                <Setter Property="IsHitTestVisible" Value="False"></Setter>
+                                <Setter Property="Focusable" Value="False"></Setter>
+                                <Setter Property="Background" Value="Gray"></Setter>
+                            </Style>
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="6*"></RowDefinition>
                             <RowDefinition Height="41*"></RowDefinition>
@@ -130,68 +125,192 @@
                             <ColumnDefinition Width="41*"></ColumnDefinition>
                             <ColumnDefinition Width="6*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <RadioButton x:Name="btA" Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="1" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
-                            <local:LepsiLabel TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[0]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
+                        <RadioButton x:Name="btA" Grid.Column="1" Grid.Row="1" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
+                            <RadioButton.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=aktualniUloha.SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=1}" Value="True">
+                                            <Setter Property="Background" Value="Green"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Resources>
+                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[0]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btB" Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="3" Grid.Row="1" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
-                            <local:LepsiLabel TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[1]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
+                        <RadioButton x:Name="btB" Grid.Column="3" Grid.Row="1" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
+                            <RadioButton.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=aktualniUloha.SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=2}" Value="True">
+                                            <Setter Property="Background" Value="Green"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Resources>
+                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[1]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btC" Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="3" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
-                            <local:LepsiLabel TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[2]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
+                        <RadioButton x:Name="btC" Grid.Column="1" Grid.Row="3" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
+                            <RadioButton.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=aktualniUloha.SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=3}" Value="True">
+                                            <Setter Property="Background" Value="Green"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Resources>
+                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[2]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btD" Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="3" Grid.Row="3" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Uceni}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
-                            <local:LepsiLabel TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[3]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
+                        <RadioButton x:Name="btD"  Grid.Column="3" Grid.Row="3" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
+                            <RadioButton.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=aktualniUloha.SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=4}" Value="True">
+                                            <Setter Property="Background" Value="Green"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Resources>
+                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[3]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
                     </Grid>
                     <Grid x:Name="grOtevrene" Visibility="{Binding Converter={StaticResource Bool2Vis}, Path=aktualniUloha.OtevrenyVysledek}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="66*"></ColumnDefinition>
-                            <ColumnDefinition Width="33*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <ListView ItemsSource="{Binding aktualniUloha.otevreneVysledky, UpdateSourceTrigger=PropertyChanged}">
-                            <ListView.Resources>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.Resources>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50*"></ColumnDefinition>
-                                            <ColumnDefinition Width="50*"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0" Text="{Binding Klic, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
-                                        <TextBox Grid.Column="1" 
-                                                 Text="{Binding Hodnota, UpdateSourceTrigger=PropertyChanged}" 
-                                                 IsReadOnly="True">
-                                        </TextBox>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        
-                        <ListView Grid.Column="1" ItemsSource="{Binding aktualniUloha.otevreneVysledkyOdpovedi, UpdateSourceTrigger=PropertyChanged}">
-                            <ListView.Resources>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.Resources>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100*"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0" Text="{Binding Hodnota, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Otázka" FontSize="15" HorizontalAlignment="Center"></Label>
+                                <Label Grid.Column="1" Content="Správná odpověď" FontSize="15" HorizontalAlignment="Center"></Label>
+                                <Label Grid.Column="2" Content="Zadaná odpověď" FontSize="15" HorizontalAlignment="Center"></Label>
+                            </Grid>
+                            <Border BorderBrush="Black" BorderThickness="1">
+                                <ListView x:Name="lvOdpovedi" ItemsSource="{Binding aktualniUloha.otevreneVysledkyOdpovedi, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView.Resources>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="Margin" Value="0"></Setter>
+                                            <Setter Property="Padding" Value="0"></Setter>
+                                            <Setter Property="BorderThickness" Value="0"></Setter>
+                                            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ViewportWidth}"></Setter>
+                                        </Style>
+                                    </ListView.Resources>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=ActualWidth}">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Grid.Column="0" Text="{Binding Klic, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15"></TextBox>
+                                                    <TextBox Grid.Column="1" Text="{Binding Hodnota.Klic, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15"></TextBox>
+                                                    <TextBox Grid.Column="2" Text="{Binding Hodnota.Hodnota, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15"></TextBox>
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Border>
+                        </StackPanel>
                     </Grid>
+                </Grid>
+                
+                <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btUznat" Grid.Row="1" Grid.Column="1" Background="Green" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btUznat_Click">
+                        <Button.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                <Style.Triggers>
+                                    
+                                    <DataTrigger  Binding="{Binding Source={x:Static local:Uzivatel.Prava}}" Value="{x:Static local:UrovenPrav.Zak}">
+                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                    </DataTrigger>
+                                    
+                                    <DataTrigger Binding="{Binding Path=PuvodniDruhSpusteni}" Value="{x:Static local:DruhSpusteni.Test}">
+                                        <Setter Property="IsEnabled" Value="True"></Setter>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=aktualniUloha.stavUlohy}" Value="{x:Static local:StavUlohy.Spravne}">
+                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Resources>
+                        Uznat
+                    </Button>
+                   
+                    
+                    <Button x:Name="btNeuznat" Grid.Row="1" Grid.Column="3" Background="Orange" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btNeuznat_Click">
+                        <Button.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                <Style.Triggers>
+
+                                    <DataTrigger  Binding="{Binding Source={x:Static local:Uzivatel.Prava}}" Value="{x:Static local:UrovenPrav.Zak}">
+                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                    </DataTrigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=PuvodniDruhSpusteni}" Value="{x:Static local:DruhSpusteni.Test}"></Condition>
+                                            <Condition Binding="{Binding Path=aktualniUloha.stavUlohy}" Value="{x:Static local:StavUlohy.Zodpovezena}"></Condition>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="True"></Setter>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Resources>
+                        Neuznat</Button>
+                   
+                    
+                    <Button x:Name="btUkoncit" Grid.Row="1" Background="Red" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btUkoncit_Click">
+                        <Button.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
+                                <Setter Property="Grid.Column" Value="5"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  Binding="{Binding Source={x:Static local:Uzivatel.Prava}}" Value="{x:Static local:UrovenPrav.Zak}">
+                                        <Setter Property="Grid.Column" Value="3"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Resources>
+                        Ukončit
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="dmp1.Nahled"
+﻿<UserControl x:Class="dmp1.Nahled2"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,11 +9,11 @@
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid>
             <Grid.Resources>
-                <local:StringToSource x:Key="Str2Src"></local:StringToSource>
                 <local:BoolToVisibilityConverter x:Key="Bool2Vis"></local:BoolToVisibilityConverter>
                 <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
+                <local:URLToStr x:Key="url2str"></local:URLToStr>
             </Grid.Resources>
-            <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource Str2Src}}" Visibility="{Binding Path=obsahujeObrazek, Converter={StaticResource Bool2Vis}}"></Image>
+            <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource url2str}}" Visibility="{Binding Path=obsahujeObrazek, Converter={StaticResource Bool2Vis}}"></Image>
             <local:Grafik Okno="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" Visibility="{Binding Path=obsahujeObrazek, Converter={StaticResource invBool2Vis}}" Predpis="{Binding Predpis}"></local:Grafik>
         </Grid>
     </Border>

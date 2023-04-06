@@ -6,16 +6,25 @@
              xmlns:local="clr-namespace:dmp1"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="uc"
+             Margin="0"
+             Padding="0"
              >
-    <Grid Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:LepsiLabel}}, Path=BarvaPozadi}">
-        <Viewbox x:Name="vbx" VerticalAlignment="Top">
+    
+    <Grid x:Name="gr" Background="{Binding ElementName=uc, Path=Background}">
+        <Viewbox x:Name="vbx" VerticalAlignment="Center"
+                       Width="{Binding ElementName=gr, Path=ActualWidth}"
+                       Height="{Binding ElementName=gr, Path=ActualHeight}"
+                 HorizontalAlignment="{Binding ElementName=uc, Path=Zarovnani}"
+                 Margin="0"
+                 >
             <Label x:Name="tbk" 
-                       Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:LepsiLabel}}, Path=TextKZobrazeni}" 
-                       FontWeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:LepsiLabel}}, Path=Tucne}"
-                       MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
-                       
+                       Content="{Binding ElementName=uc, Path=TextKZobrazeni}" 
+                       FontWeight="{Binding ElementName=uc, Path=Tucne}"
+                        Margin="0"
+                        Foreground="{Binding ElementName=uc, Path=Foreground}"
                        />
-            <!--Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
+            <!--Width="{Binding RlativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
                        Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"-->
         </Viewbox>
     </Grid>

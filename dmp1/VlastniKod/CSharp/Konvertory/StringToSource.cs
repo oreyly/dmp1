@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 namespace dmp1
 {
     //Převedení stringu na obrázek
-    public class StringToSource : IValueConverter
+    /*public class StringToSource : IValueConverter
     {
         public object Convert(object value, Type targetType, object parametr, CultureInfo culture)
         {
@@ -23,5 +23,5 @@ namespace dmp1
         {
             return parameter;
         }
-    }
+    }*/
 }

@@ -56,7 +56,7 @@ namespace dmp1
         private void NacteniSkupin()
         {
             string[] skupiny = (string[])PraceSDB.ZavolejPrikaz("nacti_skupiny_uloh", true, Uzivatel.Id)[0][0];
-            seznamSkupin.NastavHodnoty(skupiny);
+            seznamSkupin.NastavHodnoty(skupiny.OrderBy(s => s));
         }
 
         private void Vo_kliklNaPrvekVSeznamu(string kliklyPrvek)
@@ -86,11 +86,11 @@ namespace dmp1
             {
                 if (seznamSkupin.Contains(ib.noveJmeno))
                 {
-                    MessageBox.Show("Skupina s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Skupina s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název skupiny nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název skupiny nesmí být prázdný!");
                 }
                 else
                 {
@@ -109,11 +109,11 @@ namespace dmp1
             {
                 if (seznamSkupin.Contains(ib.noveJmeno))
                 {
-                    MessageBox.Show("Skupina s tímto názvem již existuje!");
+                    LepsiMessageBox.Show("Skupina s tímto názvem již existuje!");
                 }
                 else if (string.IsNullOrWhiteSpace(ib.noveJmeno))
                 {
-                    MessageBox.Show("Název skupiny nesmí být prázdný!");
+                    LepsiMessageBox.Show("Název skupiny nesmí být prázdný!");
                 }
                 else
                 {
