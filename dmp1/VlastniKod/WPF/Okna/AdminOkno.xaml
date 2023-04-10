@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="AdminOkno" Height="450" Width="800">
+        Title="Menu administrátor" Height="576" Width="1024">
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -24,13 +24,14 @@
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            
-            <Button x:Name="btZaci" Grid.Column="1" Grid.Row="1" Click="btZaci_Click">Načtení žáků</Button>
-            <Button x:Name="btUcitele" Grid.Column="3" Grid.Row="1" Click="btUcitele_Click">Načtení učitelů</Button>
-            <Button x:Name="btUcty" Grid.Column="1" Grid.Row="3" Click="btUcty_Click">Správa účtů</Button>
-            <Button x:Name="btObchod" Grid.Column="3" Grid.Row="3" Click="btObchod_Click">Správa obchodu</Button>
-            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="5" Click="btHesloAdmin_Click">Změna hesla administrátora</Button>
-            <Button x:Name="tbUloziste" Grid.Column="3" Grid.Row="5" Click="tbUloziste_Click">Uložiště</Button>
+            <local:LepsiLabel Grid.ColumnSpan="5" Zarovnani="Center" TextKZobrazeni="Menu administrátora" Tucne="Black"></local:LepsiLabel>
+            <Button x:Name="btOdhlasit" Grid.Column="4" Grid.Row="0" Click="btOdhlasit_Click" Margin="20 30 20 30" FontSize="20">Odhlásit se</Button>
+            <Button x:Name="btZaci" Grid.Column="1" Grid.Row="1" Click="btZaci_Click" FontSize="20">Načtení žáků</Button>
+            <Button x:Name="btUcitele" Grid.Column="3" Grid.Row="1" Click="btUcitele_Click" FontSize="20">Načtení učitelů</Button>
+            <Button x:Name="btUcty" Grid.Column="1" Grid.Row="3" Click="btUcty_Click" FontSize="20">Správa účtů</Button>
+            <Button x:Name="btObchod" Grid.Column="3" Grid.Row="3" Click="btObchod_Click" FontSize="20">Správa obchodu</Button>
+            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="5" Click="btHesloAdmin_Click" FontSize="20">Změna hesla administrátora</Button>
+            <Button x:Name="tbUloziste" Grid.Column="3" Grid.Row="5" Click="tbUloziste_Click" FontSize="20">Uložiště</Button>
         </Grid>
     </Grid>
 </Window>

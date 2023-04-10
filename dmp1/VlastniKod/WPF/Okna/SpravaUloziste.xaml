@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="SpravaUloziste" Height="100" Width="600">
+        Title="Správa uložiště" Height="100" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"></RowDefinition>

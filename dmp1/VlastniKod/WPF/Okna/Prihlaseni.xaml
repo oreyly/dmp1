@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="MainWindow" Width="960" Height="540">
+        Title="Přihlášení" Width="960" Height="540">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -26,17 +26,24 @@
         <local:LepsiLabel TextKZobrazeni="Přihlašovací jméno:" Grid.Column="1" Grid.Row="1" Tucne="Bold" Zarovnani="Right"></local:LepsiLabel>
         <Border x:Name="bdrJmeno" Grid.Row="1" Grid.Column="3" BorderThickness="1" BorderBrush="Black" Background="Transparent" MouseDown="Viewbox_MouseDown" Cursor="IBeam">
             <Viewbox HorizontalAlignment="Left">
-                <TextBox x:Name="tbJmeno" TextWrapping="NoWrap" AcceptsReturn="False" BorderThickness="0" FontWeight="Bold" MaxLength="32" Text="pepek"/>
+                <TextBox x:Name="tbJmeno" TextWrapping="NoWrap" AcceptsReturn="False" BorderThickness="0" FontWeight="Bold" MaxLength="32" Text="pepek" PreviewKeyDown="tbJmeno_PreviewKeyDown"/>
             </Viewbox>
         </Border>
 
         <local:LepsiLabel TextKZobrazeni="Heslo:" Grid.Column="1" Grid.Row="3" Tucne="Bold" Zarovnani="Right"></local:LepsiLabel>
         <Border x:Name="bdrHeslo" Grid.Row="3" Grid.Column="3" BorderThickness="1" BorderBrush="Black" Background="Transparent" MouseDown="Viewbox_MouseDown" Cursor="IBeam">
             <Viewbox HorizontalAlignment="Left">
-                <PasswordBox x:Name="tbHeslo" BorderThickness="0" FontWeight="Bold" MaxLength="32" PasswordChar="∗"/>
+                <PasswordBox x:Name="tbHeslo" BorderThickness="0" FontWeight="Bold" MaxLength="32" PasswordChar="∗" PreviewKeyDown="tbHeslo_PreviewKeyDown"/>
             </Viewbox>
         </Border>
-        <Button Grid.Column="1" Grid.Row="5" Click="PrihlasSe" Grid.ColumnSpan="3">
+
+        <Button x:Name="btPrimePrihlaseni" Grid.Column="1" Grid.Row="5" Click="btPrimePrihlaseni_Click">
+            <Viewbox>
+                <Label></Label>
+            </Viewbox>
+        </Button>
+
+        <Button x:Name="btPrihlasit" Grid.Column="3" Grid.Row="5" Click="PrihlasSe">
             <Viewbox>
                 <Label>Přihlásit</Label>
             </Viewbox>

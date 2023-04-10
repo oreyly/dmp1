@@ -23,7 +23,7 @@ namespace dmp1
         public static readonly DependencyProperty VybranaUlohaProperty = DependencyProperty.Register(
         "VybranaUloha", typeof(Uloha),
         typeof(Nahled2),
-        new PropertyMetadata(OnCustomerChangedCallBack)
+        new PropertyMetadata(ZmenaVybraneUlohy)
         );
 
         public Uloha VybranaUloha
@@ -32,7 +32,7 @@ namespace dmp1
             set => SetValue(VybranaUlohaProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaVybraneUlohy(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             Nahled2 c = sender as Nahled2;
             if (c != null)

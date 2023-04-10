@@ -31,6 +31,7 @@ namespace dmp1
         {
             Rodic = rodic;
             Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
+            htsTypVysledku_Checked(null, null);
         }
 
         private void htsTypVysledku_Checked(object sender, RoutedEventArgs e)

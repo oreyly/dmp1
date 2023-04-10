@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="spravaSkupin" Height="450" Width="800">
+        Title="Správa skupin hráčů" Height="576" Width="1024">
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
@@ -45,10 +45,10 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Button x:Name="btSkupinaVytvorit" Grid.Row="1" Click="btSkupinaVytvorit_Click">Vytvoř Skupinu</Button>
-        <Button x:Name="btSkupinaPrejmenovat" Grid.Row="2" Click="btSkupinaPrejmenovat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenuj Skupinu</Button>
-        <Button x:Name="btSkupinaSmazat" Grid.Row="3" Click="btSkupinaSmazat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smaž Skupinu</Button>
-        <Button x:Name="btHracePridat" Grid.Row="1" Grid.Column="1" Click="btHracePridat_Click" IsVisibleChanged="btUlohyPridat_IsVisibleChanged" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" >Přidej Hráče</Button>
-        <Button x:Name="btHraceOdstranit" Grid.Row="2" Grid.Column="1" Click="btHraceOdstranit_Click" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvHraci, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstraň Hráče</Button>
+        <Button x:Name="btSkupinaVytvorit" Grid.Row="1" Click="btSkupinaVytvorit_Click">Vytvoř skupinu</Button>
+        <Button x:Name="btSkupinaPrejmenovat" Grid.Row="2" Click="btSkupinaPrejmenovat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenuj skupinu</Button>
+        <Button x:Name="btSkupinaSmazat" Grid.Row="3" Click="btSkupinaSmazat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smaž skupinu</Button>
+        <Button x:Name="btHracePridat" Grid.Row="1" Grid.Column="1" Click="btHracePridat_Click" IsVisibleChanged="btUlohyPridat_IsVisibleChanged" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" >Přidej hráče</Button>
+        <Button x:Name="btHraceOdstranit" Grid.Row="2" Grid.Column="1" Click="btHraceOdstranit_Click" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvHraci, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstraň hráče</Button>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="editorSkupinUloh" Height="450" Width="800"
+        Title="Správa skupin úloh" Height="576" Width="1024"
         >
     <Grid>
         <Grid.Resources>
@@ -35,6 +35,7 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
                     <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                    <EventSetter Event="PreviewKeyDown" Handler="ListViewItem_PreviewKeyDown"></EventSetter>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
@@ -43,15 +44,16 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource VybranaRadka}">
                     <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
+                    <EventSetter Event="PreviewKeyDown" Handler="ListViewItem_PreviewKeyDown_1"></EventSetter>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
         <!--<local:seznamSTlacitky x:Name="sstSkupiny" druhTlacitka="Smazat" KliklNaTlacitko="sstSkupiny_KliklNaPrvek" DoubleKliklNaPrvek="sstSkupiny_DoubleKliklNaPrvek" KliklNaPrvek="sstSkupiny_KliklNaPrvek_1" Zapnuto="True"></local:seznamSTlacitky>-->
         <!--<local:seznamSTlacitky x:Name="sstUlohy" Grid.Column="1" druhTlacitka="Smazat" Margin="0" Padding="0" KliklNaTlacitko="sstUlohy_KliklNaPrvek" Zapnuto="True"></local:seznamSTlacitky>-->
-        <Button x:Name="btSkupinaPridat" Grid.Row="1" Click="btSkupinaPridat_Click">Vytvoř Skupinu</Button>
-        <Button x:Name="btSkupinaPrejmenovat" Grid.Row="2" Click="btSkupinaPrejmenovat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenovat Skupinu</Button>
-        <Button x:Name="btSkupinaSmazat" Grid.Row="3" Click="btSkupinaSmazat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smazat Skupinu</Button>
-        <Button x:Name="btUlohyPridat" Grid.Row="1" Grid.Column="1" Click="btUlohyPridat_Click" IsVisibleChanged="btUlohyPridat_IsVisibleChanged" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}">Přidej Ulohy</Button>
-        <Button x:Name="btUlohySmazat" Grid.Row="2" Grid.Column="1" Click="btUlohySmazat_Click" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstranit Ulohy</Button>
+        <Button x:Name="btSkupinaPridat" Grid.Row="1" Click="btSkupinaPridat_Click">Vytvoř skupinu</Button>
+        <Button x:Name="btSkupinaPrejmenovat" Grid.Row="2" Click="btSkupinaPrejmenovat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Přejmenovat skupinu</Button>
+        <Button x:Name="btSkupinaSmazat" Grid.Row="3" Click="btSkupinaSmazat_Click" IsEnabled="{Binding ElementName=lvSkupiny, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Smazat skupinu</Button>
+        <Button x:Name="btUlohyPridat" Grid.Row="1" Grid.Column="1" Click="btUlohyPridat_Click" IsVisibleChanged="btUlohyPridat_IsVisibleChanged" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}">Přidej úlohy</Button>
+        <Button x:Name="btUlohySmazat" Grid.Row="2" Grid.Column="1" Click="btUlohySmazat_Click" Visibility="{Binding ElementName=btSkupinaPrejmenovat, Path=IsEnabled, Converter={StaticResource bool2vis}}" IsEnabled="{Binding ElementName=lvUlohy, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstranit úlohy</Button>
     </Grid>
 </Window>

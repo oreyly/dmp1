@@ -26,7 +26,6 @@ namespace dmp1
         {
             InitializeComponent();
             zahlavi = new Label[] { lbNazev, lbUlohy, lbAutor, lbVytvoreni, lbTermin };
-            this.Topmost = true;
             DataContext = this;
             rb1.IsChecked = true;
         }

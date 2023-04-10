@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 
@@ -22,7 +23,7 @@ namespace dmp1
                 Filter = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*"
             };
 
-            System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(PraceSDB).TypeHandle);
+            RuntimeHelpers.RunClassConstructor(typeof(PraceSDB).TypeHandle);
 
             //data = HlavniStatik.Otoc90(File.ReadAllLines("data.txt", Encoding.Default).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2], radek[4] }).ToArray());
             //data2 = HlavniStatik.Otoc90(File.ReadAllLines("data2.txt", Encoding.Default).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2] }).ToArray());
@@ -84,21 +85,24 @@ namespace dmp1
 
         private void btHesloAdmin_Click(object sender, RoutedEventArgs e)
         {
-            InputBox ib = new InputBox("", "Nové heslo");
+            InputBox ib = new InputBox("", "Nové heslo administrátora", true, 8);
 
             if (ib.ShowDialog() == true)
             {
                 byte[] noveHeslo = Encoding.UTF8.GetBytes(BCrypt.Net.BCrypt.EnhancedHashPassword(ib.noveJmeno));
 
                 PraceSDB.ZavolejPrikaz("zmen_admin_heslo", false, noveHeslo);
-
-                LepsiMessageBox.Show("Heslo změněno");
             }
         }
 
         private void tbUloziste_Click(object sender, RoutedEventArgs e)
         {
             new SpravaUloziste().ShowDialog();
+        }
+
+        private void btOdhlasit_Click(object sender, RoutedEventArgs e)
+        {
+            HlavniStatik.OdhlasitSe();
         }
     }
 }

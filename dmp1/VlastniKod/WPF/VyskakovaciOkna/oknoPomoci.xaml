@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="oknoPomoci" Height="150" Width="300"
+        Title="Nápověda" Height="150" Width="300"
         ResizeMode="NoResize"
         >
     <Grid>
@@ -45,6 +45,7 @@
                     </Style>
                 </Image.Resources>
             </Image>
+            
             <Image x:Name="imgPomoc3" Grid.Column="2" Source="{Binding Converter={StaticResource int2src}}" MouseLeftButtonUp="imgPomoc3_MouseLeftButtonUp">
                 <Image.Resources>
                     <Style TargetType="Image">

@@ -23,7 +23,7 @@ namespace dmp1
         public static readonly DependencyProperty ProduktKZobrazeniProperty = DependencyProperty.Register(
         "ProduktKZobrazeni", typeof(Produkt),
         typeof(OknoVObchode),
-        new PropertyMetadata(OnCustomerChangedCallBack)
+        new PropertyMetadata(ZmenaProduktu)
         );
 
         public Produkt ProduktKZobrazeni
@@ -32,7 +32,7 @@ namespace dmp1
             set => SetValue(ProduktKZobrazeniProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaProduktu(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             OknoVObchode c = sender as OknoVObchode;
             if (c != null)

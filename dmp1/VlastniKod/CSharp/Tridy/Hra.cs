@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
@@ -12,15 +11,6 @@ using System.Windows.Threading;
 
 namespace dmp1
 {
-    public enum DruhSpusteni {
-        [Description("Učení")]
-        Uceni=1,
-        [Description("Procvičování")]
-        Procvicovani,
-        Oboje,
-        Test,
-        Kontrola
-    }
 
     public delegate void ZmenaStavu(object sender, object stary, object novy);
     //Třída obsahující všechna potřebná data pro průběh jedné hry
@@ -43,7 +33,7 @@ namespace dmp1
 
         public DateTime CasKonce { get; set; }
 
-        public DruhSpusteni DruhSpusteni { get; set; } //V jakém módu může být hra spuštěna (učení, procvičování, oboje, test)
+        public DruhSpusteni DruhSpusteni { get; set; }
         public DruhSpusteni PuvodniDruhSpusteni { get; set; }
 
         private Uloha _aktualniUloha;
@@ -140,7 +130,7 @@ namespace dmp1
             PraceSDB.ZavolejPrikaz("konec_hry", false, Uzivatel.HerniId, celkemBodu);
             if(DruhSpusteni != DruhSpusteni.Uceni)
             {
-                LepsiMessageBox.Show("Konec!");
+                LepsiMessageBox.Show($"Konec{(DruhSpusteni == DruhSpusteni.Procvicovani ? $", získáno {BodyZiskal} bodů" : "")}!");
             }
         }
 

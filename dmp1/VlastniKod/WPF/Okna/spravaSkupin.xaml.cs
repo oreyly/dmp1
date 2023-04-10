@@ -40,20 +40,41 @@ namespace dmp1
             }
         }
 
+        vyhledavaciOknoHracu vo;
         private spravaSkupin()
         {
-            vo = new vyhledavaciOknoHracu();
-            vo.kliklNaPrvekVSeznamu += Vo_kliklNaPrvekVSeznamu;
+            vo = new vyhledavaciOknoHracu(seznamHracu);
+            vo.OdeslaniVybranychPrvku += Vo_OdeslaniVybranychPrvku;
             InitializeComponent();
             DataContext = this;
             NacteniSkupin();
+        }
+
+        private void Vo_OdeslaniVybranychPrvku(string[] Prvky)
+        {
+            if (vo.HraciVHledacku)
+            {
+                foreach(string prvek in Prvky)
+                {
+                    PraceSDB.ZavolejPrikaz("pridej_hrace", false, prvek.ZiskejZavorku(), vybranaSkupina, Uzivatel.Id);
+                }
+                NacteniHracu();
+            }
+            else
+            {
+                foreach (string prvek in Prvky)
+                {
+                    PraceSDB.ZavolejPrikaz("pridej_celou_skupinu", false, prvek, vybranaSkupina, Uzivatel.Id);
+                }
+                NacteniHracu();
+            }
         }
 
         private Window Rodic;
         public spravaSkupin(Window rodic) : this()
         {
             Rodic = rodic;
-            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
+            Closed += delegate (object sender, EventArgs e) { vo.Close(); Rodic.Show(); };
         }
 
         private void NacteniSkupin()
@@ -67,21 +88,6 @@ namespace dmp1
             seznamHracu.NastavHodnoty(ucty);
         }
 
-        vyhledavaciOknoHracu vo;
-
-        private void Vo_kliklNaPrvekVSeznamu(string kliklyPrvek)
-        {
-            if(vo.HraciVHledacku)
-            {
-                PraceSDB.ZavolejPrikaz("pridej_hrace", false, kliklyPrvek.ZiskejZavorku(), vybranaSkupina, Uzivatel.Id);
-                NacteniHracu();
-            }
-            else
-            {
-                PraceSDB.ZavolejPrikaz("pridej_celou_skupinu", false, kliklyPrvek, vybranaSkupina, Uzivatel.Id);
-                NacteniHracu();
-            }
-        }
 
         private void btSkupinaVytvorit_Click(object sender, RoutedEventArgs e)
         {
@@ -135,7 +141,7 @@ namespace dmp1
 
         private void btSkupinaSmazat_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show($"Opravdu si přejete odstranit skupinu '{vybranaSkupina}'?", "Odstranění skupiny", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (LepsiMessageBox.Show($"Opravdu si přejete odstranit skupinu '{vybranaSkupina}'?", DruhTlacitekLMB.AnoNe) == MessageBoxResult.Yes)
             {
                 PraceSDB.ZavolejPrikaz("odstran_skupinu", false, Uzivatel.Id, vybranaSkupina);
                 NacteniSkupin();

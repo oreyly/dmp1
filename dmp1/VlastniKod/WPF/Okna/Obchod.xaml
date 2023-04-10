@@ -7,7 +7,7 @@
         xmlns:import1="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         mc:Ignorable="d"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Obchod" Height="450" Width="800"
+        Title="Obchod" Height="576" Width="1024"
         >
     <Window.Resources>
         <ResourceDictionary>
@@ -19,12 +19,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Viewbox>
+        <local:LepsiLabel Grid.Row="0" Zarovnani="Center" TextKZobrazeni="Obchod" Tucne="Black"></local:LepsiLabel>
+        <local:ProfilovyPrvek></local:ProfilovyPrvek>
+        <Viewbox Grid.Row="1">
             <import1:HorizontalToggleSwitch x:Name="htsTypVysledku" CheckedContent="Pozadí" CheckedBackground="White" CheckedForeground="Black" UncheckedContent=" Profilové obrázky " UncheckedBackground="White" UncheckedForeground="Black" IsChecked="False" Checked="htsTypVysledku_Checked" Unchecked="htsTypVysledku_Checked"></import1:HorizontalToggleSwitch>
         </Viewbox>
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" CornerRadius="20" Margin="5 5 5 5">
+        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="2" CornerRadius="20" Margin="5 5 5 5">
             <ScrollViewer Margin="5 5 10 5">
                 <ScrollViewer.Resources>
                     <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource KulatyTmavyScrollBar}"></Style>

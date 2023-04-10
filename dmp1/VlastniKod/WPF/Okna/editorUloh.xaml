@@ -7,118 +7,273 @@
         xmlns:import1="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="editorUloh" Height="450" Width="800"
+        Title="Editor úloh" Height="576" Width="1024"
         Closing="Window_Closing"
         >
     <Window.Resources>
-        <local:BoolToVisibilityConverter x:Key="Bool2Vis" TrueValue="Visible" FalseValue="Collapsed"></local:BoolToVisibilityConverter>
-        <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
-        <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
-        <local:NullToBool x:Key="Null2Bool"></local:NullToBool>
-        <local:FuncToNcalc x:Key="Fun2NCalc"></local:FuncToNcalc>
-        <local:URLToStr x:Key="url2str"></local:URLToStr>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VlastniKod/Styly/StylVybranyRadekListView.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/VlastniKod/Styly/StylTextBox.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <local:BoolToVisibilityConverter x:Key="Bool2Vis" TrueValue="Visible" FalseValue="Collapsed"></local:BoolToVisibilityConverter>
+            <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
+            <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
+            <local:NullToBool x:Key="Null2Bool"></local:NullToBool>
+            <local:FuncToNcalc x:Key="Fun2NCalc"></local:FuncToNcalc>
+            <local:URLToStr x:Key="url2str"></local:URLToStr>
+            <local:DeleniHodnoty x:Key="deleniHodnot"></local:DeleniHodnoty>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60*"></RowDefinition>
-            <RowDefinition Height="30*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-        </Grid>
-        <Grid Grid.Row="0">
+
+        <local:LepsiLabel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Zarovnani="Center" TextKZobrazeni="Editor úloh" Tucne="Black"></local:LepsiLabel>
+
+        <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="9*"></ColumnDefinition>
-                <ColumnDefinition Width="9*"></ColumnDefinition>
-                <ColumnDefinition Width="9*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:LepsiLabel Grid.Row="0" TextKZobrazeni="Název úlohy" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <TextBox Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding Nazev, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <Grid Grid.Column="2" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <local:lepsiComboBox Visibility="Collapsed" x:Name="lcbxKategorie" PrazdnyText="Vyber kategorii" VybranyItem="{Binding Kategorie, Mode=TwoWay}"></local:lepsiComboBox>
-                <Button Visibility="Collapsed" Grid.Column="1" Click="Button_Click">Sprava kategorií</Button>
-            </Grid>
-            <local:LepsiLabel Grid.Row="1" TextKZobrazeni="Kategorie" Grid.ColumnSpan="2" Visibility="Collapsed"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Row="4" TextKZobrazeni="Počet bodů&#x0a;za správnou odpověď" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}" Minimum="0"></toolkit:IntegerUpDown>
 
-            <local:LepsiLabel Grid.Row="2" TextKZobrazeni="Typ úlohy" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <Viewbox Grid.Column="2" Grid.Row="2">
-                <import1:HorizontalToggleSwitch x:Name="htsTypVysledku" Checked="htsTypVysledku_CheckChanged" Unchecked="htsTypVysledku_CheckChanged" CheckedContent="Otevřené" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="ABCD" UncheckedBackground="White" UncheckedForeground="Black" IsChecked="{Binding OtevrenyVysledek}"></import1:HorizontalToggleSwitch>
+            <local:LepsiLabel x:Name="llNazev" Grid.Row="0" TextKZobrazeni="Název úlohy:"></local:LepsiLabel>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Nazev, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource stylVelikostTextu}" Height="{Binding ElementName=llNazev, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='1,75'}"></TextBox>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Zadání:"></local:LepsiLabel>
+            <TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Popis, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tb3Radky}" AcceptsReturn="True"></TextBox>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="3" TextKZobrazeni="Nápověda:"></local:LepsiLabel>
+            <TextBox Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Napoveda, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tb3Radky}" AcceptsReturn="True"></TextBox>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="4" TextKZobrazeni="Počet bodů:" Grid.ColumnSpan="2"></local:LepsiLabel>
+            <toolkit:IntegerUpDown Grid.Column="1" Grid.Row="4" Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Style="{StaticResource stylVelikostTextu}" Height="{Binding ElementName=llNazev, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='1,75'}"></toolkit:IntegerUpDown>
+
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="5" TextKZobrazeni="Obrázek:" Zarovnani="Left" Height="{Binding ElementName=brNahled, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='2'}"></local:LepsiLabel>
+            <Border Grid.Column="1" Grid.Row="5" x:Name="brNahled" BorderBrush="Black" BorderThickness="1" MouseUp="imgNahled_MouseUp" Background="Transparent" Margin="1">
+                <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource url2str}}"></Image>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="10 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <local:LepsiLabel Grid.Row="0" TextKZobrazeni="Typ úlohy" Zarovnani="Center"></local:LepsiLabel>
+            <Viewbox Grid.Row="1">
+                <import1:HorizontalToggleSwitch IsChecked="{Binding OtevrenyVysledek}" x:Name="htsTypVysledku" Checked="htsTypVysledku_CheckChanged" Unchecked="htsTypVysledku_CheckChanged" CheckedContent="Otevřená" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="ABCD" UncheckedBackground="White" UncheckedForeground="Black"></import1:HorizontalToggleSwitch>
             </Viewbox>
-            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Zadání" Grid.ColumnSpan="2"></local:LepsiLabel>
-            <local:LepsiLabel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" TextKZobrazeni="Nápověda"></local:LepsiLabel>
+            
+            <Grid x:Name="grOdpovedi" Grid.Row="2">
+                <Grid x:Name="grABCD">
+                    <Grid.Resources>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ABCDMoznosti}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
 
-            <TextBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Popis, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Text="{Binding Napoveda, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <Grid x:Name="grOdpovedi" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="3" Grid.RowSpan="1">
-                <Grid x:Name="grABCD" Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=ABCDMoznosti}">
+                        <Style x:Key="rbABCD" TargetType="RadioButton">
+                            <Setter Property="BorderBrush" Value="Black"></Setter>
+                            <Setter Property="BorderThickness" Value="1"></Setter>
+                            <Setter Property="Cursor" Value="Hand"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="BorderThickness" Value="5"></Setter>
+                                    <Setter Property="Cursor" Value="Arrow"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <Style x:Key="tbABCD" TargetType="TextBox">
+                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="FontSize" Value="15"></Setter>
+                            <Setter Property="BorderThickness" Value="0"></Setter>
+                            <Setter Property="MinHeight" Value="20"></Setter>
+                            <Setter Property="MinWidth" Value="40"></Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="20*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
+                        <RowDefinition Height="20*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
                     </Grid.RowDefinitions>
+                    
+                    <RadioButton x:Name="rbA" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="1" Grid.Row="1" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
+                        <RadioButton.Resources>
+                            <Style TargetType="RadioButton" BasedOn="{StaticResource rbABCD}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                                                <TextBox Text="{Binding CastiVysledku4[0]}" Style="{StaticResource tbABCD}"></TextBox>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Resources>
+                    </RadioButton>
+                    <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" FontSize="20">
+                        <TextBlock.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Normal"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=rbA, Path=IsChecked}" Value="True">
+                                        <Setter Property="FontWeight" Value="Black"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Resources>
+                        A</TextBlock>
+                    
+                    <RadioButton x:Name="rbB" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="3" Grid.Row="1" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
+                        <RadioButton.Resources>
+                            <Style TargetType="RadioButton" BasedOn="{StaticResource rbABCD}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                                                <TextBox Text="{Binding CastiVysledku4[1]}" Style="{StaticResource tbABCD}"></TextBox>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Resources>
+                    </RadioButton>
+                    <TextBlock Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" FontSize="20">
+                        <TextBlock.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Normal"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=rbB, Path=IsChecked}" Value="True">
+                                        <Setter Property="FontWeight" Value="Black"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Resources>
+                        B</TextBlock>
+                    
+                    <RadioButton x:Name="rbC" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="1" Grid.Row="4" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
+                        <RadioButton.Resources>
+                            <Style TargetType="RadioButton" BasedOn="{StaticResource rbABCD}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                                                <TextBox Text="{Binding CastiVysledku4[2]}" Style="{StaticResource tbABCD}"></TextBox>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Resources>
+                    </RadioButton>
+                    <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" FontSize="20">
+                        <TextBlock.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Normal"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=rbC, Path=IsChecked}" Value="True">
+                                        <Setter Property="FontWeight" Value="Black"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Resources>
+                        C</TextBlock>
+                    
+                    <RadioButton x:Name="rbD" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="3" Grid.Row="4" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
+                        <RadioButton.Resources>
+                            <Style TargetType="RadioButton" BasedOn="{StaticResource rbABCD}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                                                <TextBox Text="{Binding CastiVysledku4[3]}" Style="{StaticResource tbABCD}"></TextBox>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Resources>
+                    </RadioButton>
+                    <TextBlock Grid.Column="3" Grid.Row="5" HorizontalAlignment="Center" FontSize="20">
+                        <TextBlock.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Normal"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=rbD, Path=IsChecked}" Value="True">
+                                        <Setter Property="FontWeight" Value="Black"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Resources>
+                        D</TextBlock>
+                </Grid>
+                <Grid x:Name="grOtevrene">
                     <Grid.Resources>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ABCDMoznosti}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
                         <Style x:Key="stlRBTB" TargetType="TextBox">
                             <Setter Property="BorderThickness" Value="0"></Setter>
                             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=RadioButton, Mode=FindAncestor}, Path=Background}"></Setter>
                         </Style>
                     </Grid.Resources>
-                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="0" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
-                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[0]}"></TextBox>
-                    </RadioButton>
-                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">A</TextBlock>
-                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="1" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
-                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[1]}"></TextBox>
-                    </RadioButton>
-                    <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">B</TextBlock>
-                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="2" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
-                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[2]}"></TextBox>
-                    </RadioButton>
-                    <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">C</TextBlock>
-                    <RadioButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" Grid.Column="3" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="{Binding Path=SpravnyVysledek, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
-                        <TextBox Style="{StaticResource stlRBTB}" Text="{Binding CastiVysledku4[3]}"></TextBox>
-                    </RadioButton>
-                    <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">D</TextBlock>
-                </Grid>
-                <Grid x:Name="grOtevrene" Visibility="{Binding Converter={StaticResource Bool2Vis}, Path=ABCDMoznosti}" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25*"></RowDefinition>
                         <RowDefinition Height="75*"></RowDefinition>
                         <RowDefinition Height="25*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Grid>
+                    <Grid Margin="10 0 0 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40*"></ColumnDefinition>
                             <ColumnDefinition Width="40*"></ColumnDefinition>
                             <ColumnDefinition Width="10*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Otázka" FontWeight="Bold"></TextBlock>
-                        <TextBlock Grid.Column="1" Text="Odpověď" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Column="0" Text="Otázka" FontWeight="Bold" VerticalAlignment="Bottom" FontSize="20"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="Odpověď" FontWeight="Bold" VerticalAlignment="Bottom" FontSize="20"></TextBlock>
                     </Grid>
                     <ListView Grid.Row="1" x:Name="lvOtevreneUlohy" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:editorUloh, Mode=FindAncestor}, Path=DataContext}" ItemsSource="{Binding otevreneVysledky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.Resources>
@@ -128,15 +283,15 @@
                         </ListView.Resources>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid x:Name="grRadek">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40*"></ColumnDefinition>
-                                        <ColumnDefinition Width="40*"></ColumnDefinition>
-                                        <ColumnDefinition Width="10*"></ColumnDefinition>
+                                        <ColumnDefinition Width="{Binding ElementName=grRadek, Path=ActualWidth, Converter={StaticResource deleniHodnot}, ConverterParameter='2,25'}"></ColumnDefinition>
+                                        <ColumnDefinition Width="{Binding ElementName=grRadek, Path=ActualWidth, Converter={StaticResource deleniHodnot}, ConverterParameter='2,25'}"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Text="{Binding Klic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <TextBox Grid.Column="1" Text="{Binding Hodnota, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <Button Grid.Column="2" Background="Red" x:Name="btOdstranit" Click="btOdstranit_Click">X</Button>
+                                    <TextBox Grid.Column="0" Text="{Binding Klic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20"></TextBox>
+                                    <TextBox Grid.Column="1" Text="{Binding Hodnota, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="20"></TextBox>
+                                    <Button Grid.Column="2" Background="Red" x:Name="btOdstranit" Click="btOdstranit_Click" FontSize="20">X</Button>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -145,29 +300,18 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:LepsiLabel TextKZobrazeni="Obrázek:" VerticalAlignment="Center"></local:LepsiLabel>
-            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" MouseUp="imgNahled_MouseUp" Background="Transparent">
-                <Image x:Name="imgNahled" Source="{Binding Path=Obrazek, Converter={StaticResource url2str}}"></Image>
-            </Border>
-            <!--<Viewbox Grid.Column="1">
-                <import1:HorizontalToggleSwitch x:Name="htsObr" IsChecked="{Binding obsahujeObrazek}" CheckedContent="Vlastní obrázek" CheckedBackground="White" CheckedForeground="Black" UncheckedContent="Auto" UncheckedBackground="White" UncheckedForeground="Black"></import1:HorizontalToggleSwitch>
-            </Viewbox>-->
-            <!--<Grid Grid.Column="2" Visibility="{Binding ElementName=htsObr, Path=IsChecked, Converter={StaticResource invBool2Vis}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="75*"></RowDefinition>
-                    <RowDefinition Height="25*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <local:Grafik Okno="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" Predpis="{Binding Predpis}"></local:Grafik>
-                <TextBox Grid.Row="2" Text="{Binding Predpis, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            </Grid>-->
-            <Button Grid.Column="3" Click="btUlozitUlohu_Click">Uložit</Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="1" Grid.Row="1" FontSize="20" Click="btUlozitUlohu_Click">Uložit</Button>
         </Grid>
     </Grid>
 </Window>

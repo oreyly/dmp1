@@ -51,5 +51,10 @@ namespace dmp1
         {
             LepsiMessageBox.Show("Žáci úspěšně nahráni!");
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
+        }
     }
 }

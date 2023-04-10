@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="VyberHryKeSpusteni" Height="450" Width="800"
+        Title="Výber hry ke spuštení" Height="576" Width="1024"
         IsVisibleChanged="Window_IsVisibleChanged"
         >
     <Grid>
@@ -51,7 +51,7 @@
                 <Label x:Name="lbTermin" Content="Termín" FontWeight="Bold" MouseUp="lbTermin_MouseUp"></Label>
             </Viewbox>
         </Grid>
-        <ListView Grid.Row="3" ItemsSource="{Binding seznamHer}" Margin="2" Padding="0" BorderThickness="1" BorderBrush="Black">
+        <ListView Grid.Row="3" ItemsSource="{Binding seznamHer}" Padding="0">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

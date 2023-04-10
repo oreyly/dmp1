@@ -42,7 +42,7 @@ namespace dmp1
                     return;
                 }
 
-                string[] data = value.Split(new string[] { "$$$" }, StringSplitOptions.None);
+                string[] data = value.RozdelDolary();
                 if (OtevrenyVysledek = data[0] == "O")
                 {
                     List<Par<string, string>> datka = new List<Par<string, string>>();
@@ -86,7 +86,7 @@ namespace dmp1
             set
             {
                 _ObrazekPredpis = value;
-                string[] data = value.Split(new string[] { "$$$" }, StringSplitOptions.None);
+                string[] data = value.RozdelDolary();
                 if (data[0] == "URL")
                 {
                     obsahujeObrazek = true;
@@ -99,10 +99,6 @@ namespace dmp1
                 }
                 else
                 {
-                    if (hra != null)
-                    {
-                        Obrazek = HlavniStatik.Dira;
-                    }
                     obsahujeObrazek = true;
                 }
             }
@@ -246,7 +242,7 @@ namespace dmp1
 
             if (OtevrenyVysledek)
             {
-                string[] data = vysledekOdpoved.Split(new string[] { "$$$" }, StringSplitOptions.None);
+                string[] data = vysledekOdpoved.RozdelDolary();
                 List<Par<string, Par<string, string>>> datka = new List<Par<string, Par<string, string>>>();
                 for (int i = 0; i < data.Length; ++i)
                 {
@@ -361,13 +357,13 @@ namespace dmp1
                 return false;
             }
 
-            if (Nazev != Zaklad.Nazev && (bool)PraceSDB.ZavolejPrikaz("existuje_nazev_ulohy", true, Uzivatel.Id, Nazev)[0][0])
+            if ((Zaklad is null || Nazev != Zaklad.Nazev) && (bool)PraceSDB.ZavolejPrikaz("existuje_nazev_ulohy", true, Uzivatel.Id, Nazev)[0][0])
             {
                 LepsiMessageBox.Show("Úloha nelze uložit! - Nadpis je již využíván");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(Popis))
+            if (string.IsNullOrWhiteSpace(Popis) && Obrazek is null)
             {
                 LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný popis");
                 return false;
@@ -382,13 +378,13 @@ namespace dmp1
             string obrPredpis;
             if (obsahujeObrazek)
             {
-                if (string.IsNullOrWhiteSpace(Obrazek))
+                if (string.IsNullOrWhiteSpace(Obrazek?.Soubor))
                 {
                     obrPredpis = "N";
                 }
                 else
                 {
-                    obrPredpis = "URL$$$" + Obrazek; 
+                    obrPredpis = "URL$$$" + Obrazek.Soubor; 
                 }
             }
             else

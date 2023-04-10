@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Pojmenování skupiny" Height="150" Width="300"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         >
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +24,8 @@
             <RowDefinition Height="30*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbNazev" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Text="{Binding noveJmeno, Mode=TwoWay}"></TextBox>
+        <TextBox x:Name="tbNazev" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Text="{Binding noveJmeno, Mode=TwoWay}" PreviewKeyDown="Nazev_PreviewKeyDown"></TextBox>
+        <PasswordBox x:Name="pbNazev" Visibility="Collapsed" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" PasswordChar="*" PreviewKeyDown="Nazev_PreviewKeyDown"></PasswordBox>
         <Button x:Name="btUlozit" Grid.Row="3" Grid.Column="3" Click="btUlozit_Click">Uložit</Button>
         <Button x:Name="btZrusit" Grid.Row="3" Grid.Column="1" Click="btZrusit_Click">Zrušit</Button>
     </Grid>

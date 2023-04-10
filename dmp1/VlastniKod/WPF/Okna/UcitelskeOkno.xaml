@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="UcitelskeOkno" Height="600" Width="1000">
+        Title="Menu učitele" Height="576" Width="1024">
     <Window.Resources>
         <local:URLToStr x:Key="url2str"></local:URLToStr>
     </Window.Resources>
@@ -31,14 +31,14 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <local:LepsiLabel Grid.Column="2" Grid.Row="1" TextKZobrazeni="Menu učitele" Tucne="Bold"></local:LepsiLabel>
+        <local:LepsiLabel Grid.Column="2" Grid.Row="1" TextKZobrazeni="Menu učitele" Tucne="Black" FontSize="20"></local:LepsiLabel>
 
-        <local:ProfilovyPrvek Grid.Column="4" Grid.ColumnSpan="1"></local:ProfilovyPrvek>
+        <local:ProfilovyPrvek Grid.ColumnSpan="5" HorizontalAlignment="Right"></local:ProfilovyPrvek>
 
-        <Button x:Name="btEditorUloh" Grid.Column="1" Grid.Row="3" Click="btEditorUloh_Click" >Editor úloh</Button>
-        <Button x:Name="btSpravaSkupinUloh" Grid.Column="3" Grid.Row="3" Click="btSpravaSkupinUloh_Click">Správa skupin úloh</Button>
-        <Button x:Name="btSpravaSkupinHracu" Grid.Column="1" Grid.Row="5" Click="btSpravaSkupinHracu_Click">Správa skupin hráčů</Button>
-        <Button x:Name="btTvorbaHer" Grid.Column="3" Grid.Row="5" Click="btTvorbaHer_Click">Tvorba her</Button>
-        <Button x:Name="btVysledky" Grid.Column="2" Grid.Row="7" Click="btVysledky_Click">Výsledky žáků</Button>
+        <Button x:Name="btEditorUloh" Grid.Column="1" Grid.Row="3" Click="btEditorUloh_Click" FontSize="20">Správa úloh</Button>
+        <Button x:Name="btSpravaSkupinUloh" Grid.Column="3" Grid.Row="3" Click="btSpravaSkupinUloh_Click" FontSize="20">Správa skupin úloh</Button>
+        <Button x:Name="btSpravaSkupinHracu" Grid.Column="1" Grid.Row="5" Click="btSpravaSkupinHracu_Click" FontSize="20">Správa skupin žáků</Button>
+        <Button x:Name="btTvorbaHer" Grid.Column="3" Grid.Row="5" Click="btTvorbaHer_Click" FontSize="20">Tvorba her</Button>
+        <Button x:Name="btVysledky" Grid.Column="2" Grid.Row="7" Click="btVysledky_Click" FontSize="20">Výsledky hráčů</Button>
     </Grid>
 </Window>

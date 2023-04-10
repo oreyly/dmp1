@@ -45,7 +45,14 @@ namespace dmp1
 
         private void NacteniUloh(string kategorie)
         {
-            seznamUloh.NastavHodnoty(((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_ulohy_kategorie", true, Uzivatel.Id, kategorie)[0][0]).Select(u => new Par<string, int>(u.Key, Convert.ToInt32(u.Value))));
+            if(PraceSDB.ZavolejPrikaz("nacti_ulohy_kategorie", true, Uzivatel.Id, kategorie)[0][0] is Dictionary<string, string> ulohy)
+            {
+                seznamUloh.NastavHodnoty(ulohy.Select(u => new Par<string, int>(u.Key, Convert.ToInt32(u.Value))));
+            }
+            else
+            {
+                seznamUloh.Clear();
+            }
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -131,7 +138,7 @@ namespace dmp1
                 return;
             }
 
-            if (MessageBox.Show($"Opravdu si přejete odstranit kategorii '{kategorie.Klic}'?", "Odstranění kategorie", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (LepsiMessageBox.Show($"Opravdu si přejete odstranit kategorii '{kategorie.Klic}'?", DruhTlacitekLMB.AnoNe) != MessageBoxResult.Yes)
             {
                 return;
             }
@@ -160,7 +167,7 @@ namespace dmp1
         private void btOdstranitUlohu_Click(object sender, RoutedEventArgs e)
         {
             Par<string, int> uloha = (Par<string, int>)lvUlohy.SelectedItem;
-            if (MessageBox.Show($"Opravdu si přejetě odstranit úlohu '{uloha.Klic}'?", "Změna úlohy", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (LepsiMessageBox.Show($"Opravdu si přejetě odstranit úlohu '{uloha.Klic}'?", DruhTlacitekLMB.AnoNe) == MessageBoxResult.Yes)
             {
                 PraceSDB.ZavolejPrikaz("odstran_ulohu", false, uloha.Hodnota);
 
@@ -195,6 +202,22 @@ namespace dmp1
             {
                 ((ListViewItem)sender).IsSelected = true;
                 DragDrop.DoDragDrop(lvUlohy, lvUlohy.SelectedItem, DragDropEffects.All);
+            }
+        }
+
+        private void ListViewItem_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                btOdstranitUlohu_Click(null, null);
+            }
+        }
+
+        private void ListViewItem_PreviewKeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                btSmazatKategorii_Click(null, null);
             }
         }
     }

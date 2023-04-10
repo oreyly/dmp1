@@ -136,7 +136,7 @@ namespace dmp1
                     return false;
                 }
 
-                PraceSDB.ZavolejPrikaz(druhProduktu == DruhProduktu.ProfilovaFotka ? "uloz_avatar" : "uloz_tema", true, Id, Nazev, URL, Cena);
+                PraceSDB.ZavolejPrikaz(druhProduktu == DruhProduktu.ProfilovaFotka ? "uloz_avatar" : "uloz_tema", true, Id, Nazev, URL.Soubor, Cena);
                 PuvodniNazev = Nazev;
                 PuvodniURL = URL;
                 PuvodniCena = Cena;

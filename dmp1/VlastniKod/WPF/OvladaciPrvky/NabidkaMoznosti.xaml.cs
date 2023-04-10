@@ -43,10 +43,10 @@ namespace dmp1
         public static readonly DependencyProperty VysledkyProperty = DependencyProperty.Register(
             "Vysledky", typeof(string),
             typeof(NabidkaMoznosti),
-            new PropertyMetadata(OnCustomerChangedCallBack)
+            new PropertyMetadata(ZmenaVysledku)
             );
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaVysledku(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             NabidkaMoznosti c = sender as NabidkaMoznosti;
             if (c != null)
@@ -57,7 +57,7 @@ namespace dmp1
 
         protected virtual void OnCustomerChanged()
         {
-            string[] data = ((string)GetValue(VysledkyProperty)).Split(new string[] { "$$$" }, StringSplitOptions.None);
+            string[] data = ((string)GetValue(VysledkyProperty)).RozdelDolary();
             if (data[0] != "M")
             {
                 throw new Exception("Výsledek není ve formátu pro výběr 4 možností");

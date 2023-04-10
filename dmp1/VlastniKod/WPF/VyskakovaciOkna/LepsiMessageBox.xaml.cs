@@ -33,6 +33,8 @@ namespace dmp1
         private LepsiMessageBox()
         {
             InitializeComponent();
+
+            btOk.Focus();
         }
 
         private LepsiMessageBox(string text, DruhTlacitekLMB dtl) : this()

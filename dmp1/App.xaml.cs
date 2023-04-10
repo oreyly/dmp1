@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PostSharp.Aspects.Advices;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,17 @@ namespace dmp1
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Exit += App_Exit;
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Uzivatel.Jmeno))
+            {
+                PraceSDB.ZavolejPrikaz("odhlasit", false, Uzivatel.Jmeno.ZiskejZavorku());
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace dmp1
         public static readonly DependencyProperty VybranyItemProperty = DependencyProperty.Register(
         "VybranyItem", typeof(object),
         typeof(lepsiComboBox),
-        new PropertyMetadata(OnCustomerChangedCallBack)
+        new PropertyMetadata(ZmenaVybranehoItemu)
         );
 
         public object VybranyItem
@@ -35,7 +35,7 @@ namespace dmp1
             set => SetValue(VybranyItemProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaVybranehoItemu(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             lepsiComboBox c = sender as lepsiComboBox;
             if (c != null)

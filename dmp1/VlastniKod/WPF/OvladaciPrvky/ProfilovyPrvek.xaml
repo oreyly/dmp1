@@ -6,26 +6,27 @@
             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:dmp1"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="200"
+             d:DesignHeight="50" d:DesignWidth="250"
              SizeChanged="UserControl_SizeChanged"
-             Margin="0 0 0 0"
+             Height="57"
              BorderBrush="Black"
+             Grid.Row="0"
+             Grid.Column="0"
+             Grid.RowSpan="1000"
+             Grid.ColumnSpan="1000"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Right"
              >
-    <StackPanel x:Name="spPanel">
+    <StackPanel x:Name="spPanel" Margin="0 5 5 0">
         <ToggleButton x:Name="tgbHlavni" Padding="0">
-            <Grid Width="{Binding ElementName=tgbHlavni, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType=local:ProfilovyPrvek, Mode=FindAncestor}, Path=ActualHeight}">
+            <Grid x:Name="grHlavni" Height="50">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                </Grid.RowDefinitions>
                 <!--<Button Content="{Binding Path=(local:Uzivatel.Jmeno), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Button>-->
-                <local:LepsiLabel x:Name="llJmeno" Tucne="Bold"></local:LepsiLabel>
-                <local:LepsiLabel x:Name="llZkratka" Grid.Row="1" Tucne="Bold"></local:LepsiLabel>
-                <local:ObrazekVKrouzku Grid.Column="1" x:Name="imgMaly" Grid.RowSpan="2" Zdroj="{Binding Path=(local:Uzivatel.ObrazekProfil), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></local:ObrazekVKrouzku>
+                <Label x:Name="llJmeno" FontWeight="Bold" FontSize="15" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                <local:ObrazekVKrouzku Grid.Column="1" x:Name="imgMaly" Grid.RowSpan="2" Height="{Binding ElementName=grHlavni, Path=ActualHeight}" Width="{Binding ElementName=grHlavni, Path=ActualHeight}" Zdroj="{Binding Path=(local:Uzivatel.ObrazekProfil), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></local:ObrazekVKrouzku>
             </Grid>
         </ToggleButton>
         <Popup x:Name="ppNabidka" Placement="Bottom" PlacementTarget="{Binding ElementName=tgbHlavni}" Width="{Binding ElementName=tgbHlavni, Path=ActualWidth}" StaysOpen="False" IsOpen="{Binding ElementName=tgbHlavni, Path=IsChecked}" VerticalOffset="-5">
@@ -35,17 +36,17 @@
                         <RowDefinition Height="1*"></RowDefinition>
                         <RowDefinition Height="1*"></RowDefinition>
                         <RowDefinition Height="1*"></RowDefinition>
-                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <local:ObrazekVKrouzku Zdroj="{Binding Path=(local:Uzivatel.ObrazekProfil), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseUp="Image_MouseUp" Cursor="Hand"></local:ObrazekVKrouzku>
+                    <local:ObrazekVKrouzku x:Name="obrVelky" Zdroj="{Binding Path=(local:Uzivatel.ObrazekProfil), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseUp="Image_MouseUp"></local:ObrazekVKrouzku>
                     <local:LepsiLabel Grid.Row="1" TextKZobrazeni="{Binding Source={x:Static local:Uzivatel.Jmeno}}"></local:LepsiLabel>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Label Content="{Binding Source={x:Static local:Uzivatel.Body}}" Grid.Column="0" HorizontalContentAlignment="Right"></Label>
-                        <Label Content="Bodů" Grid.Column="1"></Label>
+                        <Label x:Name="lbBodyPocet" Content="{Binding Source={x:Static local:Uzivatel.Body}}" Grid.Column="0" HorizontalContentAlignment="Right"></Label>
+                        <Label x:Name="lbBodySlovo" Content="Bodů" Grid.Column="1"></Label>
                     </Grid>
                     <Button Grid.Row="3" Click="Button_Click">Odhlásit se</Button>
                 </Grid>

@@ -7,7 +7,7 @@
         xmlns:import1="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="EditorObchodu" Height="450" Width="800">
+        Title="Editor obchodu" Height="576" Width="1024">
     <Grid>
         
         <Grid.Resources>
@@ -29,8 +29,8 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*"></RowDefinition>
-            <RowDefinition Height="82*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="59*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>

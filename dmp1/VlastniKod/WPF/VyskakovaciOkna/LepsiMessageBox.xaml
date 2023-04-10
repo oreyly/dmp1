@@ -10,6 +10,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
+        WindowStartupLocation="CenterScreen"
         >
     <Border BorderBrush="Black" BorderThickness="2" CornerRadius="20" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White">
         <Grid>

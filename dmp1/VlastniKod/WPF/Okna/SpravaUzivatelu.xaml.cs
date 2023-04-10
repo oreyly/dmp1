@@ -101,5 +101,17 @@ namespace dmp1
             e.Handled = true;
         }
 
+        private void btOdhlasit_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)PraceSDB.ZavolejPrikaz("zkus_odhlasit", true, Uzivatel.Jmeno.ZiskejZavorku())[0][0])
+            {
+                LepsiMessageBox.Show("Uživatel odhlášen!");
+                return;
+            }
+            else
+            {
+                LepsiMessageBox.Show("Uživatel není přihlášen!");
+            }
+        }
     }
 }

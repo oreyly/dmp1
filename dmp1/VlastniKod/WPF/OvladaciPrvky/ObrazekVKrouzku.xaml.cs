@@ -23,7 +23,7 @@ namespace dmp1
         public static readonly DependencyProperty ZdrojProperty = DependencyProperty.Register(
         "Zdroj", typeof(string),
         typeof(ObrazekVKrouzku),
-        new PropertyMetadata(OnCustomerChangedCallBack)
+        new PropertyMetadata(ZmenaZdroje)
         );
 
         public string Zdroj
@@ -32,7 +32,7 @@ namespace dmp1
             set => SetValue(ZdrojProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaZdroje(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ObrazekVKrouzku c = sender as ObrazekVKrouzku;
             if (c != null)

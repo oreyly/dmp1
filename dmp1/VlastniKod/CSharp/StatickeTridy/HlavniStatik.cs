@@ -31,256 +31,11 @@ namespace dmp1
     public static class HlavniStatik
     {
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
-        public static double Sirka { get; set; } = 1024;
-        public static double Vyska { get; set; } = 576;
 
-        public static double Left { get; set; } = 50;
-        public static double Top { get; set; } = 50;
-
+        public static Random rnd = new Random();
         public static readonly string[] Oddelovac = new string[] { "$$$" };
-        public static readonly string Dira = "http://home.spsostrov.cz/~matema/dlouhodobka/obr/dira.png";
+
         private static HttpClient client = new HttpClient();
-
-        //Import pomocné systémové metody
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-
-        //Převod bitmapy na ImageSource použitelný v komponentě Image
-        public static ImageSource ToImageSource(this Bitmap bmp)
-        {
-            IntPtr handle = bmp.GetHbitmap();
-            try
-            {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally
-            {
-                DeleteObject(handle); 
-            }
-        }
-
-        //Vymaže ObservableCollection a uloží nové prvky bez potřeby vytvoření nové kolekce
-        public static void NastavHodnoty<T>(this ObservableCollection<T> oc, IEnumerable<T> ie)
-        {
-            oc.Clear();
-
-            foreach(T t in ie)
-            {
-                oc.Add(t);
-            }
-        }
-
-        //Algoritmus na získání zkratky v závorce
-        public static string ZiskejZavorku(this string str)
-        {
-            return str.Substring(str.LastIndexOf("(") + 1, str.LastIndexOf(")") - str.LastIndexOf("(") - 1);
-        }
-
-        public static string OdeberZavorku(this string str)
-        {
-            return str.Replace($" ({str.ZiskejZavorku()})", "");
-        }
-
-        //Najde rodiče Elementu jež odpovídá typu T
-        public static T GetAncestorOfType<T>(this FrameworkElement child) where T : FrameworkElement
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-            if (parent != null && !(parent is T))
-            {
-                return (T)GetAncestorOfType<T>((FrameworkElement)parent);
-            }
-
-            return (T)parent;
-        }
-        public static FrameworkElement GetChildByName(this FrameworkElement element, string name)
-        {
-            List<FrameworkElement> children = new List<FrameworkElement>();
-            int count = VisualTreeHelper.GetChildrenCount(element);
-            for (int i = 0; i < count; ++i)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(element, i);
-                if (child is FrameworkElement fe)
-                {
-                    if(fe.Name == name)
-                    {
-                        return fe;
-                    }
-                    else
-                    {
-                        children.Add(fe);
-                    }
-                }
-            }
-
-            foreach (FrameworkElement child in children)
-            {
-                FrameworkElement fe = child.GetChildByName(name);
-
-                if (fe != null)
-                {
-                    return fe;
-                }
-            }
-
-            return null;
-        }
-
-        //Vyhledá člen od indexu dál nebo zpět
-        public static string HledejZavorky(this string str, int index, bool dopredu)
-        {
-            int i = index;
-            if (dopredu)
-            {
-                switch (str[i])
-                {
-                    case 'x':
-                        return "x";
-
-                    case '-':
-                    case '+':
-                    case '^':
-                        return str[i] + HledejZavorky(str, index + 1, dopredu);
-
-                    case '(':
-                    case '{':
-                        int pocet1 = 0;
-                        int pocet2 = 0;
-
-                        for (; i < str.Length; ++i)
-                        {
-                            switch (str[i])
-                            {
-                                case '(':
-                                    pocet1 += 1;
-                                    break;
-
-                                case ')':
-                                    pocet1 -= 1;
-                                    break;
-
-                                case '{':
-                                    pocet2 += 1;
-                                    break;
-
-                                case '}':
-                                    pocet2 += 1;
-                                    break;
-                            }
-
-                            if (pocet1 < 0 || pocet2 < 0)
-                            {
-                                throw new Exception("Chyba ve výrazu!");
-                            }
-
-                            if (pocet1 == 0 && pocet2 == 0)
-                            {
-                                return str.Substring(index, i - index + 1);
-                            }
-                        }
-
-                        if (pocet1 == 0 && pocet2 == 0)
-                        {
-                            return str.Substring(index, i - index + 1);
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-
-                    default:
-                        if (char.IsDigit(str[i]))
-                        {
-                            string vysledek = "";
-                            for (; i < str.Length; ++i)
-                            {
-                                if (char.IsDigit(str[i]))
-                                {
-                                    vysledek += str[i];
-                                }
-                                else
-                                {
-                                    return vysledek;
-                                }
-                            }
-                            return vysledek;
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-                }
-            }
-            else
-            {
-                switch (str[i])
-                {
-                    case 'x':
-                        return "x";
-
-                    case ')':
-                    case '}':
-                        int pocet1 = 0;
-                        int pocet2 = 0;
-
-                        for (; i >= 0; --i)
-                        {
-                            switch (str[i])
-                            {
-                                case '(':
-                                    pocet1 += 1;
-                                    break;
-
-                                case ')':
-                                    pocet1 -= 1;
-                                    break;
-
-                                case '{':
-                                    pocet2 += 1;
-                                    break;
-
-                                case '}':
-                                    pocet2 -= 1;
-                                    break;
-                            }
-
-                            if (pocet1 > 0 || pocet2 > 0)
-                            {
-                                throw new Exception("Chyba ve výrazu!");
-                            }
-
-                            if (pocet1 == 0 && pocet2 == 0)
-                            {
-                                return str.Substring(i, index - i + 1);
-                            }
-                        }
-
-                        if (pocet1 == 0 && pocet2 == 0)
-                        {
-                            return str.Substring(i - index + 1, index);
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-
-                    default:
-                        if (char.IsDigit(str[i]))
-                        {
-                            string vysledek = "";
-                            for (; i >= 0; --i)
-                            {
-                                if (char.IsDigit(str[i]))
-                                {
-                                    vysledek = str[i] + vysledek;
-                                }
-                                else
-                                {
-                                    return vysledek;
-                                }
-                            }
-                            return vysledek;
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-                }
-            }
-        }
 
         public static string OpravFunkci(string funkce)
         {
@@ -329,67 +84,6 @@ namespace dmp1
             return ex;
         }
 
-        /// <summary>
-        /// Perform a deep Copy of the object, using Json as a serialization method. NOTE: Private members are not cloned using this method.
-        /// </summary>
-        /// <typeparam name="T">The type of object being copied.</typeparam>
-        /// <param name="source">The object instance to copy.</param>
-        /// <returns>The copied object.</returns>
-        public static T CloneJson<T>(this T source)
-        {
-            // Don't serialize a null object, simply return the default for that object
-            if (ReferenceEquals(source, null)) return default;
-
-            // initialize inner objects individually
-            // for example in default constructor some list property initialized with some values,
-            // but in 'source' these items are cleaned -
-            // without ObjectCreationHandling.Replace default constructor values will be added to result
-            var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
-
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
-        }
-
-        public static ObservableCollection<object> NactiEnum(Type typ)
-        {
-            return new ObservableCollection<object>(Enum.GetValues(typ).Cast<object>());
-        }
-
-        public static void AddIfNotExists<T>(this IList<T> list, T value)
-        {
-            if (!list.Contains(value))
-            {
-                list.Add(value);
-            }
-        }
-
-        public static void AddIfNotExists<T>(this IList<T> list, IList<T> values)
-        {
-            foreach (T value in values)
-            {
-                if (!list.Contains(value))
-                {
-                    list.Add(value);
-                }
-            }
-        }
-
-        public static Random rnd = new Random();
-
-        public static void ZamichejList<T>(this IList<T> list)
-        {
-            for (int i = 0; i < list.Count; ++i)
-            {
-                int j = rnd.Next(0, i);
-
-                (list[i], list[j]) = (list[j], list[i]);
-            }
-        }
-
-        public static void NactiObrNapoved(int i)
-        {
-
-        }
-
         public static Media.Color SmichejBarvy(Media.Color c1, Media.Color c2)
         {
             byte r = (byte)(c1.R * 0.5 + c2.R * 0.5);
@@ -399,16 +93,6 @@ namespace dmp1
             return Media.Color.FromRgb(r, g, b);
         }
 
-        public static T[] ZiskejPole<T>(this string pole)
-        {
-            return pole.Replace("{", "").Replace("}", "").Split(',').Select(id => (T)Convert.ChangeType(id, typeof(T))).ToArray();
-        }
-
-        public static string[] RozdelDolary(this string pole)
-        {
-            return pole.Split(Oddelovac, StringSplitOptions.None);
-        }
-
         public static T[,] To2D<T>(T[][] zdroj)
         {
             int prvniDim = zdroj.Length;
@@ -416,8 +100,12 @@ namespace dmp1
 
             T[,] vysledek = new T[prvniDim, druhaDim];
             for (int i = 0; i < prvniDim; ++i)
+            {
                 for (int j = 0; j < druhaDim; ++j)
+                {
                     vysledek[i, j] = zdroj[i][j];
+                }
+            }
 
             return vysledek;
         }
@@ -432,7 +120,7 @@ namespace dmp1
 
                 for (int j = 0; j < zdroj.Length; ++j)
                 {
-                     vysledek[i][j] = zdroj[j][i];
+                    vysledek[i][j] = zdroj[j][i];
                 }
             }
 
@@ -453,7 +141,6 @@ namespace dmp1
                         {"obr", byty }
                     };
 
-
                 return PosliPost((URLAdresa)"php/nahraniSouboru.php", hodnoty);
             }
         }
@@ -472,6 +159,12 @@ namespace dmp1
 
             string vys = zbyvaT.Result;
             return vys;
+        }
+
+        public static void OdhlasitSe()
+        {
+            Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }

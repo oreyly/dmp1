@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="SpravaUzivatelu" Height="450" Width="800">
+        Title="Správa uživatelů" Height="576" Width="1024">
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
@@ -26,8 +26,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="90*"></RowDefinition>
-            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="65*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
         
         <ListView x:Name="lvTridy" SelectionChanged="ListView_SelectionChanged" ItemsSource="{Binding seznamTrid}" MouseUp="lvKategorie_MouseUp" SelectionMode="Single">
@@ -52,5 +53,6 @@
             </ListView.ItemContainerStyle>
         </ListView>
         <Button x:Name="btResetHesla" Grid.Row="1" Grid.Column="1" Click="btResetHesla_Click" Visibility="{Binding ElementName=lvTridy, Path=SelectedIndex, Converter={StaticResource int2vis}, ConverterParameter=-1}" IsEnabled="{Binding ElementName=lvUzivatele, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odstranit heslo</Button>
+        <Button x:Name="btOdhlasit" Grid.Row="2" Grid.Column="1" Click="btOdhlasit_Click" Visibility="{Binding ElementName=lvTridy, Path=SelectedIndex, Converter={StaticResource int2vis}, ConverterParameter=-1}" IsEnabled="{Binding ElementName=lvUzivatele, Path=SelectedIndex, Converter={StaticResource int2bool}, ConverterParameter=-1}">Odhlásit</Button>
     </Grid>
 </Window>

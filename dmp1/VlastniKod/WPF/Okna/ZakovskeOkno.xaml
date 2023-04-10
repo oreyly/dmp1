@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="ZakovskeOkno" Height="450" Width="800">
+        Title="Menu hráče" Height="576" Width="1024"
+        Closed="Window_Closed"
+        >
     <Window.Resources>
         <local:URLToStr x:Key="url2str"></local:URLToStr>
     </Window.Resources>
@@ -29,14 +31,13 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="4" Grid.Column="2" Click="Button_Click"></Button>
-        <local:LepsiLabel Grid.Column="2" Grid.Row="1" TextKZobrazeni="Menu žáka" Tucne="Bold"></local:LepsiLabel>
+        <local:LepsiLabel Grid.Column="2" Grid.Row="1" TextKZobrazeni="Menu hráče" Tucne="Bold"></local:LepsiLabel>
 
-        <local:ProfilovyPrvek Grid.Column="4" Grid.ColumnSpan="1"></local:ProfilovyPrvek>
+        <local:ProfilovyPrvek></local:ProfilovyPrvek>
 
-        <Button x:Name="btSpustit" Grid.Column="1" Grid.Row="3" Click="btSpustit_Click">Spusti hru</Button>
-        <Button x:Name="btHistorie" Grid.Column="3" Grid.Row="3" Click="btHistorie_Click">Historie her</Button>
-        <Button x:Name="btObchod" Grid.Column="1" Grid.Row="5" Click="btObchod_Click">Obchod</Button>
-        <Button x:Name="btPozadi" Grid.Column="3" Grid.Row="5" Click="btPozadi_Click">Vyběr pozadí</Button>
+        <Button x:Name="btSpustit" Grid.Column="1" Grid.Row="3" Click="btSpustit_Click" FontSize="20">Spustit hru</Button>
+        <Button x:Name="btHistorie" Grid.Column="3" Grid.Row="3" Click="btHistorie_Click" FontSize="20">Historie her</Button>
+        <Button x:Name="btObchod" Grid.Column="1" Grid.Row="5" Click="btObchod_Click" FontSize="20">Obchod</Button>
+        <Button x:Name="btPozadi" Grid.Column="3" Grid.Row="5" Click="btPozadi_Click" FontSize="20">Vyběr pozadí</Button>
     </Grid>
 </Window>

@@ -9,16 +9,25 @@
         Title="Vyhledávání hráčů" Height="400" Width="300"
         Closing="Window_Closing"
         >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VlastniKod/Styly/StylTextBox.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbHledej" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" TextChanged="NactiSeznam"></TextBox>
+        <TextBox x:Name="tbHledej" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Style="{StaticResource stylVelikostTextu}" TextChanged="NactiSeznam"></TextBox>
         <Viewbox Grid.Row="1">
             <pokus:HorizontalToggleSwitch x:Name="htsHraci" CheckedContent="Hráči" UncheckedContent="Skupiny" IsChecked="True" CheckedBackground="White" CheckedForeground="Black" UncheckedBackground="White" UncheckedForeground="Black" Checked="NactiSeznam" Unchecked="NactiSeznam"></pokus:HorizontalToggleSwitch>
         </Viewbox>
-        <local:seznamSTlacitky x:Name="sstVysledky" Grid.Row="2" druhTlacitka="Pridat" Zapnuto="True" KliklNaTlacitko="sstVysledky_KliklNaPrvek"></local:seznamSTlacitky>
+        <ListView x:Name="lvVysledky" Grid.Row="2" ItemsSource="{Binding seznam}"></ListView>
+        <Button Grid.Row="3" Click="Button_Click">Přidat</Button>
     </Grid>
 </Window>

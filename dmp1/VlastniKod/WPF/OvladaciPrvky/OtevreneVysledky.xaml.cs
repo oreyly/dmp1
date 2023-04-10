@@ -28,10 +28,10 @@ namespace dmp1
         public static readonly DependencyProperty VysledkyProperty = DependencyProperty.Register(
             "Vysledky", typeof(string),
             typeof(OtevreneVysledky),
-            new PropertyMetadata(OnCustomerChangedCallBack)
+            new PropertyMetadata(ZmennaVysledku)
             );
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmennaVysledku(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             OtevreneVysledky c = sender as OtevreneVysledky;
             if (c != null)
@@ -42,7 +42,7 @@ namespace dmp1
 
         protected virtual void OnCustomerChanged()
         {
-            string[] data = ((string)GetValue(VysledkyProperty)).Split(new string[] { "$$$" }, StringSplitOptions.None);
+            string[] data = ((string)GetValue(VysledkyProperty)).RozdelDolary();
             if (data[0] != "O")
             {
                 throw new Exception("Výsledek není ve formátu pro otevřené možností");

@@ -192,6 +192,7 @@ namespace dmp1
             imgPomoc2.Source = Properties.Resources.icoNapovedaNe.ToImageSource();
             imgPomoc2.IsEnabled = false;
             grPomoc.Visibility = Visibility.Visible;
+            scwPomoc.Visibility = Visibility.Visible;
 
             lbPomoc.Text = hra.aktualniUloha.Napoveda;
         }

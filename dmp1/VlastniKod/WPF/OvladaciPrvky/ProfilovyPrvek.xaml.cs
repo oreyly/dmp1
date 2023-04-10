@@ -25,30 +25,33 @@ namespace dmp1
         public ProfilovyPrvek()
         {
             InitializeComponent();
-            llJmeno.TextKZobrazeni = Uzivatel.Jmeno.OdeberZavorku();
-            llZkratka.TextKZobrazeni = Uzivatel.Jmeno.ZiskejZavorku();
+            llJmeno.Content = Uzivatel.Jmeno.OdeberZavorku();
+            lbBodyPocet.Visibility = lbBodySlovo.Visibility = Uzivatel.Prava == UrovenPrav.Zak ? Visibility.Visible : Visibility.Collapsed;
+            obrVelky.Cursor = Uzivatel.Prava == UrovenPrav.Zak ? Cursors.Hand : Cursors.Arrow;
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.WidthChanged)
+            /*if (e.WidthChanged)
             {
                 Height = e.NewSize.Width / 4;
-            }
+            }*/
         }
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            ppNabidka.StaysOpen = true;
-            VyberProduktu vp = new VyberProduktu(DruhProduktu.ProfilovaFotka);
-            vp.ShowDialog();
-            ppNabidka.StaysOpen = false;
+            if (Uzivatel.Prava == UrovenPrav.Zak)
+            {
+                ppNabidka.StaysOpen = true;
+                VyberProduktu vp = new VyberProduktu(DruhProduktu.ProfilovaFotka);
+                vp.ShowDialog();
+                ppNabidka.StaysOpen = false;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(Application.ResourceAssembly.Location);
-            Application.Current.Shutdown();
+            HlavniStatik.OdhlasitSe();
         }
     }
 }

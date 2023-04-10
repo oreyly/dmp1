@@ -60,7 +60,7 @@ namespace dmp1
         public static readonly DependencyProperty PredpisProperty = DependencyProperty.Register(
         "Predpis", typeof(string),
         typeof(Grafik),
-        new PropertyMetadata(OnCustomerChangedCallBack2)
+        new PropertyMetadata(ZmenaPredpisu)
         );
 
         public string Predpis
@@ -69,7 +69,7 @@ namespace dmp1
             set => SetValue(PredpisProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack2(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaPredpisu(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             Grafik c = sender as Grafik;
             if (c != null)
@@ -92,7 +92,7 @@ namespace dmp1
         public static readonly DependencyProperty OknoProperty = DependencyProperty.Register(
         "Okno", typeof(Window),
         typeof(Grafik),
-        new PropertyMetadata(OnCustomerChangedCallBack)
+        new PropertyMetadata(ZmenaOkna)
         );
 
         public Window Okno
@@ -101,7 +101,7 @@ namespace dmp1
             set => SetValue(OknoProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaOkna(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             Grafik c = sender as Grafik;
             if (c != null)

@@ -77,13 +77,8 @@ namespace dmp1
 
         private void MerCas(object sender, DoWorkEventArgs e)
         {
-            /*while(!HlidacCasu.CancellationPending && DateTime.Now < HraCoSeHraje.CasKonce)
-            {
-                HlidacCasu.ReportProgress(0);
-                Thread.Sleep(1000);
-            }*/
             int i = 0;
-            while (!konec)
+            while (!konec && DateTime.Now < HraCoSeHraje.CasKonce && !HlidacCasu.CancellationPending)
             {
                 HlidacCasu.ReportProgress(0);
                 Thread.Sleep(1000);

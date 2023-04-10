@@ -18,8 +18,6 @@ using System.Windows.Shapes;
 
 namespace dmp1
 {
-    public enum druhTlacitkaVSeznamu { Nic, Smazat, Pridat }
-    public delegate void seznamSTlacitkyKlikHandler(string kliklyPrvek);
     /// <summary>
     /// Interakční logika pro seznamSTlacitky.xaml
     /// </summary>
@@ -29,7 +27,7 @@ namespace dmp1
         public static readonly DependencyProperty stylProperty = DependencyProperty.Register(
              "styl", typeof(Style),
              typeof(seznamSTlacitky),
-             new PropertyMetadata(OnCustomerChangedCallBack)
+             new PropertyMetadata(ZmenaStylu)
              );
 
         public Style styl
@@ -43,7 +41,7 @@ namespace dmp1
         public static readonly DependencyProperty druhTlacitkaProperty = DependencyProperty.Register(
              "druhTlacitka", typeof(druhTlacitkaVSeznamu),
              typeof(seznamSTlacitky),
-             new PropertyMetadata(OnCustomerChangedCallBack)
+             new PropertyMetadata(ZmenaStylu)
              );
 
         public druhTlacitkaVSeznamu druhTlacitka
@@ -55,7 +53,7 @@ namespace dmp1
         public static readonly DependencyProperty zapnutoProperty = DependencyProperty.Register(
              "Zapnuto", typeof(bool),
              typeof(seznamSTlacitky),
-             new PropertyMetadata(OnCustomerChangedCallBack)
+             new PropertyMetadata(ZmenaStylu)
              );
 
         public bool Zapnuto
@@ -64,7 +62,7 @@ namespace dmp1
             set => SetValue(zapnutoProperty, value);
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void ZmenaStylu(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             seznamSTlacitky c = sender as seznamSTlacitky;
             if (c != null)
@@ -130,18 +128,16 @@ namespace dmp1
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public event seznamSTlacitkyKlikHandler KliklNaTlacitko;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            KliklNaTlacitko?.Invoke((string)((Button)sender).GetAncestorOfType<ListViewItem>().Content);
+
             //MessageBox.Show(sender.ToString());
         }
 
-        public event seznamSTlacitkyKlikHandler DoubleKliklNaPrvek;
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DoubleKliklNaPrvek?.Invoke((string)((ListViewItem)sender).Content);
+
         }
 
         public string VybranyRadek
@@ -152,7 +148,6 @@ namespace dmp1
             }
         }
 
-        public event seznamSTlacitkyKlikHandler KliklNaPrvek;
         private void seznamOtazek_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OnPropertyChanged("VybranyRadek");
@@ -160,7 +155,7 @@ namespace dmp1
 
         private void ListViewItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            KliklNaPrvek?.Invoke((string)((ListViewItem)sender).Content);
+
         }
     }
 }

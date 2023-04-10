@@ -27,6 +27,8 @@ namespace dmp1
             InitializeComponent();
             lbAutor.Content = Uzivatel.Prava == UrovenPrav.Zak ? "Autor" : "Počet hráčů";
             lbTermin.Content = Uzivatel.Prava == UrovenPrav.Zak ? "Čas dokončení" : "Termín";
+            lbNadpis.TextKZobrazeni = Title = Uzivatel.Prava == UrovenPrav.Zak ? "Výběr hry k prohlédnutí" : "Výběr hry ke zkontrolování";
+            colAutor.Width = new GridLength(Uzivatel.Prava == UrovenPrav.Zak ? 200 : 50, GridUnitType.Star);
             zahlavi = new Label[] { lbNazev, lbUlohy, lbAutor, lbVytvoreni, lbTermin };
             DataContext = this;
             rb1.IsChecked = true;

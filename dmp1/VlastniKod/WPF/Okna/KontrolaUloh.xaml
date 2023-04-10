@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="KontrolaUloh"  Height="576" Width="1024"
+        Title="Kontrola úloh"  Height="576" Width="1024"
         Closed="Window_Closed"
         >
     <Grid>
@@ -76,32 +76,49 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75*"></RowDefinition>
-                    <RowDefinition Height="100*"></RowDefinition>
-                    <RowDefinition Height="100*"></RowDefinition>
-                    <RowDefinition Height="112"></RowDefinition>
+                    <RowDefinition Height="200*"></RowDefinition>
+                    <RowDefinition Height="124"></RowDefinition>
                     <RowDefinition Height="100*"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <local:LepsiLabel Grid.Row="0" FontSize="10" Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
 
 
-                <Image Grid.Row="1" Source="{Binding Path=aktualniUloha.Obrazek, Converter={StaticResource url2str}}">
-                    <Image.Resources>
-                        <Style TargetType="Image">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=tbPopis, Path=Text}" Value="">
-                                    <Setter Property="Grid.RowSpan" Value="2"></Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Resources>
-                </Image>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <ScrollViewer Grid.Column="0" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
-                    <TextBlock x:Name="tbPopis" TextWrapping="Wrap" FontSize="22" Padding="5 0 5 0"/>
-                </ScrollViewer>
+                    <Image x:Name="imgNahled" Source="{Binding Path=aktualniUloha.Obrazek, Converter={StaticResource url2str}}">
+                        <Image.Resources>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=tbPopis, Path=Text}" Value="">
+                                        <Setter Property="Grid.ColumnSpan" Value="2"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Resources>
+                    </Image>
 
-                <Grid x:Name="grOdpovedi" Grid.Row="3" Grid.ColumnSpan="2">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollViewer">
+                                <Setter Property="Grid.Column" Value="1"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=aktualniUloha.Obrazek, Converter={StaticResource url2str}}" Value="">
+                                        <Setter Property="Grid.Column" Value="0"></Setter>
+                                        <Setter Property="Grid.ColumnSpan" Value="2"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ScrollViewer.Resources>
+                        <TextBlock x:Name="tbPopis" Text="{Binding Path=aktualniUloha.Popis}" TextWrapping="Wrap" FontSize="22" Padding="5 0 5 0"/>
+                    </ScrollViewer>
+                </Grid>
+
+                <Grid x:Name="grOdpovedi" Grid.Row="2" Grid.ColumnSpan="2">
                     <!--<local:UkladaniVysledku x:Name="UVukladani" Grid.ColumnSpan="2" Vysledky="{Binding aktualniUloha.Vysledek}"></local:UkladaniVysledku>-->
                     <Grid x:Name="grMoznosti" Visibility="{Binding Converter={StaticResource invBool2Vis}, Path=aktualniUloha.OtevrenyVysledek}">
                         <Grid.Resources>
@@ -125,7 +142,7 @@
                             <ColumnDefinition Width="41*"></ColumnDefinition>
                             <ColumnDefinition Width="6*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <RadioButton x:Name="btA" Grid.Column="1" Grid.Row="1" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
+                        <RadioButton x:Name="btA" Grid.Column="1" Grid.Row="1" Content="{Binding aktualniUloha.CastiVysledku4[0]}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=1}">
                             <RadioButton.Resources>
                                 <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
                                     <Style.Triggers>
@@ -135,10 +152,9 @@
                                     </Style.Triggers>
                                 </Style>
                             </RadioButton.Resources>
-                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[0]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btB" Grid.Column="3" Grid.Row="1" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
+                        <RadioButton x:Name="btB" Grid.Column="3" Grid.Row="1" Content="{Binding aktualniUloha.CastiVysledku4[1]}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=2}">
                             <RadioButton.Resources>
                                 <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
                                     <Style.Triggers>
@@ -148,10 +164,9 @@
                                     </Style.Triggers>
                                 </Style>
                             </RadioButton.Resources>
-                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[1]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btC" Grid.Column="1" Grid.Row="3" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
+                        <RadioButton x:Name="btC" Grid.Column="1" Grid.Row="3" Content="{Binding aktualniUloha.CastiVysledku4[2]}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=3}">
                             <RadioButton.Resources>
                                 <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
                                     <Style.Triggers>
@@ -161,10 +176,9 @@
                                     </Style.Triggers>
                                 </Style>
                             </RadioButton.Resources>
-                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[2]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
 
-                        <RadioButton x:Name="btD"  Grid.Column="3" Grid.Row="3" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
+                        <RadioButton x:Name="btD"  Grid.Column="3" Grid.Row="3" Content="{Binding aktualniUloha.CastiVysledku4[3]}" IsChecked="{Binding Path=aktualniUloha.SpravnyVysledekOdpoved, Converter={StaticResource Bool2Int}, ConverterParameter=4}">
                             <RadioButton.Resources>
                                 <Style TargetType="RadioButton" BasedOn="{StaticResource rbStyl}">
                                     <Style.Triggers>
@@ -174,7 +188,6 @@
                                     </Style.Triggers>
                                 </Style>
                             </RadioButton.Resources>
-                            <local:LepsiLabel Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.CastiVysledku4[3]}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualWidth}"  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RadioButton}, Path=ActualHeight}"></local:LepsiLabel>
                         </RadioButton>
                     </Grid>
                     <Grid x:Name="grOtevrene" Visibility="{Binding Converter={StaticResource Bool2Vis}, Path=aktualniUloha.OtevrenyVysledek}">
@@ -234,7 +247,7 @@
                     </Grid>
                 </Grid>
                 
-                <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                <Grid Grid.Row="3" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -249,7 +262,7 @@
                         <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Button x:Name="btUznat" Grid.Row="1" Grid.Column="1" Background="Green" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btUznat_Click">
+                    <Button x:Name="btUznat" Grid.Row="1" Grid.Column="1" Background="Green" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Background, Converter={StaticResource autoBarva}}" FontWeight="Bold" FontSize="20" Click="btUznat_Click">
                         <Button.Resources>
                             <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
                                 <Setter Property="IsEnabled" Value="False"></Setter>
@@ -271,9 +284,9 @@
                         </Button.Resources>
                         Uznat
                     </Button>
-                   
-                    
-                    <Button x:Name="btNeuznat" Grid.Row="1" Grid.Column="3" Background="Orange" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btNeuznat_Click">
+
+
+                    <Button x:Name="btNeuznat" Grid.Row="1" Grid.Column="3" Background="Red" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Background, Converter={StaticResource autoBarva}}" FontWeight="Bold" FontSize="20" Click="btNeuznat_Click">
                         <Button.Resources>
                             <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
                                 <Setter Property="IsEnabled" Value="False"></Setter>
@@ -298,7 +311,7 @@
                         Neuznat</Button>
                    
                     
-                    <Button x:Name="btUkoncit" Grid.Row="1" Background="Red" Foreground="Black" FontWeight="Bold" FontSize="20" Click="btUkoncit_Click">
+                    <Button x:Name="btUkoncit" Grid.Row="1" Background="White" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=Background, Converter={StaticResource autoBarva}}" FontWeight="Bold" FontSize="20" Click="btUkoncit_Click">
                         <Button.Resources>
                             <Style TargetType="Button" BasedOn="{StaticResource KulateTlacitko}">
                                 <Setter Property="Grid.Column" Value="5"></Setter>

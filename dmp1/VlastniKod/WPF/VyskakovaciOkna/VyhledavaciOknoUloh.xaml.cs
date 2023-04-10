@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -20,37 +22,26 @@ namespace dmp1
     /// </summary>
     public partial class VyhledavaciOknoUloh : Window
     {
-        public bool HraciVHledacku
+        public bool UlohyVHledacku
         {
             get
             {
                 return htsUlohy.IsChecked;
             }
         }
-
-        public string[] vysledkyHledani
-        {
-            get
-            {
-                return sstVysledky.Seznam.ToArray();
-            }
-        }
-
-        public VyhledavaciOknoUloh(bool hraci = true)
+        public ObservableCollection<string> seznam { get; set; } = new ObservableCollection<string>();
+        private ObservableCollection<string> CilovySeznam;
+        public VyhledavaciOknoUloh(ObservableCollection<string> cilovySeznam)
         {
             InitializeComponent();
-
-            if (hraci)
-            {
-
-            }
-
+            CilovySeznam = cilovySeznam;
+            DataContext = this;
             NactiSeznam();
         }
 
-        private void NactiSeznam(object sender = null, RoutedEventArgs e = null)
+        public void NactiSeznam(object sender = null, RoutedEventArgs e = null)
         {
-            if (tbHledej == null || htsUlohy == null || sstVysledky == null)
+            if (tbHledej == null || htsUlohy == null || lvVysledky == null)
             {
                 return;
             }
@@ -65,26 +56,38 @@ namespace dmp1
             if (htsUlohy.IsChecked)
             {
                 string[] ulohy = (string[])PraceSDB.ZavolejPrikaz("vyhledej_ulohy", true, hledanyVyraz, Uzivatel.Id)[0][0];
-                sstVysledky.Seznam.NastavHodnoty(ulohy);
+                seznam.NastavHodnoty(ulohy.Except(CilovySeznam));
             }
             else
             {
                 string[] skupiny = (string[])PraceSDB.ZavolejPrikaz("vyhledej_skupiny_uloh", true, hledanyVyraz, Uzivatel.Id)[0][0];
-                sstVysledky.Seznam.NastavHodnoty(skupiny);
+                seznam.NastavHodnoty(skupiny);
             }
         }
 
-        public event seznamSTlacitkyKlikHandler kliklNaPrvekVSeznamu;
-        private void sstVysledky_KliklNaPrvek(string kliklyPrvek)
+        private bool Konec = false;
+        public new void Close()
         {
-            kliklNaPrvekVSeznamu?.Invoke(kliklyPrvek);
+            Konec = true;
+            base.Close();
         }
 
         //Místo zavření pouze skrytí okna
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            if (Konec)
+            {
+                return;
+            }
             e.Cancel = true;
             Hide();
+        }
+
+        public event OdeslaniVybranychPrvkuHandler OdeslaniVybranychPrvku;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OdeslaniVybranychPrvku?.Invoke(lvVysledky.SelectedItems.Cast<string>().ToArray());
+            NactiSeznam();
         }
     }
 }

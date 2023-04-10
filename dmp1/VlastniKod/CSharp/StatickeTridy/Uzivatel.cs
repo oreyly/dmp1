@@ -16,7 +16,7 @@ namespace dmp1
 
         public static int Id = 2;
         public static int HerniId { get; set; }
-        public static string Jmeno { get; set; } = "Matyáš Matějka (matema)";
+        public static string Jmeno { get; set; }
         public static int Body { get; set; } = 101;
         public static UrovenPrav Prava { get; set; } = UrovenPrav.Zak;
         public static URLAdresa ObrazekProfil { get; set; }// = "https://home.spsostrov.cz/~matema/dlouhodobka/avatari/profil02.jpg";
@@ -24,6 +24,8 @@ namespace dmp1
 
         public static void NactiUzivatele(string nazev)
         {
+            PraceSDB.ZavolejPrikaz("prihlasit", false, nazev);
+
             string[] uzivatel = ((string)PraceSDB.ZavolejPrikaz("nacti_uzivatele", true, nazev)[0][0]).RozdelDolary();
 
             Id = Convert.ToInt32(uzivatel[0]);
@@ -32,7 +34,7 @@ namespace dmp1
             Prava = (UrovenPrav)Convert.ToInt32(uzivatel[3]);
             ObrazekPozadi = uzivatel[4];
             ObrazekProfil = uzivatel[5];
-            //StaticPropertyChanged(null, new PropertyChangedEventArgs("Jmeno"));
+
         }
 
         public static void NastavProdukt(DruhProduktu dp, URLAdresa url)

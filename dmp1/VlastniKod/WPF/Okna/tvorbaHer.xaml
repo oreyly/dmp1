@@ -7,20 +7,22 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="tvorbaHer" Height="450" Width="800"
+        Title="Tvorba her" Height="576" Width="1024"
         Closed="Window_Closed"
         >
-    <Grid>
+    <Grid x:Name="grRodic">
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="/VlastniKod/Styly/StylVybranyRadekListView.xaml"></ResourceDictionary>
+                    <ResourceDictionary Source="/VlastniKod/Styly/StylTextBox.xaml"></ResourceDictionary>
                 </ResourceDictionary.MergedDictionaries>
                 <local:BoolToString x:Key="bool2str" TrueValue="2" FalseValue="0"></local:BoolToString>
                 <local:NullToBool x:Key="null2bool"></local:NullToBool>
                 <local:IntToBool x:Key="int2bool"></local:IntToBool>
                 <local:PorovnaniHodnotDruhuSpusteni x:Key="porovnavac"></local:PorovnaniHodnotDruhuSpusteni>
                 <local:BoolToVisibilityConverter x:Key="bool2vis" TrueValue="Visible" FalseValue="Hidden"></local:BoolToVisibilityConverter>
+                <local:DeleniHodnoty x:Key="deleniHodnot"></local:DeleniHodnoty>
             </ResourceDictionary>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -31,95 +33,99 @@
 
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <local:LepsiLabel Grid.Column="0" Grid.Row="0" TextKZobrazeni="Název:"></local:LepsiLabel>
-            <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" x:Name="tbNazev"></TextBox>
+            <local:LepsiLabel x:Name="llNazev" Grid.Column="0" Grid.Row="2" TextKZobrazeni="Název:"></local:LepsiLabel>
+            
+            <local:LepsiLabel TextKZobrazeni="Tvorba her" Zarovnani="Center" Grid.ColumnSpan="3" Tucne="Black"></local:LepsiLabel>
 
-            <local:LepsiLabel Grid.Column="0" Grid.Row="1" TextKZobrazeni="Datum:"></local:LepsiLabel>
-            <DatePicker x:Name="dpKonec" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" SelectedDate="{x:Static System:DateTime.Today}" DisplayDateStart="{x:Static System:DateTime.Today}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
+            
+            <TextBox 
+                Height="{Binding ElementName=llNazev, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='2'}"
+                Style="{StaticResource stylVelikostTextu}"
+                Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" x:Name="tbNazev"
+                VerticalContentAlignment="Center"
+                ></TextBox>
+
+            <local:LepsiLabel Grid.Column="0" Grid.Row="4" TextKZobrazeni="Datum:"></local:LepsiLabel>
+            <DatePicker x:Name="dpKonec"
+                Height="{Binding ElementName=llNazev, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='2'}"
+                Style="{StaticResource stylVelikostTextu}" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" SelectedDate="{x:Static System:DateTime.Today}" DisplayDateStart="{x:Static System:DateTime.Today}" 
+                        IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
             </DatePicker>
 
-            <local:LepsiLabel Grid.Column="0" Grid.Row="2" TextKZobrazeni="Čas:"></local:LepsiLabel>
-            <toolkit:IntegerUpDown Grid.Column="1" Grid.Row="2" x:Name="iupCas" Text="3" Minimum="3" Maximum="120" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
-            <local:LepsiLabel Grid.Column="3" Grid.Row="2" TextKZobrazeni="min."></local:LepsiLabel>
+            <local:LepsiLabel Grid.Column="0" Grid.Row="6" TextKZobrazeni="Čas:"></local:LepsiLabel>
+            <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal">
+                <toolkit:IntegerUpDown
+                Height="{Binding ElementName=llNazev, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='2'}"
+                Style="{StaticResource stylVelikostTextu}" Grid.Column="1" Grid.Row="6" x:Name="iupCas" Text="3" Minimum="3" Maximum="120"  IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="89"/>
+                <local:LepsiLabel TextKZobrazeni="min." Width="{Binding ElementName=iupCas, Path=ActualWidth}"></local:LepsiLabel>
+            </StackPanel>
 
-            <local:LepsiLabel Grid.Column="0" Grid.Row="3" TextKZobrazeni="Druh spuštění:" VerticalAlignment="Center"></local:LepsiLabel>
-            <local:lepsiComboBox x:Name="lcbxDruhSpusteni" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Seznam="{Binding MozneDruhySpusteni}" ZmenilVyber="lcbxDruhSpusteni_ZmenilVyber"></local:lepsiComboBox>
-
-            <Grid Grid.Row="4" Grid.ColumnSpan="3">
+            <local:LepsiLabel Grid.Column="0" Grid.Row="8" TextKZobrazeni="Druh spuštění:"></local:LepsiLabel>
+            <local:lepsiComboBox x:Name="lcbxDruhSpusteni" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="1" Seznam="{Binding MozneDruhySpusteni}" VybranaVlastnost="Hodnota" ZmenilVyber="lcbxDruhSpusteni_ZmenilVyber"></local:lepsiComboBox>
+ 
+            <Grid x:Name="grCBXka" Grid.Row="10" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
                 
-                <CheckBox x:Name="cbxOpravovat" Grid.Column="0" Grid.Row="0" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
-                    <Grid Width="{Binding ElementName=cbxOpravovat, Path=ActualWidth}">
+                <CheckBox x:Name="cbxOpravovat" Grid.Column="0" Grid.Row="0" Style="{StaticResource {x:Type ToggleButton}}">
+                    <Grid Width="{Binding ElementName=cbxOpravovat, Path=ActualWidth}" Height="{Binding ElementName=cbxOpravovat, Path=ActualHeight}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="0.1*"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Viewbox Grid.Column="1">
-                            <TextBlock TextAlignment="Right" VerticalAlignment="Center">Opravovat automaticky</TextBlock>
-                        </Viewbox>
+                        <TextBlock TextAlignment="Right" VerticalAlignment="Center">Opravovat automaticky</TextBlock>
 
-                        <Grid Grid.Column="3">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"></RowDefinition>
-                                <RowDefinition Height="3*"></RowDefinition>
-                                <RowDefinition Height="1*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Viewbox HorizontalAlignment="Left">
-                                <RadioButton Grid.Row="1" IsChecked="{Binding ElementName=cbxOpravovat, Path=IsChecked}" GroupName="a"></RadioButton>
-                            </Viewbox>
-                        </Grid>
+                        <Viewbox HorizontalAlignment="Left" Grid.Column="1"
+                            Height="{Binding RelativeSource={RelativeSource AncestorType=CheckBox, Mode=FindAncestor}, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='3'}"
+                     >
+                            <RadioButton Grid.Row="1" IsChecked="{Binding ElementName=cbxOpravovat, Path=IsChecked}" GroupName="a" Margin="2 2 0 0"></RadioButton>
+                        </Viewbox>
                     </Grid>
                 </CheckBox>
 
-                <CheckBox x:Name="cbxRaditNahodne" Grid.Column="3" Grid.Row="4" Style="{StaticResource {x:Type ToggleButton}}" IsEnabled="{Binding ElementName=lcbxDruhSpusteni, Path=VybranyItem, Converter={StaticResource porovnavac}, ConverterParameter=Test}">
-                    <Grid Width="{Binding ElementName=cbxOpravovat, Path=ActualWidth}">
+                <CheckBox x:Name="cbxRaditNahodne" Grid.Column="3" Grid.Row="4" Style="{StaticResource {x:Type ToggleButton}}">
+                    <Grid Width="{Binding ElementName=cbxRaditNahodne, Path=ActualWidth}" Height="{Binding ElementName=cbxRaditNahodne, Path=ActualHeight}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="0.1*"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Viewbox Grid.Column="1">
-                            <TextBlock TextAlignment="Center">Řadit náhodně</TextBlock>
-                        </Viewbox>
+                        <TextBlock TextAlignment="Right" VerticalAlignment="Center">Řadit náhodně</TextBlock>
 
-                        <Grid Grid.Column="3">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"></RowDefinition>
-                                <RowDefinition Height="3*"></RowDefinition>
-                                <RowDefinition Height="1*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Viewbox HorizontalAlignment="Left">
-                                <RadioButton IsChecked="{Binding ElementName=cbxRaditNahodne, Path=IsChecked}" GroupName="b"></RadioButton>
-                            </Viewbox>
-                        </Grid>
+                        <Viewbox HorizontalAlignment="Left" Grid.Column="1"
+                            Height="{Binding RelativeSource={RelativeSource AncestorType=CheckBox, Mode=FindAncestor}, Path=ActualHeight, Converter={StaticResource deleniHodnot}, ConverterParameter='3'}"
+                     >
+                            <RadioButton IsChecked="{Binding ElementName=cbxRaditNahodne, Path=IsChecked}" GroupName="b" Margin="2 2 0 0"></RadioButton>
+                        </Viewbox>
                     </Grid>
                 </CheckBox>
             </Grid>
             
             
-            <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Click="Button_Click_2">Vytvořit hru</Button>
+            <Button Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="3" Click="Button_Click_2">Vytvořit hru</Button>
         </Grid>
 
         <Grid Grid.Column="2">

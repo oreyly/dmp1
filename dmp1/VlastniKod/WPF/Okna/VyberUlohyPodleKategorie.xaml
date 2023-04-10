@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dmp1"
         mc:Ignorable="d"
-        Title="VyberUlohyPodleKategorie" Height="450" Width="800"
+        Title="Správa úloh" Height="576" Width="1024"
         Closed="Window_Closed"
         IsVisibleChanged="Window_IsVisibleChanged"
         >
@@ -38,6 +38,7 @@
                     <Setter Property="Content" Value="{Binding Klic}"></Setter>
                     <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
                     <EventSetter Event="Drop" Handler="ListViewItem_Drop"></EventSetter>
+                    <EventSetter Event="PreviewKeyDown" Handler="ListViewItem_PreviewKeyDown_1"></EventSetter>
                     <Setter Property="AllowDrop" Value="True"></Setter>
                 </Style>
             </ListView.ItemContainerStyle>
@@ -49,6 +50,7 @@
                     <Setter Property="Content" Value="{Binding Klic}"></Setter>
                     <EventSetter Event="PreviewMouseUp" Handler="FrameworkElement_PreviewMouseUp"></EventSetter>
                     <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_MouseDown"></EventSetter>
+                    <EventSetter Event="PreviewKeyDown" Handler="ListViewItem_PreviewKeyDown"></EventSetter>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
