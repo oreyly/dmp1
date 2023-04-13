@@ -15,7 +15,7 @@ namespace dmp1
 {
     public static class RozsirujiciMetody
     {
-        //Import pomocné systémové metody
+        //Import pomocná systémová metoda pro převod obrázku
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
@@ -51,6 +51,7 @@ namespace dmp1
             return str.Substring(str.LastIndexOf("(") + 1, str.LastIndexOf(")") - str.LastIndexOf("(") - 1);
         }
 
+        //Algoritmus na odebrání zkratky v závorce
         public static string OdeberZavorku(this string str)
         {
             return str.Replace($" ({str.ZiskejZavorku()})", "");
@@ -68,6 +69,8 @@ namespace dmp1
 
             return (T)parent;
         }
+
+        //Najde dítě podle jména
         public static FrameworkElement GetChildByName(this FrameworkElement element, string name)
         {
             List<FrameworkElement> children = new List<FrameworkElement>();
@@ -101,160 +104,7 @@ namespace dmp1
             return null;
         }
 
-        //Vyhledá člen od indexu dál nebo zpět
-        public static string HledejZavorky(this string str, int index, bool dopredu)
-        {
-            int i = index;
-            if (dopredu)
-            {
-                switch (str[i])
-                {
-                    case 'x':
-                        return "x";
-
-                    case '-':
-                    case '+':
-                    case '^':
-                        return str[i] + HledejZavorky(str, index + 1, dopredu);
-
-                    case '(':
-                    case '{':
-                        int pocet1 = 0;
-                        int pocet2 = 0;
-
-                        for (; i < str.Length; ++i)
-                        {
-                            switch (str[i])
-                            {
-                                case '(':
-                                    pocet1 += 1;
-                                    break;
-
-                                case ')':
-                                    pocet1 -= 1;
-                                    break;
-
-                                case '{':
-                                    pocet2 += 1;
-                                    break;
-
-                                case '}':
-                                    pocet2 += 1;
-                                    break;
-                            }
-
-                            if (pocet1 < 0 || pocet2 < 0)
-                            {
-                                throw new Exception("Chyba ve výrazu!");
-                            }
-
-                            if (pocet1 == 0 && pocet2 == 0)
-                            {
-                                return str.Substring(index, i - index + 1);
-                            }
-                        }
-
-                        if (pocet1 == 0 && pocet2 == 0)
-                        {
-                            return str.Substring(index, i - index + 1);
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-
-                    default:
-                        if (char.IsDigit(str[i]))
-                        {
-                            string vysledek = "";
-                            for (; i < str.Length; ++i)
-                            {
-                                if (char.IsDigit(str[i]))
-                                {
-                                    vysledek += str[i];
-                                }
-                                else
-                                {
-                                    return vysledek;
-                                }
-                            }
-                            return vysledek;
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-                }
-            }
-            else
-            {
-                switch (str[i])
-                {
-                    case 'x':
-                        return "x";
-
-                    case ')':
-                    case '}':
-                        int pocet1 = 0;
-                        int pocet2 = 0;
-
-                        for (; i >= 0; --i)
-                        {
-                            switch (str[i])
-                            {
-                                case '(':
-                                    pocet1 += 1;
-                                    break;
-
-                                case ')':
-                                    pocet1 -= 1;
-                                    break;
-
-                                case '{':
-                                    pocet2 += 1;
-                                    break;
-
-                                case '}':
-                                    pocet2 -= 1;
-                                    break;
-                            }
-
-                            if (pocet1 > 0 || pocet2 > 0)
-                            {
-                                throw new Exception("Chyba ve výrazu!");
-                            }
-
-                            if (pocet1 == 0 && pocet2 == 0)
-                            {
-                                return str.Substring(i, index - i + 1);
-                            }
-                        }
-
-                        if (pocet1 == 0 && pocet2 == 0)
-                        {
-                            return str.Substring(i - index + 1, index);
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-
-                    default:
-                        if (char.IsDigit(str[i]))
-                        {
-                            string vysledek = "";
-                            for (; i >= 0; --i)
-                            {
-                                if (char.IsDigit(str[i]))
-                                {
-                                    vysledek = str[i] + vysledek;
-                                }
-                                else
-                                {
-                                    return vysledek;
-                                }
-                            }
-                            return vysledek;
-                        }
-
-                        throw new Exception("Chyba ve výrazu!");
-                }
-            }
-        }
+        //Přidá element do listu pokud tam ještě není
         public static void AddIfNotExists<T>(this IList<T> list, T value)
         {
             if (!list.Contains(value))
@@ -263,6 +113,7 @@ namespace dmp1
             }
         }
 
+        //Přidá elementy do listu pokud tam ještě nejsou
         public static void AddIfNotExists<T>(this IList<T> list, IList<T> values)
         {
             foreach (T value in values)
@@ -274,6 +125,7 @@ namespace dmp1
             }
         }
 
+        //Zamíchá elementy v listu
         public static void ZamichejList<T>(this IList<T> list)
         {
             for (int i = 0; i < list.Count; ++i)
@@ -283,11 +135,14 @@ namespace dmp1
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }
+
+        //Vytvoří pole ze stringu ve fromě pole
         public static T[] ZiskejPole<T>(this string pole)
         {
             return pole.Replace("{", "").Replace("}", "").Split(',').Select(id => (T)Convert.ChangeType(id, typeof(T))).ToArray();
         }
 
+        //Rozdělí string spojený dolary na pole
         public static string[] RozdelDolary(this string pole)
         {
             return pole.Split(HlavniStatik.Oddelovac, StringSplitOptions.None);

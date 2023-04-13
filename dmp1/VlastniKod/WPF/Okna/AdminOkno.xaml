@@ -30,7 +30,7 @@
             <Button x:Name="btUcitele" Grid.Column="3" Grid.Row="1" Click="btUcitele_Click" FontSize="20">Načtení učitelů</Button>
             <Button x:Name="btUcty" Grid.Column="1" Grid.Row="3" Click="btUcty_Click" FontSize="20">Správa účtů</Button>
             <Button x:Name="btObchod" Grid.Column="3" Grid.Row="3" Click="btObchod_Click" FontSize="20">Správa obchodu</Button>
-            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="5" Click="btHesloAdmin_Click" FontSize="20">Změna hesla administrátora</Button>
+            <Button x:Name="btHesloAdmin" Grid.Column="1" Grid.Row="5" Click="btHesloAdmin_Click" FontSize="20">Změna hesla admina</Button>
             <Button x:Name="tbUloziste" Grid.Column="3" Grid.Row="5" Click="tbUloziste_Click" FontSize="20">Správa uložiště</Button>
         </Grid>
     </Grid>

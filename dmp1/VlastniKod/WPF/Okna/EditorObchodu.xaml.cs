@@ -25,10 +25,16 @@ namespace dmp1
     /// </summary>
     public partial class EditorObchodu : Window
     {
+        //Nadřazené okno
         Window Rodic;
+
+        //Okno pro výběr souboru
         OpenFileDialog ofd;
 
+        //Seznam produktů
         public ObservableCollection<Produkt> seznamProduktu { get; set; } = new ObservableCollection<Produkt>();
+       
+        //Vybraný produkt
         private Produkt VybranyProdukt
         {
             get
@@ -36,6 +42,7 @@ namespace dmp1
                 return (Produkt)lvProdukty.SelectedItem;
             }
         }
+
         private EditorObchodu()
         {
             InitializeComponent();
@@ -44,12 +51,14 @@ namespace dmp1
             NacteniVsechProduktu();
         }
 
+        //Konstruktor umožňující návrat k rodičovi
         public EditorObchodu(Window rodic) : this()
         {
             Rodic = rodic;
             Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
         }
 
+        //Inicializace ofd
         private void VytvorOFD()
         {
             ofd = new OpenFileDialog();
@@ -80,6 +89,7 @@ namespace dmp1
             ofd.DefaultExt = ".png";
         }
 
+        //Načtení produktů daného typu
         private void NacteniVsechProduktu()
         {
             IEnumerable<Produkt> produkty;
@@ -93,24 +103,27 @@ namespace dmp1
             }
 
             seznamProduktu.NastavHodnoty(produkty);
-            //throw new NotImplementedException();
         }
 
+        //Změna druhu produktu
         private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
         {
             NacteniVsechProduktu();
         }
 
+        //Odoznačení prvku v seznamu
         private void lvKategorie_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ((ListView)sender).SelectedIndex = -1;
         }
 
+        //Zastavení MouseUp eventu při kliku na prvek v seznamu
         private void FrameworkElement_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
         }
 
+        //Změna vybraného produktu
         private void lvProdukty_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.RemovedItems.Count > 0)
@@ -151,12 +164,14 @@ namespace dmp1
             }
         }
 
+        //Přidání nového produktu
         private void btPridat_Click(object sender, RoutedEventArgs e)
         {
             seznamProduktu.Add(new Produkt(htsDruh.IsChecked ? DruhProduktu.Pozadi : DruhProduktu.ProfilovaFotka));
             lvProdukty.SelectedIndex = seznamProduktu.Count - 1;
         }
 
+        //Odstranění vybraného produktu
         private void btOdstranit_Click(object sender, RoutedEventArgs e)
         {
             if (LepsiMessageBox.Show("Opravdu si přejete odstranit vybraný produkt?", DruhTlacitekLMB.AnoNe) != MessageBoxResult.Yes)
@@ -172,16 +187,19 @@ namespace dmp1
             seznamProduktu.Remove(VybranyProdukt);
         }
 
+        //Uložení produktu
         private void btUlozit_Click(object sender, RoutedEventArgs e)
         {
             VybranyProdukt.Ulozit();
         }
 
+        //Obnovení produktu do původního stavu
         private void btObnovit_Click(object sender, RoutedEventArgs e)
         {
             VybranyProdukt.ObnovVse();
         }
 
+        //Obnovení obrázku produktu
         private void Border_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if(e.RightButton == MouseButtonState.Pressed)

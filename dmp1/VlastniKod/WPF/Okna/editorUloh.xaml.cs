@@ -42,8 +42,7 @@ namespace dmp1
             }
         }
 
-        //public ObservableCollection<Uloha> seznamUloh { get; set; } = new ObservableCollection<Uloha>();
-
+        //Editovaná úloha
         Uloha uloha;
 
         //Výběr nového obrázku
@@ -57,11 +56,7 @@ namespace dmp1
 
             if (ofd.ShowDialog() == true)
             {
-                //MessageBox.Show(ofd.FileName);
-                //imgNahled.Source = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
-
                 uloha.Obrazek = HlavniStatik.NahrajObrazek(ofd.FileName);
-                uloha.obsahujeObrazek = true;
             }
         }
 
@@ -103,7 +98,7 @@ namespace dmp1
             ItemContainerGenerator icg = (ItemContainerGenerator)sender;
             if (icg.Status == GeneratorStatus.ContainersGenerated)
             {
-                NastavTlacitkaSeznamu(icg.Status);
+                NastavTlacitkaSeznamu();
             }
         }
 
@@ -158,12 +153,7 @@ namespace dmp1
             uk.ShowDialog();
         }
 
-        private bool poprve = true;
-        private bool vrat = false;
-        private bool vrat2 = false;
-        private string Nazev;
-
-        private void NastavTlacitkaSeznamu(GeneratorStatus gs)
+        private void NastavTlacitkaSeznamu()
         {
             btPridat.IsEnabled = uloha.otevreneVysledky.Count < 4;
 

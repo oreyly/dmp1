@@ -17,12 +17,19 @@ namespace dmp1
     [NotifyPropertyChanged]
     public class Hra
     {
-        private int Id;
+        //Id hry
+        private int Id { get; set; }
+        //Název hry
         public string Nazev { get; set; }
 
+        //Úlohy hry
         public ObservableCollection<Uloha> Ulohy { get; set; }
-        public bool Nahodne; //Jestli mají být úlohy náhodně seřazeny
+        //Jestli mají být úlohy náhodně seřazeny
+        public bool Nahodne { get; set; }
+        //Jestli se má hra sama kontrolovat odpovědi
+        public bool Kontrolovat { get; set; }
 
+        //Maximální počet sekund
         private int MaximalniCas 
         {
             set
@@ -31,11 +38,15 @@ namespace dmp1
             }
         }
 
+        //Čas, kdy se hra sama ukončí
         public DateTime CasKonce { get; set; }
 
+        //V jakém módu byla hru spuštěna
         public DruhSpusteni DruhSpusteni { get; set; }
+        //V případě, že aktuální druh spuštění je kontrola, tak co to bylo originálně
         public DruhSpusteni PuvodniDruhSpusteni { get; set; }
 
+        //Aktuálně otevřená úloha
         private Uloha _aktualniUloha;
         public Uloha aktualniUloha
         {
@@ -63,11 +74,12 @@ namespace dmp1
             }
         }
 
+        //Event, který se vyvolá při změně úlohy
         public event ZmenaStavu ZmenaAktualniUlohy;
 
-        public bool Kontrolovat { get; set; }
 
-        [SafeForDependencyAnalysis]
+        //Celkový možný počet bodů
+        [SafeForDependencyAnalysis]//Atribut NotifyPropertyChanged měl error. bez tohoto atributu
         public int BodyCelkem
         {
             get
@@ -76,7 +88,8 @@ namespace dmp1
             }
         }
 
-        [SafeForDependencyAnalysis]
+        //Získaný počet bodů
+        [SafeForDependencyAnalysis]//Atribut NotifyPropertyChanged měl error. bez tohoto atributu
         public int BodyZiskal
         {
             get
@@ -85,6 +98,31 @@ namespace dmp1
             }
         }
 
+        //Vytvoří hru s vlastnostmi pro kontrolu výsledků
+        public Hra(int idHry, int[] vysledky, int druh)
+        {
+            Id = idHry;
+            DruhSpusteni = DruhSpusteni.Kontrola;
+            PuvodniDruhSpusteni = (DruhSpusteni)druh;
+
+            List<object[]> o = PraceSDB.ZavolejPrikaz("nacti_vysledky_uloh", true, vysledky).Select(radek => (object[])radek[0]).ToList();
+            Ulohy = new ObservableCollection<Uloha>(o.Select(u => new Uloha(this, (string)u[0], (string)u[1], (string)u[2], (string)u[3], (int)u[4], (int)u[5], (string)u[6], (int)u[7])));
+
+            return;
+        }
+
+        //Nastavení základních hodnot hry
+        private Hra(int id, DruhSpusteni druh)
+        {
+            Id = id;
+
+            Uzivatel.HerniId = (int)PraceSDB.ZavolejPrikaz("nacti_id_hrace", true, Id, Uzivatel.Id)[0][0];
+
+            DruhSpusteni = druh;
+        }
+
+
+        //Nastaví hře potřebné vlastnosti
         public void NastavHru(string nazev, Uloha[] ulohy, bool nahodne, int maximalniCas, bool kontrolovat)
         {
             Nazev = nazev;
@@ -114,6 +152,7 @@ namespace dmp1
             aktualniUloha = Ulohy[0];
         }
 
+        //Odešle neodeslané odpovědi a ukončí hru
         public void KonecHry()
         {
             foreach(Uloha u in Ulohy)
@@ -134,40 +173,8 @@ namespace dmp1
             }
         }
 
-        public Hra(int idHry, int[] vysledky, int druh)
-        {
-            Id = idHry;
-            DruhSpusteni = DruhSpusteni.Kontrola;
-            PuvodniDruhSpusteni = (DruhSpusteni)druh;
 
-            List<object[]> o = PraceSDB.ZavolejPrikaz("nacti_vysledky_uloh", true, vysledky).Select(radek => (object[])radek[0]).ToList();
-            Ulohy = new ObservableCollection<Uloha>(o.Select(u => new Uloha(this, (string)u[0], (string)u[1], (string)u[2], (string)u[3], (int)u[4], (int)u[5], (string)u[6], (int)u[7])));
-
-            //foreach()
-            return;
-        }
-
-        //Nastavení základních hodnot hry
-        private Hra(int id, DruhSpusteni druh)
-        {
-            Id = id;
-
-            Uzivatel.HerniId = (int)PraceSDB.ZavolejPrikaz("nacti_id_hrace", true, Id, Uzivatel.Id)[0][0];
-
-            DruhSpusteni = druh;
-            /*int pocet = 41;
-            Ulohy = new Uloha[pocet];
-            DruhSpusteniI = 2;
-
-            for (int i = 0; i < pocet; ++i)
-            {
-                //Ulohy[i] = new Uloha(i * 5);
-            }
-
-            aktualniUloha = Ulohy[2];*/
-            //Pokračovat
-        }
-
+        //Vytvoří hru, předá jí potřebné vlastnosti a vrátí nově vytvořenou hru
         public static Hra NactiHru(int id, DruhSpusteni druh)
         {
             string[] data = ((string)PraceSDB.ZavolejPrikaz("nacti_hru", true, id)[0][0]).Split(HlavniStatik.Oddelovac, StringSplitOptions.None);

@@ -19,12 +19,14 @@ namespace dmp1
     /// </summary>
     public partial class SpravaUloziste : Window
     {
-        private static bool ZmenenaAdresa;
+        private static bool ZmenenaAdresa; //Jestli byla změněna adresa
+
         public SpravaUloziste()
         {
             InitializeComponent();
         }
 
+        //Otestuje nové uložiště a případně ho zapíše do databáze
         private void btUlozit_Click(object sender, RoutedEventArgs e)
         {
             if (ZmenenaAdresa)
@@ -59,6 +61,7 @@ namespace dmp1
             }
         }
 
+        //Odstraní z databáze nepoužívané obrázky
         private void btVycistit_Click(object sender, RoutedEventArgs e)
         {
             string[] seznamSouboru = (string[])PraceSDB.ZavolejPrikaz("nacti_odpad", true)[0][0];

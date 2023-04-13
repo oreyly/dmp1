@@ -9,24 +9,29 @@ using System.Windows;
 
 namespace dmp1
 {
-    public enum DruhProduktu
-    {
-        Pozadi,
-        ProfilovaFotka
-    }
-
     [NotifyPropertyChanged]
+    //Třída představující avatar nebo téma
     public class Produkt
     {
+        //Id v databázi
         public int Id;
+        //Název před editací
         private string PuvodniNazev;
+        //Název
         public string Nazev { get; set; }
+        //Adresa obrázku před editací
         private URLAdresa PuvodniURL;
+        //Adresa obrázku
         public URLAdresa URL { get; set; }
+        //Cena před editací
         private int PuvodniCena;
+        //Cena
         public int Cena { get; set; }
+        //Co to je za produkt
         public DruhProduktu druhProduktu { get; set; }
+        //Jestli je již zakoupen
         public bool Koupeno { get; set; }
+        //Porovná aktuální a původní hodnoty
         public bool ZmenilSe
         {
             get
@@ -35,11 +40,7 @@ namespace dmp1
             }
         }
 
-        private Produkt()
-        {
-
-        }
-
+        //Konstruktor pro prázdný produkt
         public Produkt(DruhProduktu druh)
         {
             Novy = true;
@@ -47,6 +48,7 @@ namespace dmp1
             druhProduktu = druh;
         }
 
+        //Konstruktor pro obchod
         public Produkt(int id, string url, int cena, DruhProduktu druhProduktu, bool koupeno)
         {
             Id = id;
@@ -56,6 +58,7 @@ namespace dmp1
             Koupeno = koupeno;
         }
 
+        //Konstruktor pro editaci
         public Produkt(int id, string nazev, string url, int cena, DruhProduktu druhProduktu)
         {
             Id = id;
@@ -65,6 +68,7 @@ namespace dmp1
             this.druhProduktu = druhProduktu;
         }
 
+        //Pokusí se zakoupit produkt
         public void Koupit()
         {
             if (Cena <= Uzivatel.Body)
@@ -87,7 +91,10 @@ namespace dmp1
             }
         }
 
+        //Jestli je produkt nově vytvořen
         public bool Novy { get; set; }
+
+        //Zkusí uložit změny produktu do databáze
         public bool Ulozit()
         {
             if (Novy)
@@ -145,11 +152,13 @@ namespace dmp1
             return true;
         }
 
+        //Obnoví adresu obrázku do původního stavu
         public void ObnovURL()
         {
             URL = PuvodniURL;
         }
 
+        //Obnoví produkt do původního stavu
         public void ObnovVse()
         {
             Nazev = PuvodniNazev;

@@ -24,6 +24,7 @@ namespace dmp1
     //Okno na vyhledávání hráčů
     public partial class vyhledavaciOknoHracu : Window
     {
+        //Jestli jsou hledáni samotní hráči nebo celé skupiny
         public bool HraciVHledacku
         {
             get
@@ -32,7 +33,9 @@ namespace dmp1
             }
         }
 
+        //Seznam výsledků
         public ObservableCollection<string> seznam { get; set; } = new ObservableCollection<string>();
+        //Seznam do kterého se vybrané výsledky přesouvají
         private ObservableCollection<string> CilovySeznam;
 
         public vyhledavaciOknoHracu(ObservableCollection<string> cilovySeznam)
@@ -43,6 +46,7 @@ namespace dmp1
             NactiSeznam();
         }
 
+        //Načtení výsledků vyhledávání
         private void NactiSeznam(object sender = null, RoutedEventArgs e = null)
         {
             if (tbHledej == null || htsHraci == null || lvVysledky == null)
@@ -51,11 +55,6 @@ namespace dmp1
             }
 
             string hledanyVyraz = tbHledej.Text;
-            /*if (string.IsNullOrWhiteSpace(hledanyVyraz))
-            {
-                sstVysledky.Seznam.NastavHodnoty(new string[0]);
-                return;
-            }*/
 
             if (htsHraci.IsChecked)
             {
@@ -69,8 +68,9 @@ namespace dmp1
             }
         }
 
-
+        //Jestli se má okno zavřít úplně nebo jen schovat
         private bool Konec = false;
+        //Úplné zavření okna
         public new void Close()
         {
             Konec = true;
@@ -88,7 +88,9 @@ namespace dmp1
             Hide();
         }
 
+        //Event oznamující odeslání nových prvků
         public event OdeslaniVybranychPrvkuHandler OdeslaniVybranychPrvku;
+        //Zavolá event s novými prvky
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             OdeslaniVybranychPrvku?.Invoke(lvVysledky.SelectedItems.Cast<string>().ToArray());

@@ -22,20 +22,9 @@ namespace dmp1
             {
                 Filter = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*"
             };
-
-            RuntimeHelpers.RunClassConstructor(typeof(PraceSDB).TypeHandle);
-
-            //data = HlavniStatik.Otoc90(File.ReadAllLines("data.txt", Encoding.Default).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2], radek[4] }).ToArray());
-            //data2 = HlavniStatik.Otoc90(File.ReadAllLines("data2.txt", Encoding.Default).Select(radek => radek.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)).Select(radek => new string[] { radek[0].Substring(0, radek[0].IndexOf('@')), radek[1] + " " + radek[2] }).ToArray());
         }
 
-        Window Rodic;
-        public AdminOkno(Window rodic) : this()
-        {
-            Rodic = rodic;
-            Closed += delegate (object o, EventArgs e) { Rodic.Show(); };
-        }
-
+        //Načte žáky do databáze
         private void btZaci_Click(object sender, RoutedEventArgs e)
         {
             if (ofd.ShowDialog() == true)
@@ -53,6 +42,7 @@ namespace dmp1
             }
         }
 
+        //Načte učitele do databáze
         private void btUcitele_Click(object sender, RoutedEventArgs e)
         {
             if (ofd.ShowDialog() == true)
@@ -71,18 +61,21 @@ namespace dmp1
             }
         }
 
+        //Otevře správu uživatelů
         private void btUcty_Click(object sender, RoutedEventArgs e)
         {
             new SpravaUzivatelu(this).Show();
             Hide();
         }
 
+        //Otevře správu obchodu
         private void btObchod_Click(object sender, RoutedEventArgs e)
         {
             new EditorObchodu(this).Show();
             Hide();
         }
 
+        //Změní heslo administrátorovi
         private void btHesloAdmin_Click(object sender, RoutedEventArgs e)
         {
             InputBox ib = new InputBox("", "Nové heslo administrátora", true, 8);
@@ -95,11 +88,13 @@ namespace dmp1
             }
         }
 
+        //Otevře správu uložiště
         private void tbUloziste_Click(object sender, RoutedEventArgs e)
         {
             new SpravaUloziste().ShowDialog();
         }
 
+        //Odhlásí uživatele
         private void btOdhlasit_Click(object sender, RoutedEventArgs e)
         {
             HlavniStatik.OdhlasitSe();

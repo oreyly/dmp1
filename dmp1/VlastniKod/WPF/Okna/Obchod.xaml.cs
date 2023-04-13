@@ -30,7 +30,7 @@ namespace dmp1
         public Obchod(Window rodic) : this()
         {
             Rodic = rodic;
-            Closed += delegate (object sender, EventArgs e) { Rodic.Show(); };
+            Closed += delegate (object sender, EventArgs e) { Rodic?.Show(); };
             htsTypVysledku_Checked(null, null);
         }
 

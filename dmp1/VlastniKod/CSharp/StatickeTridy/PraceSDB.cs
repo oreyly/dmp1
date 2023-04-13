@@ -67,7 +67,7 @@ namespace dmp1
             }
             else
             {
-                int i = cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
                 return null;
             }
         }

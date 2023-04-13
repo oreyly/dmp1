@@ -21,28 +21,34 @@ namespace dmp1
     /// </summary>
     public partial class VyberUlohyPodleKategorie : Window
     {
+        //Seznam kategorií
         public ObservableCollection<Par<string, bool>> seznamKategorii { get; set; } = new ObservableCollection<Par<string, bool>>();
+        
+        //Seznam úloh
         public ObservableCollection<Par<string, int>> seznamUloh { get; set; } = new ObservableCollection<Par<string, int>>();
 
+        //Nadřazené okno
         Window Rodic;
         private VyberUlohyPodleKategorie()
         {
             InitializeComponent();
-            //new ListViewDragDropManager<Par<string, int>>(lvUlohy);
             DataContext = this;
             NacteniKategorii();
         }
 
+        //Konstruktor umožňující návrat k rodičovi
         public VyberUlohyPodleKategorie(Window rodic) : this()
         {
             Rodic = rodic;
         }
 
+        //Načtení všech kategorií
         private void NacteniKategorii()
         {
             seznamKategorii.NastavHodnoty(((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_kategorie", true, Uzivatel.Id)[0][0]).Select(k => new Par<string, bool>(k.Key, Convert.ToBoolean(k.Value))).OrderBy(k => k.Klic));
         }
 
+        //Načtení úloh z dané kategorie
         private void NacteniUloh(string kategorie)
         {
             if(PraceSDB.ZavolejPrikaz("nacti_ulohy_kategorie", true, Uzivatel.Id, kategorie)[0][0] is Dictionary<string, string> ulohy)
@@ -55,6 +61,7 @@ namespace dmp1
             }
         }
 
+        //Změna vybrané kategorie
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lvKategorie.SelectedIndex >= 0)
@@ -67,16 +74,19 @@ namespace dmp1
             }
         }
 
+        //Zobrazení rodiče po zavření okna
         private void Window_Closed(object sender, EventArgs e)
         {
             Rodic.Show();
         }
 
+        //Odoznačení prvku v seznamu
         private void lvKategorie_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ((ListView)sender).SelectedIndex = -1;
         }
 
+        //Přidání nové kategorie
         private void btPridatKategorii_Click(object sender, RoutedEventArgs e)
         {
             InputBox ib = new InputBox("", "Pojmenování skupiny");
@@ -128,6 +138,7 @@ namespace dmp1
             }
         }
 
+        //Smazání kategorie
         private void btSmazatKategorii_Click(object sender, RoutedEventArgs e)
         {
             Par<string, bool> kategorie = (Par<string, bool>)lvKategorie.SelectedItem;
@@ -152,18 +163,21 @@ namespace dmp1
             NacteniKategorii();
         }
 
+        //Přidání úlohy
         private void btPridatUlohu_Click(object sender, RoutedEventArgs e)
         {
             new editorUloh(this, -1, ((Par<string, bool>)lvKategorie.SelectedItem).Klic).Show();
             Hide();
         }
 
+        //Editace úlohy
         private void btUpravitUlohu_Click(object sender, RoutedEventArgs e)
         {
             new editorUloh(this, ((Par<string, int>)lvUlohy.SelectedItem).Hodnota, ((Par<string, bool>)lvKategorie.SelectedItem).Klic).Show();
             Hide();
         }
 
+        //Odstranění úlohy
         private void btOdstranitUlohu_Click(object sender, RoutedEventArgs e)
         {
             Par<string, int> uloha = (Par<string, int>)lvUlohy.SelectedItem;
@@ -175,6 +189,7 @@ namespace dmp1
             }
         }
 
+        //Načte znovu úlohy po svém zobrazení
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue && ((Par<string, bool>)lvKategorie.SelectedItem) != null)
@@ -183,19 +198,21 @@ namespace dmp1
             }
         }
 
+        //Přesune chycenou úlohu do kategorie
         private void ListViewItem_Drop(object sender, DragEventArgs e)
         {
             Par<string, int> uloha = (Par<string, int>)e.Data.GetData(typeof(Par<string, int>));
             PraceSDB.ZavolejPrikaz("aktualizuj_kategorii_ulohy", false, Uzivatel.Id, (string)((ListViewItem)sender).Content, uloha.Hodnota);
             NacteniUloh(((Par<string, bool>)lvKategorie.SelectedItem).Klic);
-            //MessageBox.Show((string)((ListViewItem)sender).Content + " -> " + ((ListViewItem)e.Data.GetData(typeof(ListViewItem))).Content);
         }
 
+        //Zastavení MouseUp eventu při kliku na prvek v seznamu
         private void FrameworkElement_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
         }
 
+        //Chytne úlohu aby mohl táhnout
         private void ListViewItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -205,6 +222,7 @@ namespace dmp1
             }
         }
 
+        //Odstranění vybrané úlohy klávesou del
         private void ListViewItem_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -213,6 +231,7 @@ namespace dmp1
             }
         }
 
+        //Odstranění vybrané kategorie klávesou del
         private void ListViewItem_PreviewKeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)

@@ -28,71 +28,21 @@ using System.ComponentModel;
 
 namespace dmp1
 {
+    //Statická třída sdružující proměnné a funkce potřebné napříč programem
     public static class HlavniStatik
     {
+        //Event hlídající případné změny kvůli bindingu v XAML
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
 
-        public static Random rnd = new Random();
+        //Instance Randomu pro celý kód
+        public static readonly Random rnd = new Random();
+        //Oddelovac využívaný na spojování dat v DB
         public static readonly string[] Oddelovac = new string[] { "$$$" };
 
+        //Klient pro připojení k HTTP stránkám
         private static HttpClient client = new HttpClient();
 
-        public static string OpravFunkci(string funkce)
-        {
-            if (string.IsNullOrWhiteSpace(funkce))
-            {
-                return "";
-            }
-
-            funkce = funkce.ToLower();
-            funkce = funkce.Replace("[", "(");
-            funkce = funkce.Replace("]", ")");
-            funkce = funkce.Replace("{", "(");
-            funkce = funkce.Replace("}", ")");
-            funkce = Regex.Replace(funkce, @"[^0-9+\-*/^()x]", "");
-
-            for (int i = 0; i < funkce.Length; ++i)
-            {
-                if (funkce[i] == '^')
-                {
-                    string pred = funkce.HledejZavorky(i - 1, false);
-                    string za = funkce.HledejZavorky(i + 1, true);
-                    funkce = funkce.Replace(pred + '^' + za, $"{{{pred},{za}}}");
-                    i = -1;
-                }
-            }
-
-            funkce = funkce.Replace("{", "Pow(");
-            funkce = funkce.Replace("}", ")");
-
-            return funkce;
-        }
-
-        public static NC.Expression VytvorFunkci(string predpis)
-        {
-            NC.Expression ex;
-            try
-            {
-                ex = new NC.Expression(OpravFunkci(predpis));
-                ex.Parameters["x"] = 1;
-                ex.Evaluate();
-            }
-            catch
-            {
-                return null;
-            }
-            return ex;
-        }
-
-        public static Media.Color SmichejBarvy(Media.Color c1, Media.Color c2)
-        {
-            byte r = (byte)(c1.R * 0.5 + c2.R * 0.5);
-            byte g = (byte)(c1.G * 0.5 + c2.G * 0.5);
-            byte b = (byte)(c1.B * 0.5 + c2.B * 0.5);
-
-            return Media.Color.FromRgb(r, g, b);
-        }
-
+        //Převede pole polí do 2D pole
         public static T[,] To2D<T>(T[][] zdroj)
         {
             int prvniDim = zdroj.Length;
@@ -110,6 +60,7 @@ namespace dmp1
             return vysledek;
         }
 
+        //Otočí pole polí o 90 stupňů
         public static T[][] Otoc90<T>(T[][] zdroj)
         {
             T[][] vysledek = new T[zdroj[0].Length][];
@@ -127,6 +78,7 @@ namespace dmp1
             return vysledek;
         }
 
+        //Nahraje obrázek na server a vrátí jeho jméno
         public static string NahrajObrazek(string cesta)
         {
             BitmapImage bi = new BitmapImage(new Uri(cesta, UriKind.Absolute));
@@ -145,6 +97,7 @@ namespace dmp1
             }
         }
 
+        //Odešle požadavek metodou POST
         public static string PosliPost(string url, Dictionary<string, string> parametry)
         {
             parametry.Add("heslo", "KoprovkaJeZloVytvoreneDablem");
@@ -161,6 +114,7 @@ namespace dmp1
             return vys;
         }
 
+        //Odhlasi účet z oplikace jejím restartem
         public static void OdhlasitSe()
         {
             Process.Start(Application.ResourceAssembly.Location);

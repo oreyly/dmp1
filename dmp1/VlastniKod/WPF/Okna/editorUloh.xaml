@@ -20,7 +20,6 @@
             <local:BoolToVisibilityConverter x:Key="invBool2Vis" TrueValue="Collapsed" FalseValue="Visible"></local:BoolToVisibilityConverter>
             <local:RadioBoolToIntConverter x:Key="Bool2Int"></local:RadioBoolToIntConverter>
             <local:NullToBool x:Key="Null2Bool"></local:NullToBool>
-            <local:FuncToNcalc x:Key="Fun2NCalc"></local:FuncToNcalc>
             <local:URLToStr x:Key="url2str"></local:URLToStr>
             <local:DeleniHodnoty x:Key="deleniHodnot"></local:DeleniHodnoty>
         </ResourceDictionary>

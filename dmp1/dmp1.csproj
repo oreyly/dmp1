@@ -366,6 +366,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="VlastniKod\CSharp\Konvertory\DruhToDesc.cs" />
+    <Compile Include="VlastniKod\CSharp\Enumy\StavUlohy.cs" />
+    <Compile Include="VlastniKod\CSharp\Enumy\UrovenPrav.cs" />
+    <Compile Include="VlastniKod\CSharp\Enumy\DruhProduktu.cs" />
     <Compile Include="VlastniKod\WPF\Okna\AdminOkno.xaml.cs">
       <DependentUpon>AdminOkno.xaml</DependentUpon>
     </Compile>
@@ -376,9 +379,6 @@
     <Compile Include="VlastniKod\CSharp\Konvertory\IntToVis.cs" />
     <Compile Include="VlastniKod\WPF\VyskakovaciOkna\LepsiMessageBox.xaml.cs">
       <DependentUpon>LepsiMessageBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="skejlovani.xaml.cs">
-      <DependentUpon>skejlovani.xaml</DependentUpon>
     </Compile>
     <Compile Include="VlastniKod\WPF\VyskakovaciOkna\SpravaUloziste.xaml.cs">
       <DependentUpon>SpravaUloziste.xaml</DependentUpon>
@@ -396,7 +396,6 @@
     <Compile Include="VlastniKod\CSharp\Konvertory\Calculate.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\DeleniHodnoty.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\DruhToVis.cs" />
-    <Compile Include="VlastniKod\CSharp\Konvertory\FuncToNcalc.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\IntToBool.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\IntToNapovedaSrc.cs" />
     <Compile Include="VlastniKod\CSharp\Konvertory\InvDruhToVis.cs" />
@@ -417,16 +416,6 @@
     <Compile Include="VlastniKod\WPF\Okna\editorUloh.xaml.cs">
       <DependentUpon>editorUloh.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VlastniKod\WPF\Okna\HlavniMenu.xaml.cs">
-      <DependentUpon>HlavniMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="VlastniKod\WPF\Okna\VyberAkceEditoruHer.xaml.cs">
-      <DependentUpon>VyberAkceEditoruHer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\druhTlacitkaVSeznamu.cs" />
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\Grafik.xaml.cs">
-      <DependentUpon>Grafik.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VlastniKod\WPF\OvladaciPrvky\ObrazekVKrouzku.xaml.cs">
       <DependentUpon>ObrazekVKrouzku.xaml</DependentUpon>
     </Compile>
@@ -446,14 +435,6 @@
     <Compile Include="VlastniKod\WPF\OvladaciPrvky\LepsiLabel.xaml.cs">
       <DependentUpon>LepsiLabel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VlastniKod\CSharp\Tridy\Graf.cs" />
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\NabidkaMoznosti.xaml.cs">
-      <DependentUpon>NabidkaMoznosti.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\Nahled.xaml.cs">
-      <DependentUpon>Nahled.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NIKDYNEOTEVIRAT.cs" />
     <Compile Include="VlastniKod\WPF\Okna\Obchod.xaml.cs">
       <DependentUpon>Obchod.xaml</DependentUpon>
     </Compile>
@@ -463,9 +444,6 @@
     <Compile Include="VlastniKod\WPF\OvladaciPrvky\OknoVObchode.xaml.cs">
       <DependentUpon>OknoVObchode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\OtevreneVysledky.xaml.cs">
-      <DependentUpon>OtevreneVysledky.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VlastniKod\CSharp\Tridy\Par.cs" />
     <Compile Include="VlastniKod\CSharp\Tridy\Produkt.cs" />
     <Compile Include="VlastniKod\WPF\Okna\ProhlednoutTesty.xaml.cs">
@@ -474,17 +452,11 @@
     <Compile Include="VlastniKod\WPF\Okna\ProhlednoutTestyLidi.xaml.cs">
       <DependentUpon>ProhlednoutTestyLidi.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\seznamSTlacitky.xaml.cs">
-      <DependentUpon>seznamSTlacitky.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VlastniKod\WPF\Okna\spravaSkupin.xaml.cs">
       <DependentUpon>spravaSkupin.xaml</DependentUpon>
     </Compile>
     <Compile Include="VlastniKod\WPF\Okna\tvorbaHer.xaml.cs">
       <DependentUpon>tvorbaHer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="VlastniKod\WPF\OvladaciPrvky\UkladaniVysledku.xaml.cs">
-      <DependentUpon>UkladaniVysledku.xaml</DependentUpon>
     </Compile>
     <Compile Include="VlastniKod\CSharp\Tridy\Uloha.cs" />
     <Compile Include="VlastniKod\WPF\VyskakovaciOkna\UpravaKategorie.xaml.cs">
@@ -509,9 +481,6 @@
     <Compile Include="VlastniKod\WPF\Okna\VyberUlohyPodleKategorie.xaml.cs">
       <DependentUpon>VyberUlohyPodleKategorie.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VlastniKod\WPF\Okna\ZakovskeOkno.xaml.cs">
       <DependentUpon>ZakovskeOkno.xaml</DependentUpon>
     </Compile>
@@ -524,10 +493,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VlastniKod\WPF\VyskakovaciOkna\LepsiMessageBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="skejlovani.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -571,18 +536,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VlastniKod\WPF\Okna\HlavniMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VlastniKod\WPF\Okna\VyberAkceEditoruHer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\Grafik.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="VlastniKod\WPF\Okna\HraciPlocha.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -611,14 +564,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\NabidkaMoznosti.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\Nahled.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="VlastniKod\WPF\Okna\Obchod.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -628,10 +573,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VlastniKod\WPF\OvladaciPrvky\OknoVObchode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\OtevreneVysledky.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -660,19 +601,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\seznamSTlacitky.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="VlastniKod\WPF\Okna\spravaSkupin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VlastniKod\WPF\Okna\tvorbaHer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VlastniKod\WPF\OvladaciPrvky\UkladaniVysledku.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -701,10 +634,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VlastniKod\WPF\Okna\VyberUlohyPodleKategorie.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

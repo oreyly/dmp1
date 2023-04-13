@@ -16,17 +16,20 @@ using NC = NCalc;
 
 namespace dmp1
 {
-    public enum StavUlohy {Prazdna, Spravne, Spatne, Zodpovezena }
     //Třída obsahující potřebná data o jednotlivých úlohách
     [NotifyPropertyChanged]
     public class Uloha
     {
-        public string xd { get; set; } = "Počet bodů\nza správnou odpověď";
+        //Id úlohy
         private int Id;
-        public string Kategorie { get; set; }
+        //Název/nadpis úlohy
         public string Nazev { get; set; }
+        //Název kategorie úlohy
+        public string Kategorie { get; set; }
+        //Zadání úlohy
         public string Popis { get; set; }
 
+        //Výsledek úlohy
         private string _Vysledek;
         public string Vysledek
         {
@@ -43,7 +46,7 @@ namespace dmp1
                 }
 
                 string[] data = value.RozdelDolary();
-                if (OtevrenyVysledek = data[0] == "O")
+                if (OtevrenyVysledek = data[0] == "O") //O značí otevřené odpovědi
                 {
                     List<Par<string, string>> datka = new List<Par<string, string>>();
                     for (int i = 1; i < data.Length; i += 2)
@@ -56,7 +59,7 @@ namespace dmp1
                         otevreneVysledkyOdpovedi.NastavHodnoty(datka.Select((dato, i) => new Par<string, Par<string, string>>(dato.Klic, new Par<string, string>(otevreneVysledky[i].Hodnota,hra.DruhSpusteni == DruhSpusteni.Uceni ? dato.Hodnota : ""))));
                     }
                 }
-                else
+                else //Jinak jsou odpovědi ve formě možností
                 {
                     SpravnyVysledek = Convert.ToInt32(data[5]);
                     if(hra != null && hra.DruhSpusteni == DruhSpusteni.Uceni)
@@ -68,14 +71,22 @@ namespace dmp1
             }
         }
 
-        public bool OtevrenyVysledek { get; set; } //Jestli má úloha otevřené odpovědi
+        //Jestli má úloha otevřené odpovědi
+        public bool OtevrenyVysledek { get; set; }
+        //Pole otevřených odpovědí -> otázka-odpověď
         public ObservableCollection<Par<string, string>> otevreneVysledky { get; set; }
+        //Pole otevřených odpovědí zadaných hráčem -> otázka-odpověď
         public ObservableCollection<Par<string, Par<string, string>>> otevreneVysledkyOdpovedi { get; set; }
-        public ObservableCollection<string> CastiVysledku4 { get; set; } //Případné ABCD odpovědi
-        public int SpravnyVysledek { get; set; } //Kolikátá odpověď je správná
+        //ABCD možnosti odpovědí
+        public ObservableCollection<string> CastiVysledku4 { get; set; }
+        //Kolikátá odpověď je správná (od 1)
+        public int SpravnyVysledek { get; set; }
+        //Kolikátou odpověď hráč označil (od 1)
         public int SpravnyVysledekOdpoved { get; set; }
-        public string Napoveda { get; set; }
-        public bool obsahujeObrazek { get; set; }
+        //Nápověda k výsledku
+        public string Napoveda { get; set; } 
+
+        //Předpis obrázku -> URL$$$cesta nebo N bez obrázku
         private string _ObrazekPredpis;
         public string ObrazekPredpis
         {
@@ -89,27 +100,20 @@ namespace dmp1
                 string[] data = value.RozdelDolary();
                 if (data[0] == "URL")
                 {
-                    obsahujeObrazek = true;
                     Obrazek = data[1];
-                }
-                else if (data[0] == "F")
-                {
-                    obsahujeObrazek = false;
-                    Predpis = data[1];
-                }
-                else
-                {
-                    obsahujeObrazek = true;
                 }
             }
         }
 
-        public URLAdresa Obrazek { get; set; } //URL obrázku
-        public string Predpis { get; set; } //Případný předpis grafu apod.
+        //URL obrázku
+        public URLAdresa Obrazek { get; set; } 
+
+        //Počet bodů za správnou odpověď
         private int _Body;
         public object Body { 
             get
             {
+                //Pokud je úloha ve hře k učení, zobrazuje místo hodnot pouze pomlčky
                 if (hra != null && hra.DruhSpusteni == DruhSpusteni.Uceni)
                 {
                     return "---";
@@ -127,15 +131,21 @@ namespace dmp1
                 }
             }
         }
-        //public string Kategorie { get; set; }
-        public bool Otevrena { get; set; } //Jestli je aktuálně úloha otevřená ve hře
+
+        //Jestli je aktuálně úloha otevřená ve hře
+        public bool Otevrena { get; set; } 
+        //Stav úlohy
         public StavUlohy stavUlohy { get; set; } = StavUlohy.Prazdna;
+        //Jestli je úloha záchytným bodem
         public bool ZachytnyBod { get; set; } = false;
-        private Hra hra;
+        //Hra do které úloha patří
+        private Hra hra { get; set; }
+        //Hranice, která se má vykreslovat na herní ploše kolem dané úlohy
         public float TloustkaOhraniceni
         {
             get
             {
+                //Obrys pouze pokud je otevřená
                 if(Otevrena)
                 {
                     return 2f;
@@ -146,15 +156,12 @@ namespace dmp1
                 }
             }
         }
-        public Brush Barva //Nastavení barvy v seznamu úloh ve hře
+
+        //Nastavení barvy v seznamu úloh ve hře
+        public Brush Barva 
         {
             get
             {
-                /*if(Otevrena)
-                {
-                    return Brushes.LightBlue;
-                }*/
-
                 if (ZachytnyBod)
                 {
                     return Brushes.BlanchedAlmond;
@@ -181,15 +188,15 @@ namespace dmp1
             }
         }
 
+        //Úloha před editací
         private Uloha Zaklad;
+
+        //Porovná aktuální vlastnosti s vlastnostmi před editací a zjistí, jestli se něco změnilo
         [SafeForDependencyAnalysis]
         public bool ZmenilSe
         {
             get
             {
-                //Par[] p1 = Zaklad.otevreneVysledky.ToArray();
-                //Par[] a = otevreneVysledky.ToArray();
-                //bool a = Enumerable.SequenceEqual(Zaklad.otevreneVysledky.ToArray(), otevreneVysledky.ToArray());
                 if(Nova)
                 {
                     return true;
@@ -202,12 +209,12 @@ namespace dmp1
                     && Enumerable.SequenceEqual(Zaklad.CastiVysledku4, CastiVysledku4) 
                     && Zaklad.SpravnyVysledek == SpravnyVysledek 
                     && Zaklad.Napoveda == Napoveda 
-                    && Zaklad.obsahujeObrazek == obsahujeObrazek 
-                    && Zaklad.Obrazek == Obrazek 
-                    && Zaklad.Predpis == Predpis 
+                    && Zaklad.Obrazek == Obrazek
                     && Zaklad.Body.Equals(Body));
             }
         }
+
+        //Uloží svou kopii před editací
         private void Naklonuj()
         {
             Zaklad = new Uloha()
@@ -219,13 +226,12 @@ namespace dmp1
                 CastiVysledku4 = new ObservableCollection<string>(CastiVysledku4),
                 SpravnyVysledek = SpravnyVysledek,
                 Napoveda = Napoveda,
-                obsahujeObrazek = obsahujeObrazek,
                 Obrazek = Obrazek,
-                Predpis = Predpis,
                 Body = Body,
             };
         }
 
+        //Konstruktor využívaný při kontrole úloh
         public Uloha(Hra h, string nazev, string popis, string vysledek, string obrPred, int body, int id, string vysledekOdpoved, int spravne)
         {
             hra = h;
@@ -264,27 +270,8 @@ namespace dmp1
             };
         }
 
-        //Nastavení základních hodnot
-        public Uloha(int id)
-        {
 
-            /*
-            CastiVysledku4 = new ObservableCollection<string>() { "", "", "", "" };
-            otevreneVysledky = new ObservableCollection<Par<string, string>>() { new Par<string, string>("", "") };
-            Nazev = nazev;
-            Popis = popis;
-            Vysledek = vysledek;
-            Napoveda = napoveda;
-            ObrazekPredpis = obrPred;
-            Body = body;
-            Kategorie = kategorie;
-            Nova = false;
-            Id = id;*/
-
-            Naklonuj();
-        }
-
-        //Nastavení základních hodnot
+        //Konstruktor pro vytvoření normální úlohy
         public Uloha(string nazev, string popis, string vysledek, string napoveda, string obrPred, int body, int id, Hra h = null, string kategorie = "")
         {
             hra = h;
@@ -307,6 +294,7 @@ namespace dmp1
             }
         }
 
+        //Konstruktor pro vytvoření prázdné úlohy, maximálně s kategorií
         public Uloha(string kategorie = "")
         {
             Kategorie = kategorie;
@@ -322,7 +310,7 @@ namespace dmp1
             Nova = true;
         }
 
-
+        //Zamíchá ABCD možnosti a taky správně nastaví nový správný výsledek
         public void ZamichejMoznosti()
         {
             if(!OtevrenyVysledek)
@@ -341,12 +329,9 @@ namespace dmp1
             }
         }
 
-        public override string ToString()
-        {
-            return Nazev;// + stavUlohy.AsString(EnumFormat.Name);
-        }
-
-        public bool Nova;
+        //Značí jestli je úloha nová a měla by se teprve zapsat do databáze
+        public bool Nova { get; set; }
+        //Zapíše úlohu do databáze pokud splňuje všechny
         public bool UlozSe()
         {
             if (!Nova && !ZmenilSe)
@@ -384,28 +369,13 @@ namespace dmp1
             }
 
             string obrPredpis;
-            if (obsahujeObrazek)
+            if (string.IsNullOrWhiteSpace(Obrazek?.Soubor))
             {
-                if (string.IsNullOrWhiteSpace(Obrazek?.Soubor))
-                {
-                    obrPredpis = "N";
-                }
-                else
-                {
-                    obrPredpis = "URL$$$" + Obrazek.Soubor; 
-                }
+                obrPredpis = "N";
             }
             else
             {
-                if (HlavniStatik.VytvorFunkci(Predpis) == null)
-                {
-                    LepsiMessageBox.Show("Úloha nelze uložit! - Neplatný předpis funkce");
-                    return false;
-                }
-                else
-                {
-                    obrPredpis = "F$$$" + Predpis;
-                }
+                obrPredpis = "URL$$$" + Obrazek.Soubor;
             }
 
             string vysledek;
@@ -463,26 +433,7 @@ namespace dmp1
             return true;
         }
 
-        public void ObnovSe()
-        {
-            Nazev = Zaklad.Nazev;
-            Popis = Zaklad.Popis;
-            OtevrenyVysledek = Zaklad.OtevrenyVysledek;
-            otevreneVysledky = new ObservableCollection<Par<string, string>>(Zaklad.otevreneVysledky.Select(p => new Par<string, string>(p.Klic, p.Hodnota)));
-            CastiVysledku4 = new ObservableCollection<string>(Zaklad.CastiVysledku4);
-            SpravnyVysledek = Zaklad.SpravnyVysledek;
-            Napoveda = Zaklad.Napoveda;
-            obsahujeObrazek = Zaklad.obsahujeObrazek;
-            Obrazek = Zaklad.Obrazek;
-            Predpis = Zaklad.Predpis;
-            Body = Zaklad.Body;
-        }
-
-        public void OdstranSe()
-        {
-            PraceSDB.ZavolejPrikaz("odstran_ulohu", false, Id);
-        }
-
+        //Zkontroluje jestli je zadaná odpověď správná
         public void ZkontrolujOdpoved(bool ukazovatMB)
         {
             if (stavUlohy is StavUlohy.Spravne or StavUlohy.Spatne)
@@ -500,11 +451,7 @@ namespace dmp1
                 for (int i = 0; i < otevreneVysledky.Count; ++i)
                 {
                     string vysledek = otevreneVysledkyOdpovedi[i].Hodnota.Hodnota;
-                    /*if(string.IsNullOrWhiteSpace(vysledek))
-                    {
-                        LepsiMessageBox.Show("Chybí některá z odpovědí");
-                        return;
-                    }*/
+
                     celkovyVysledek += $"{vysledek}$$$";
                     if (otevreneVysledky[i].Hodnota != vysledek)
                     {
@@ -557,12 +504,14 @@ namespace dmp1
             }
         }
 
+        //Vrátí pole nových úloh, jež reprezentují herní úlohy zadaných idéček
         public static Uloha[] VytvorHerniUlohy(int[] idecka, Hra h)
         {
             object[][] dataUloh = PraceSDB.ZavolejPrikaz("nacti_herni_ulohy", true, idecka).Select(o => (object[])o[0]).ToArray();
             return dataUloh.Select(dato => new Uloha((string)dato[0], (string)dato[1], (string)dato[2], (string)dato[3], (string)dato[4], (int)dato[5], (int)dato[7], h)).ToArray();
         }
 
+        //Změní stav úlohy
         public void PrehodnotStav(int novyStav)
         {
             PraceSDB.ZavolejPrikaz("prehodnotit_vysledek", false, Id, novyStav);

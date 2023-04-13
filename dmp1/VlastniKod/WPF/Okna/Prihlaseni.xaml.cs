@@ -37,8 +37,9 @@ namespace dmp1
             tbJmeno.Focus();
         }
 
-        private string AutoUzivatel;
+        private string AutoUzivatel; //Přihlašovací jméno uživatele ve školní síti
 
+        //Zjistí, jestli je plikace připojena ze školní sítě
         private void NajdiAutoUzivatele()
         {
             try
@@ -65,6 +66,7 @@ namespace dmp1
 
         }
 
+        //Zjistí jestli je AutoUzivatel v databázi a případně ukáže tlačítko pro přímé přihlášení
         private void UkazAutoPrihlaseni()
         {
             if (!string.IsNullOrWhiteSpace(AutoUzivatel) && (bool)PraceSDB.ZavolejPrikaz("existuje_prihlasovaci_nazev", true, AutoUzivatel)[0][0])
@@ -74,6 +76,7 @@ namespace dmp1
             }
         }
 
+        //Nastaví černý ohraničení, pokud není
         private void Viewbox_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is Border b && b.BorderBrush != Brushes.Black)
@@ -85,42 +88,50 @@ namespace dmp1
             ((Viewbox)((Border)sender).Child).Child.Focus();
         }
 
+        //Přihlásí uživatele na základě uživatelského jména a hesla
         private void PrihlasSe(object sender, RoutedEventArgs e)
         {
             bdrJmeno.BorderBrush = Brushes.Black;
             object hash = PraceSDB.ZavolejPrikaz("nacti_heslo", true, tbJmeno.Text)[0][0];
             if (hash is not DBNull)
             {
-                if (BCrypt.Net.BCrypt.EnhancedVerify(tbHeslo.Password, Encoding.UTF8.GetString((byte[])hash))) //Ověří heslo
+                try
                 {
-                    if (tbJmeno.Text != "ADMIN" && (bool)PraceSDB.ZavolejPrikaz("over_jednotne_prihlaseni", true, tbJmeno.Text)[0][0])
+                    if (BCrypt.Net.BCrypt.EnhancedVerify(tbHeslo.Password, Encoding.UTF8.GetString((byte[])hash))) //Ověří heslo
                     {
-                        LepsiMessageBox.Show("Uživatel je již přihlášen na jiném zařízení!");
-                        return;
-                    }
+                        if (tbJmeno.Text != "ADMIN" && (bool)PraceSDB.ZavolejPrikaz("over_jednotne_prihlaseni", true, tbJmeno.Text)[0][0])
+                        {
+                            LepsiMessageBox.Show("Uživatel je již přihlášen na jiném zařízení!");
+                            return;
+                        }
 
-                    Uzivatel.NactiUzivatele(tbJmeno.Text);
-                    switch(Uzivatel.Prava)
+                        Uzivatel.NactiUzivatele(tbJmeno.Text);
+                        switch (Uzivatel.Prava)
+                        {
+                            case UrovenPrav.Administrator:
+                                new AdminOkno().Show();
+                                break;
+
+                            case UrovenPrav.Ucitel:
+                                new UcitelskeOkno().Show();
+                                break;
+
+                            case UrovenPrav.Zak:
+                                new ZakovskeOkno().Show();
+                                break;
+                        }
+                        Close();
+                    }
+                    else
                     {
-                        case UrovenPrav.Administrator:
-                            new AdminOkno().Show();
-                            break;
-
-                        case UrovenPrav.Ucitel:
-                            new UcitelskeOkno().Show();
-                            break;
-
-                        case UrovenPrav.Zak:
-                            new ZakovskeOkno().Show();
-                            break;
+                        LepsiMessageBox.Show("Špatné heslo!");
+                        bdrHeslo.BorderBrush = Brushes.Red;
+                        bdrHeslo.BorderThickness = new Thickness(2);
                     }
-                    Close();
                 }
-                else
+                catch
                 {
-                    LepsiMessageBox.Show("Špatné heslo!");
-                    bdrHeslo.BorderBrush = Brushes.Red;
-                    bdrHeslo.BorderThickness = new Thickness(2);
+                    LepsiMessageBox.Show("Heslo je poškozeno!");
                 }
             }
             else
@@ -131,6 +142,7 @@ namespace dmp1
             }
         }
 
+        //Přihlásí uživatele bez potřeby hesla
         private void btPrimePrihlaseni_Click(object sender, RoutedEventArgs e)
         {
             object hash = PraceSDB.ZavolejPrikaz("nacti_heslo", true, AutoUzivatel)[0][0];
@@ -162,6 +174,7 @@ namespace dmp1
             Close();
         }
 
+        //Přepne klávesou enter na textové pole s heslem
         private void tbJmeno_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -170,19 +183,13 @@ namespace dmp1
             }
         }
 
+        //Přepne na tlačítko přihlásit
         private void tbHeslo_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {
                 btPrihlasit.Focus();
-                //PrihlasSe(null, null);
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            InputBox ib = new InputBox("nazev", "nadpis", true, 5);
-            ib.ShowDialog();
         }
     }
 }
