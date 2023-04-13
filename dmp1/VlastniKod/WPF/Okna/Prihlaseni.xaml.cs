@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,30 +27,50 @@ namespace dmp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        //phdrKKWs5xNOfcIm
-        //http://home.spsostrov.cz/~matema/piejcpi/formik/gulas.jpg
         public MainWindow()
         {
             InitializeComponent();
-            
-            NabidniAutoPrihlaseni();
+
+            Thread tr = new Thread(NajdiAutoUzivatele);
+            tr.Start();
 
             tbJmeno.Focus();
         }
 
         private string AutoUzivatel;
 
-        private void NabidniAutoPrihlaseni()
+        private void NajdiAutoUzivatele()
         {
-            AutoUzivatel = "matema2";//WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            if ((bool)PraceSDB.ZavolejPrikaz("existuje_prihlasovaci_nazev", true, AutoUzivatel)[0][0])
+            try
+            {
+                DirectoryEntry de = new DirectoryEntry("LDAP://RootDSE");
+                DirectoryEntry myLdapConnection = new DirectoryEntry("LDAP://" + de.Properties["defaultNamingContext"][0].ToString());
+
+                DirectorySearcher search = new DirectorySearcher(myLdapConnection)
+                {
+                    Filter = $"(cn={Environment.UserName})",
+                    Sort = new SortOption("cn", SortDirection.Ascending)
+                };
+
+                if (myLdapConnection.Path == $"LDAP://DC=spsoad,DC=spsostrov,DC=cz" && search.FindAll().Count == 1)
+                {
+                    AutoUzivatel = Environment.UserName;
+                }
+
+                Dispatcher.Invoke(UkazAutoPrihlaseni);
+            }
+            catch 
+            {
+            }
+
+        }
+
+        private void UkazAutoPrihlaseni()
+        {
+            if (!string.IsNullOrWhiteSpace(AutoUzivatel) && (bool)PraceSDB.ZavolejPrikaz("existuje_prihlasovaci_nazev", true, AutoUzivatel)[0][0])
             {
                 btPrimePrihlaseni.FindLogicalChildren<Label>().ElementAt(0).Content = $"Přihlásit jako {AutoUzivatel}";
                 btPrimePrihlaseni.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btPrimePrihlaseni.Visibility = Visibility.Collapsed;
             }
         }
 

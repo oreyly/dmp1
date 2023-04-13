@@ -116,7 +116,7 @@ namespace dmp1
             if (e.RemovedItems.Count > 0)
             {
                 Produkt stary = (Produkt)e.RemovedItems[0];
-                if (stary.ZmenilSe)
+                if (!stary.Novy && stary.ZmenilSe)
                 {
                     lvProdukty.SelectionChanged -= lvProdukty_SelectionChanged;
                     lvProdukty.SelectedItem = stary;

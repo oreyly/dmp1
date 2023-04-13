@@ -7,6 +7,7 @@
         xmlns:pokus="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         mc:Ignorable="d"
         Title="Vyhledávání hráčů" Height="400" Width="300"
+        ResizeMode="NoResize"
         Closing="Window_Closing"
         >
     <Window.Resources>

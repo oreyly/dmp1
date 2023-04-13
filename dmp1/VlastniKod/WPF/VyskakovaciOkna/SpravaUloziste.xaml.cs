@@ -33,12 +33,17 @@ namespace dmp1
                 return;
             }
 
-            if (tbAdresa.Text == URLAdresa.Koren)
+            if (tbAdresa.Text != URLAdresa.Koren)
             {
+                LepsiMessageBox.Show("Adresa se nezměnila!");
                 return;
             }
 
-            string odezva = HlavniStatik.PosliPost(tbAdresa.Text + "php/verifikaceCesty.php", new Dictionary<string, string>()).Trim();
+
+            string[] seznamSouboru = (string[])PraceSDB.ZavolejPrikaz("nacti_odpad", true)[0][0];
+
+
+            string odezva = HlavniStatik.PosliPost(tbAdresa.Text + "php/verifikaceCesty.php", new Dictionary<string, string>() { { "soubory", string.Join(HlavniStatik.Oddelovac[0], seznamSouboru) } }).Trim();
             switch(odezva)
             {
                 case "1":

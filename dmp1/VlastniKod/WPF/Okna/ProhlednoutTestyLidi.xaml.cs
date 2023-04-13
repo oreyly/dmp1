@@ -45,7 +45,7 @@ namespace dmp1
         private void NactiData()
         {
             string[] infoOHre = (string[])PraceSDB.ZavolejPrikaz("nacti_info_hry", true, IdHry)[0][0];
-            Data.NastavHodnoty(new string[] { infoOHre[0], infoOHre[1], Convert.ToBoolean(infoOHre[2]) ? "Ano" : "Ne", infoOHre[3], Convert.ToInt32(infoOHre[4]) / 60 + " min.", Convert.ToBoolean(infoOHre[5]) ? "Ano" : "Ne", infoOHre[6], infoOHre[7] });
+            Data.NastavHodnoty(new string[] { infoOHre[0], infoOHre[1], Convert.ToBoolean(infoOHre[2]) ? "Ano" : "Ne", infoOHre[3], Convert.ToInt32(infoOHre[4]) > 0 ? Convert.ToInt32(infoOHre[4]) / 60 + " min." : "Není", Convert.ToBoolean(infoOHre[5]) ? "Ano" : "Ne", infoOHre[6], infoOHre[7] });
 
             List<string> skupiny = ((Dictionary<string, string>)PraceSDB.ZavolejPrikaz("nacti_skupiny", true, Uzivatel.Id)[0][0]).OrderBy(dvojice => dvojice.Key).Select(dvojice => dvojice.Key).ToList();
             skupiny.Insert(0, "Všichni");

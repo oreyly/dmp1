@@ -329,7 +329,15 @@ namespace dmp1
             {
                 string spravny = CastiVysledku4[SpravnyVysledek - 1];
                 CastiVysledku4.ZamichejList();
-                SpravnyVysledek = CastiVysledku4.IndexOf(spravny) + 1;
+                if (SpravnyVysledek == SpravnyVysledekOdpoved)
+                {
+                    SpravnyVysledek = CastiVysledku4.IndexOf(spravny) + 1;
+                    SpravnyVysledekOdpoved = SpravnyVysledek;
+                }
+                else
+                {
+                    SpravnyVysledek = CastiVysledku4.IndexOf(spravny) + 1;
+                }
             }
         }
 

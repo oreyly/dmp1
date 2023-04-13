@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace dmp1
 {
@@ -16,6 +17,7 @@ namespace dmp1
     {
         public App()
         {
+            //MessageBox.Show("Alespoň se to zaplo");
             Exit += App_Exit;
         }
 

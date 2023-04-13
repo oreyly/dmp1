@@ -12,7 +12,7 @@
         Closing="herniOkno_Closing"
         >
     <Viewbox>
-        <Grid Height="576" Width="1024">
+        <Grid Height="576" Width="1083">
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -32,8 +32,8 @@
         </Grid.Resources>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80*"></ColumnDefinition>
-            <ColumnDefinition Width="20*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <ListView x:Name="lbxSeznamUloh" Grid.Column="1" BorderThickness="1" Margin="0" Padding="0" ItemsSource="{Binding Ulohy}" IsHitTestVisible="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}" Focusable="{Binding Converter={StaticResource invdruhComp}, Path=DruhSpusteni, ConverterParameter=Procvicovani}">
             <ListView.Resources>
@@ -63,8 +63,8 @@
         
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*"></RowDefinition>
-                <RowDefinition Height="90*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="9*"></RowDefinition>
             </Grid.RowDefinitions>
             
             <Grid>
@@ -83,10 +83,10 @@
                         <RowDefinition Height="75*"></RowDefinition>
                         <RowDefinition Height="200*"></RowDefinition>
                         <RowDefinition Height="124"></RowDefinition>
-                        <RowDefinition Height="100*"></RowDefinition>
-                </Grid.RowDefinitions>
+                        <RowDefinition Height="100*"></RowDefinition> 
+                    </Grid.RowDefinitions>
 
-                <local:LepsiLabel Grid.Row="0" FontSize="10" Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
+                    <local:LepsiLabel Grid.Row="0" FontSize="10" Zarovnani="Center" TextKZobrazeni="{Binding aktualniUloha.Nazev, Mode=TwoWay}"></local:LepsiLabel>
 
 
                     <Grid Grid.Row="1">
